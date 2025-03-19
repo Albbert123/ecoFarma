@@ -50,6 +50,7 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+        <div className="bg-red-500 text-white p-4">¡Tailwind funciona!</div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
