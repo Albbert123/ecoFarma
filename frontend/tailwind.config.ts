@@ -8,6 +8,11 @@ export default {
     theme: {
       extend: {},
     },
+    variants: {
+      extend: {
+        textColor: ['hover'], // Asegúrate de que 'hover' esté habilitado
+      },
+    },
     plugins: [],
   };
   
