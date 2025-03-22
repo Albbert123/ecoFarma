@@ -21,7 +21,7 @@ export default function Navbar() {
             {/* Links */}
             <div className={`md:flex space-x-6 ${isOpen ? "block" : "hidden"} absolute md:static bg-white w-full md:w-auto left-0 top-16 p-4 md:p-0 shadow-md md:shadow-none`}>
                 <Link 
-                    href="/dashboard" 
+                    href="/prescriptions" 
                     className="block md:inline text-gray-900 py-2" 
                     style={{ textDecoration: 'none', color: 'inherit'}}
                 >
@@ -32,14 +32,14 @@ export default function Navbar() {
                     className="block md:inline text-gray-900 py-2" 
                     style={{ textDecoration: 'none', color: 'inherit'}}
                     >
-                        Tienda
+                    Tienda
                 </Link>
                 <Link 
                     href="/orders" 
                     className="block md:inline text-gray-900 py-2" 
                     style={{ textDecoration: 'none', color: 'inherit'}}
                     >
-                        Encargos
+                    Encargos
                 </Link>
                 <Link 
                     href="/contact" 
@@ -53,7 +53,7 @@ export default function Navbar() {
                     className="block md:inline text-gray-900 py-2" 
                     style={{ textDecoration: 'none', color: 'inherit'}}
                     >
-                        Nosotros
+                    Nosotros
                 </Link>
             </div>
 
