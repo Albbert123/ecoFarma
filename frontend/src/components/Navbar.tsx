@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { FaShoppingCart, FaUser, FaBars, FaTimes } from "react-icons/fa";
+import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
+import ProfileMenu from "./ProfileMenu";
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false); //links para mobiles
+
     return (
         <nav className="flex justify-between items-center px-8 py-1 bg-white shadow-md">
             {/* Logo */}
@@ -59,8 +61,11 @@ export default function Navbar() {
 
             {/* Icons */}
             <div className="flex space-x-12">
-            <Link href="/cart"><FaShoppingCart className="text-gray-900 text-xl cursor-pointer hover:text-blue-600" /></Link>
-            <Link href="/profile"><FaUser className="text-gray-900 text-xl cursor-pointer hover:text-blue-600" /></Link>
+                {/* Cart */}
+                <Link href="/cart"><FaShoppingCart className="text-gray-900 text-xl cursor-pointer hover:text-blue-600" /></Link>
+
+                {/* Perfil */}
+                <ProfileMenu />
             </div>
         </nav>
     );
