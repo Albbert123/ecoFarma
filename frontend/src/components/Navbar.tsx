@@ -22,7 +22,7 @@ export default function Navbar() {
             <div className={`md:flex space-x-6 ${isOpen ? "block" : "hidden"} absolute md:static bg-white w-full md:w-auto left-0 top-16 p-4 md:p-0 shadow-md md:shadow-none`}>
                 <Link 
                     href="/dashboard" 
-                    className="block md:inline text-gray-90 py-2" 
+                    className="block md:inline text-gray-900 py-2" 
                     style={{ textDecoration: 'none', color: 'inherit'}}
                 >
                     Gestión de recetas
@@ -58,7 +58,7 @@ export default function Navbar() {
             </div>
 
             {/* Icons */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-12">
             <Link href="/cart"><FaShoppingCart className="text-gray-900 text-xl cursor-pointer hover:text-blue-600" /></Link>
             <Link href="/profile"><FaUser className="text-gray-900 text-xl cursor-pointer hover:text-blue-600" /></Link>
             </div>
