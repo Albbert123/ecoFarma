@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ImCross } from "react-icons/im";
 
 interface LoginFormProps {
   onSubmit: (formData: any) => void;
@@ -10,6 +12,8 @@ interface LoginFormProps {
 
 export default function LoginForm({ onSubmit, error }: LoginFormProps) {
   const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const router = useRouter(); // Hook para redirección
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,41 +27,64 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
   return (
     <div className="flex justify-center items-center min-h-screen p-4">
       <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
+
+        {/* Botón de cierre (X) */}
+        <button
+          onClick={() => router.push("/")}
+          className="absolute top-14 right-45 p-2 rounded-full hover:bg-gray-200 transition flex items-center justify-center"
+          style={{ width: "50px", height: "50px" }} // Tamaño más grande
+        >
+          <ImCross size={40} className="text-black-600 hover:text-black transition" />
+        </button>
+
+        {/*Title*/}
         <h2 className="text-3xl font-semibold text-center">Iniciar sesión</h2>
-        <p className="text-center text-gray-600">
+        
+        {/*Link to register*/}
+        <p className="text-center text-gray-600 py-3">
           ¿Es tu primera vez?{" "}
-          <Link href="/register" className="text-blue-600 hover:underline">
+          <Link href="/register" className="font-semibold" style={{ textDecoration: 'none'}}>
             Regístrate
           </Link>
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-4">
-          <label className="block text-sm font-medium">Email *</label>
-          <input
-            type="email"
-            name="email"
-            className="w-full border p-2 rounded"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+        {/*Form*/}
+        <form onSubmit={handleSubmit} className="mt-6">
+          <div className="mb-6">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email *"
+              className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <label className="block text-sm font-medium mt-2">Contraseña *</label>
-          <input
-            type="password"
-            name="password"
-            className="w-full border p-2 rounded"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="mb-6">
+            <input
+              type="password"
+              name="password"
+              placeholder="Contraseña *"
+              className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <Link href="/forgot-password" className="text-red-500 text-sm mt-1 block">
-            ¿Olvidaste la contraseña?
-          </Link>
+          {/*Link to forgot password*/}
+          <div className="mb-6">
+            <Link href="/forgot-password" className="font-semibold" style={{ textDecoration: 'none'}}>
+              ¿Olvidaste la contraseña?
+            </Link>
+          </div>
 
+          {/*Error message*/}
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-
+          
+          {/*Login button*/}
           <button
             type="submit"
             className="w-full bg-black text-white p-2 rounded mt-4"
