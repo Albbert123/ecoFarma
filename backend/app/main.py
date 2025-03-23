@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-from app.routes import user_routes  # Importar rutas de usuario
+from app.routes.user_routes import api_router  # Importar rutas agrupadas
 
 app = FastAPI()
 
-app.include_router(user_routes.router)
+# Incluir las rutas de usuarios
+app.include_router(api_router)
 
 
 @app.get("/")

@@ -1,0 +1,14 @@
+from fastapi import APIRouter, HTTPException, Depends
+from app.models.user_model import UserCreate, UserResponse
+from app.services.user_service import UserService
+
+router = APIRouter()
+
+
+@router.post("/register", response_model=UserResponse)
+async def register(user: UserCreate, user_service: UserService = Depends()):
+    existing_user = user_service.get_user_by_email(user.correo)
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Correo ya registrado")
+    new_user = user_service.create_user(user)
+    return new_user

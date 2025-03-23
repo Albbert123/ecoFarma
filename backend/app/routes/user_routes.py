@@ -1,8 +1,5 @@
 from fastapi import APIRouter
+from app.controllers.user_controller import router as user_router
 
-router = APIRouter()
-
-
-@router.get("/users")
-def get_users():
-    return {"message": "Lista de usuarios"}
+api_router = APIRouter()
+api_router.include_router(user_router, prefix="/users", tags=["users"])
