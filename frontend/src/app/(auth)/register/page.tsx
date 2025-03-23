@@ -3,22 +3,23 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RegisterForm from "@/components/auth/RegisterForm";
-import { useAuthStore } from "@/stores/authStore";
+import { registerUser } from "@/services/authService";
+import axios from "axios";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { register } = useAuthStore();
   const [error, setError] = useState("");
 
   const handleRegister = async (formData: any) => {
-    // Logica para enviar al backend
-
-    //guardar en el store
-    const success = await register(formData);
-    if (!success) {
-      setError("Error al registrarse, intenta de nuevo");
-    } else {
+    try {
+      await registerUser(formData);
       router.push("/dashboard/profile");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Error desconocido");
+      } else {
+        setError("Error inesperado. Intenta de nuevo.");
+      }
     }
   };
 
