@@ -5,6 +5,7 @@ interface AuthState {
   userRole: "usuario" | "farmaceutico" | "admin" | null;
   login: (email: string, password: string) => Promise<boolean>;
   register: (data: any) => Promise<boolean>;
+  resetPassword: (email: string, code: string, newPassword: string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -25,6 +26,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     console.log("Registrando usuario:", data);
     set({ isAuthenticated: true, userRole: "usuario" });
     return true;
+  },
+
+  resetPassword: async (email, code, newPassword) => {
+    console.log("Reseteando contraseña para:", email);
+    return true; // Aquí se integraría la lógica con el backend
   },
 
   logout: () => {
