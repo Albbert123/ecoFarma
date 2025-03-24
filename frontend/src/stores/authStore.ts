@@ -18,6 +18,6 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   logout: () => {
-    set({ isAuthenticated: false, userRole: null });
+    set({ isAuthenticated: false, userRole: null, userCorreo: "" });
   },
 }));
