@@ -4,21 +4,26 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginForm from "@/components/auth/LoginForm";
 import { useAuthStore } from "@/stores/authStore";
+import { LoginFormData } from "@/types/userTypes";
+import axios from "axios";
+import { loginUser } from "@/services/authService";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuthStore();
-  const [error, setError] = useState("");
-
-  const handleLogin = async (formData: any) => {
-    // Logica para enviar al backend
-
-    //guardar en el store
-    const success = await login(formData.email, formData.password);
-    if (!success) {
-      setError("Correo o contraseña incorrectos");
-    } else {
-      router.push("/dashboard/profile");
+  const [error, setError] = useState<string | undefined>();
+  const setUser = useAuthStore((state) => state.setUser);
+  
+  const handleLogin = async (formData: LoginFormData) => {
+    try {
+      const userData = await loginUser(formData);
+      setUser(userData.rol, userData.correo); // Guardar en authStore
+      router.push("/");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Error desconocido");
+      } else {
+        setError("Error inesperado. Intenta de nuevo.");
+      }
     }
   };
 

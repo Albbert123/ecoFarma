@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from app.models.user_model import UserCreate, UserResponse
+from app.models.user_model import UserCreate, UserLogin, UserResponse
 from app.services.user_service import UserService
 
 router = APIRouter()
@@ -12,3 +12,11 @@ async def register(user: UserCreate, user_service: UserService = Depends()):
         raise HTTPException(status_code=400, detail="Correo ya registrado")
     new_user = user_service.create_user(user)
     return new_user
+
+
+@router.post("/login", response_model=UserResponse)
+async def login(user: UserLogin, user_service: UserService = Depends()):
+    user_data = user_service.authenticate_user(user)
+    if not user_data:
+        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+    return user_data

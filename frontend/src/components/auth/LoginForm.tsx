@@ -4,14 +4,18 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImCross } from "react-icons/im";
+import { LoginFormData } from "@/types/userTypes";
 
 interface LoginFormProps {
-  onSubmit: (formData: any) => void;
+  onSubmit: (formData: LoginFormData) => void;
   error?: string;
 }
 
 export default function LoginForm({ onSubmit, error }: LoginFormProps) {
-  const [formData, setFormData] = useState({ correo: "", contraseña: "" });
+  const [formData, setFormData] = useState({
+     correo: "", 
+     contraseña: "" 
+  });
 
   const router = useRouter(); // Hook para redirección
 

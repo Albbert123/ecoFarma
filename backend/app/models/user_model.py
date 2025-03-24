@@ -14,3 +14,8 @@ class UserResponse(BaseModel):
     nombre: str
     apellido: str
     rol: str
+
+
+class UserLogin(BaseModel):
+    correo: str
+    contraseña: str
