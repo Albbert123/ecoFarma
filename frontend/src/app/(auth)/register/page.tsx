@@ -20,12 +20,8 @@ export default function RegisterPage() {
       const userData = await registerUser(formData);
       setUser(userData.rol, userData.correo); // Guardar en authStore
       router.push("/");
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Error desconocido");
-      } else {
-        setError("Error inesperado. Intenta de nuevo.");
-      }
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 

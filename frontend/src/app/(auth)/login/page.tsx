@@ -22,12 +22,8 @@ export default function LoginPage() {
       setUser(userData.rol, userData.correo); // Guardar en authStore
       toast.success("Inicio de sesión exitoso 🎉");
       router.push("/");
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Error desconocido");
-      } else {
-        setError("Error inesperado. Intenta de nuevo.");
-      }
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
