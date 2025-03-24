@@ -4,18 +4,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImCross } from "react-icons/im";
+import { RegisterFormData } from "@/types/userTypes";
 
 interface RegisterFormProps {
-  onSubmit: (formData: any) => void;
+  onSubmit: (formData: RegisterFormData) => void;
   error?: string;
 }
 
 export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
   const [formData, setFormData] = useState({
+    correo: "",
     nombre: "",
     apellido: "",
-    email: "",
-    password: "",
+    contraseña: "",
+    rol: "usuario",
   });
 
   const router = useRouter(); // Hook para redirección
@@ -74,10 +76,10 @@ export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
           <div className="mb-6">
             <input
               type="email"
-              name="email"
-              placeholder="Email *"
+              name="correo"
+              placeholder="Correo *"
               className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
-              value={formData.email}
+              value={formData.correo}
               onChange={handleChange}
               required
             />
@@ -86,10 +88,10 @@ export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
           <div className="mb-6">
             <input
               type="password"
-              name="password"
+              name="contraseña"
               placeholder="Contraseña *"
               className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
-              value={formData.password}
+              value={formData.contraseña}
               onChange={handleChange}
               required
             />

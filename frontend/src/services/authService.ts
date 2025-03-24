@@ -1,8 +1,9 @@
+import { RegisterFormData } from "@/types/userTypes";
 import { api } from "./api";
 
-export const registerUser = async (formData: any) => {
+export const registerUser = async (formData: RegisterFormData) => {
   try {
-    const response = await api.post("/register", formData);
+    const response = await api.post("/users/register", formData);
     return response.data; // Retorna los datos si el registro fue exitoso
   } catch (error) {
     console.error("Error en el registro:", error);

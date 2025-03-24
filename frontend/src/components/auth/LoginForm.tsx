@@ -11,7 +11,7 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onSubmit, error }: LoginFormProps) {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ correo: "", contraseña: "" });
 
   const router = useRouter(); // Hook para redirección
 
@@ -53,10 +53,10 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
           <div className="mb-6">
             <input
               type="email"
-              name="email"
-              placeholder="Email *"
+              name="correo"
+              placeholder="Correo *"
               className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
-              value={formData.email}
+              value={formData.correo}
               onChange={handleChange}
               required
             />
@@ -65,10 +65,10 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
           <div className="mb-6">
             <input
               type="password"
-              name="password"
+              name="contraseña"
               placeholder="Contraseña *"
               className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
-              value={formData.password}
+              value={formData.contraseña}
               onChange={handleChange}
               required
             />

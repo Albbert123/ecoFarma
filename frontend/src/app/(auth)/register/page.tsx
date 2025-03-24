@@ -5,15 +5,19 @@ import { useRouter } from "next/navigation";
 import RegisterForm from "@/components/auth/RegisterForm";
 import { registerUser } from "@/services/authService";
 import axios from "axios";
+import { RegisterFormData } from "@/types/userTypes";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | undefined>();
+  const setUser = useAuthStore((state) => state.setUser);
 
-  const handleRegister = async (formData: any) => {
+  const handleRegister = async (formData: RegisterFormData) => {
     try {
-      await registerUser(formData);
-      router.push("/dashboard/profile");
+      const userData = await registerUser(formData);
+      setUser(userData.rol, userData.correo); // Guardar en authStore
+      router.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || "Error desconocido");

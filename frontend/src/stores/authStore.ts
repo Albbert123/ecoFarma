@@ -3,34 +3,18 @@ import { create } from "zustand";
 interface AuthState {
   isAuthenticated: boolean;
   userRole: "usuario" | "farmaceutico" | "admin" | null;
-  login: (email: string, password: string) => Promise<boolean>;
-  register: (data: any) => Promise<boolean>;
-  resetPassword: (email: string, code: string, newPassword: string) => Promise<boolean>;
+  userCorreo: string;
+  setUser: (role: "usuario" | "farmaceutico" | "admin", correo: string) => void;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   userRole: null,
+  userCorreo: "",
 
-  login: async (email, password) => {
-    if (email === "admin@admin.com" && password === "1234") {
-      set({ isAuthenticated: true, userRole: "admin" });
-      return true;
-    } else {
-      return false;
-    }
-  },
-
-  register: async (data) => {
-    console.log("Registrando usuario:", data);
-    set({ isAuthenticated: true, userRole: "usuario" });
-    return true;
-  },
-
-  resetPassword: async (email, code, newPassword) => {
-    console.log("Reseteando contraseña para:", email);
-    return true; // Aquí se integraría la lógica con el backend
+  setUser: (role, correo) => {
+    set({ isAuthenticated: true, userRole: role, userCorreo: correo });
   },
 
   logout: () => {
