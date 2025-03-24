@@ -85,17 +85,17 @@ export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
             />
           </div>
 
-          <div className="mb-6">
-            <input
-              type="password"
-              name="contraseña"
-              placeholder="Contraseña *"
-              className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
-              value={formData.contraseña}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <input
+            type="password"
+            name="contraseña"
+            placeholder="Contraseña *"
+            className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
+            value={formData.contraseña}
+            onChange={handleChange}
+            required
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+            title="La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula y un número."
+          />
 
           {/* Mensaje de error */}
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
