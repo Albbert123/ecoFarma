@@ -91,6 +91,8 @@ export default function ForgotPasswordForm({ onSubmit, error }: ForgotPasswordFo
               value={formData.newPassword}
               onChange={handleChange}
               required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+              title="La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula y un número."
             />
           </div>
 
