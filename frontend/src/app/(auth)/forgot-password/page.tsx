@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 import { useAuthStore } from "@/stores/authStore";
+import { useBootstrap } from "@/hooks/useBootstrap";
 
 export default function ForgotPasswordPage() {
+  useBootstrap();
   const router = useRouter();
   const { resetPassword } = useAuthStore();
   const [error, setError] = useState("");

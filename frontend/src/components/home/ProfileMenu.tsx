@@ -4,6 +4,7 @@ import { useAuthStore } from "@/stores/authStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import toast from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
 
 export default function ProfileMenu() {
@@ -86,6 +87,7 @@ export default function ProfileMenu() {
                     <button 
                         onClick={() => {
                             logout();
+                            toast.success("Cierre de sesión exitoso 👋");
                             setMenuOpen(false);
                         }} 
                         className="block w-full text-left px-4 py-2 hover:bg-gray-100"

@@ -7,8 +7,11 @@ import { useAuthStore } from "@/stores/authStore";
 import { LoginFormData } from "@/types/userTypes";
 import axios from "axios";
 import { loginUser } from "@/services/authService";
+import { useBootstrap } from "@/hooks/useBootstrap";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
+  useBootstrap();
   const router = useRouter();
   const [error, setError] = useState<string | undefined>();
   const setUser = useAuthStore((state) => state.setUser);
@@ -17,6 +20,7 @@ export default function LoginPage() {
     try {
       const userData = await loginUser(formData);
       setUser(userData.rol, userData.correo); // Guardar en authStore
+      toast.success("Inicio de sesión exitoso 🎉");
       router.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {

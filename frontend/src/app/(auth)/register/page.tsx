@@ -7,8 +7,10 @@ import { registerUser } from "@/services/authService";
 import axios from "axios";
 import { RegisterFormData } from "@/types/userTypes";
 import { useAuthStore } from "@/stores/authStore";
+import { useBootstrap } from "@/hooks/useBootstrap";
 
 export default function RegisterPage() {
+  useBootstrap();
   const router = useRouter();
   const [error, setError] = useState<string | undefined>();
   const setUser = useAuthStore((state) => state.setUser);
