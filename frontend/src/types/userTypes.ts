@@ -10,3 +10,9 @@ export interface LoginFormData {
     correo: string;
     contraseña: string;
 }
+
+export interface UserRole {
+    usuario: string;
+    farmaceutico: string;
+    admin: string;
+}

@@ -1,23 +1,24 @@
+import { UserRole } from "@/types/userTypes";
 import { create } from "zustand";
 
 interface AuthState {
   isAuthenticated: boolean;
-  userRole: "usuario" | "farmaceutico" | "admin" | null;
-  userCorreo: string;
-  setUser: (role: "usuario" | "farmaceutico" | "admin", correo: string) => void;
+  userRole: UserRole | null;
+  userCorreo: string | null;
+  setUser: (role: UserRole, correo: string) => void;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   userRole: null,
-  userCorreo: "",
+  userCorreo: null,
 
   setUser: (role, correo) => {
     set({ isAuthenticated: true, userRole: role, userCorreo: correo });
   },
 
   logout: () => {
-    set({ isAuthenticated: false, userRole: null, userCorreo: "" });
+    set({ isAuthenticated: false, userRole: null, userCorreo: null });
   },
 }));
