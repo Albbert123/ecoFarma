@@ -1,6 +1,8 @@
 import bcrypt
+from datetime import timedelta
 from app.repositories.user_repository import UserRepository
 from app.models.user_model import UserCreate, UserLogin, UserResponse
+from app.auth.jwt_handler import create_access_token
 
 
 class UserService:
@@ -15,7 +17,14 @@ class UserService:
             user.contraseña.encode('utf-8'), bcrypt.gensalt()
         ).decode('utf-8')
         new_user = self.user_repo.create_user(user, hashed_password)
-        return UserResponse(**new_user)
+
+        # Generar el token después del registro
+        token = create_access_token(
+            data={"correo": new_user["correo"], "rol": new_user["rol"]},
+            expires_delta=timedelta(minutes=60)
+        )
+
+        return UserResponse(**new_user, token=token)
 
     def authenticate_user(self, user: UserLogin):
         userDB = self.user_repo.get_user_by_email(user.correo)
@@ -24,4 +33,11 @@ class UserService:
             userDB["contraseña"].encode("utf-8")
         ):
             return None
-        return UserResponse(**userDB)
+
+        # Generar token
+        token = create_access_token(
+            data={"correo": userDB["correo"], "rol": userDB["rol"]},
+            expires_delta=timedelta(minutes=60)
+        )
+
+        return UserResponse(**userDB, token=token)
