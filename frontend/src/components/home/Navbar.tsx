@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import ProfileMenu from "./ProfileMenu";
+// import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false); //links para mobiles
+    // useAuth();
 
     return (
         <nav className="flex justify-between items-center px-8 py-1 bg-white shadow-md">

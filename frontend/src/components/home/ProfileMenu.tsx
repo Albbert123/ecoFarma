@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/stores/authStore";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
@@ -87,6 +88,7 @@ export default function ProfileMenu() {
                     <button 
                         onClick={() => {
                             logout();
+                            signOut()
                             toast.success("Cierre de sesión exitoso 👋");
                             setMenuOpen(false);
                         }} 

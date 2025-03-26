@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { getSession, signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImCross } from "react-icons/im";
@@ -14,7 +15,8 @@ interface LoginFormProps {
 export default function LoginForm({ onSubmit, error }: LoginFormProps) {
   const [formData, setFormData] = useState({
      correo: "", 
-     contraseña: "" 
+     contraseña: "",
+     es_google: false,
   });
 
   const router = useRouter(); // Hook para redirección
@@ -95,6 +97,35 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
           >
             Iniciar sesión
           </button>
+
+          {/*Google login button*/}
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">O</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => signIn("google", { callbackUrl: "/" })}
+            className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 py-2 rounded hover:bg-gray-50 transition"
+          >
+            <img 
+              src="https://www.google.com/favicon.ico" 
+              alt="Google" 
+              className="w-5 h-5"
+            />
+            Continuar con Google
+          </button>
+
+          {error === "auth" && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+          Error al autenticar con Google. Por favor intenta nuevamente.
+        </div>
+      )}
         </form>
       </div>
     </div>
