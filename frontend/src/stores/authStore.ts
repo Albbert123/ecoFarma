@@ -6,7 +6,8 @@ interface AuthState {
   isAuthenticated: boolean;
   userRole: UserRole | null;
   userCorreo: string | null;
-  setUser: (token: string, role: UserRole, correo: string) => void;
+  userImagen: string | null;
+  setUser: (token: string, role: UserRole, correo: string, imagen: string) => void;
   logout: () => void;
   isTokenExpired: () => boolean;
 }
@@ -16,14 +17,16 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: typeof window !== "undefined" ? !!localStorage.getItem("token") : false,
   userRole: typeof window !== "undefined" ? (JSON.parse(localStorage.getItem("userRole") || "null") as UserRole | null) : null,
   userCorreo: typeof window !== "undefined" ? localStorage.getItem("userCorreo") : null,
+  userImagen: typeof window !== "undefined" ? localStorage.getItem("userImagen") : null,
 
-  setUser: (token, role, correo) => {
+  setUser: (token, role, correo, imagen) => {
     if (typeof window !== "undefined") {
       localStorage.setItem("token", token);
       localStorage.setItem("userRole", JSON.stringify(role));
       localStorage.setItem("userCorreo", correo);
+      localStorage.setItem("userImagen", imagen);
     }
-    set({ token, isAuthenticated: true, userRole: role, userCorreo: correo });
+    set({ token, isAuthenticated: true, userRole: role, userCorreo: correo, userImagen: imagen });
   },
 
   logout: () => {
@@ -31,8 +34,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.removeItem("token");
       localStorage.removeItem("userRole");
       localStorage.removeItem("userCorreo");
+      localStorage.removeItem("userImagen");
     }
-    set({ token: null, isAuthenticated: false, userRole: null, userCorreo: null });
+    set({ token: null, isAuthenticated: false, userRole: null, userCorreo: null, userImagen: null });
   },
 
   isTokenExpired: () => {

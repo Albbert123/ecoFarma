@@ -12,6 +12,7 @@ class UserRepository:
             "nombre": user.nombre,
             "apellido": user.apellido,
             "contraseña": hashed_password,
+            "imagen": user.imagen,
             "rol": user.rol
         }
         db["Persona"].insert_one(new_user)

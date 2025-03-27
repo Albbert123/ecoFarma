@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
 
 export default function ProfileMenu() {
-    const { isAuthenticated, userRole, logout } = useAuthStore();
+    const { isAuthenticated, userRole, userImagen, logout } = useAuthStore();
     const [menuOpen, setMenuOpen] = useState(false); // menu de perfil
     const menuRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
@@ -37,12 +37,28 @@ export default function ProfileMenu() {
         };
     }, [menuOpen]);
 
+    // Imagen de perfil o por defecto
+    const profileImage = (userImagen && userImagen.trim() !== "") ? userImagen : "/images/default-profile.png";
+
     return (
         <div className="relative" ref={menuRef}>
-            <FaUser 
-                className="text-gray-900 text-xl cursor-pointer hover:text-blue-600"
-                onClick={handleProfileClick} 
-            />
+
+            {/* Icono de perfil o imagen de usuario */}
+<div 
+    className="flex items-center gap-1 cursor-pointer" 
+    onClick={handleProfileClick}
+>
+    {isAuthenticated ? (
+        <img 
+            src={profileImage} 
+            alt="Perfil"
+            className="w-7 h-7 rounded-full border border-gray-300 object-cover mt-[-3.5px]"
+        />
+    ) : (
+        <FaUser className="text-gray-900 text-xl hover:text-blue-600" />
+    )}
+    {isAuthenticated && <span className="text-gray-600 text-sm mt-[1px]">▼</span>}
+</div>
             {/* Menú desplegable */}
             {menuOpen && isAuthenticated && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50">

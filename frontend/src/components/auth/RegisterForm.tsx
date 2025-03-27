@@ -17,6 +17,7 @@ export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
     nombre: "",
     apellido: "",
     contraseña: "",
+    imagen: "",
     rol: "usuario",
   });
 
