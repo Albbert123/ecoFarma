@@ -3,6 +3,7 @@ export interface RegisterFormData {
     nombre: string;
     apellido: string;
     contraseña: string;
+    imagen: string;
     rol: string;
 }
 
@@ -11,8 +12,8 @@ export interface LoginFormData {
     contraseña: string;
 }
 
-export interface UserRole {
-    usuario: string;
-    farmaceutico: string;
-    admin: string;
+export enum UserRole {
+    Usuario = "usuario",
+    Farmaceutico = "farmaceutico",
+    Admin = "admin",
 }
