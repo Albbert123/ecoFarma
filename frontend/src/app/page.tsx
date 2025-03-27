@@ -1,9 +1,14 @@
 "use client";
 
 import React from "react";
+import { useAuthStore } from "@/stores/authStore";
 import Navbar from "@/components/home/Navbar";
+import NavbarFarm from "@/components/home/NavbarFarm";
+import NavbarAdmin from "@/components/home/NavbarAdmin";
 import Footer from "@/components/home/Footer";
 import Welcome from "@/components/home/Welcome";
+import WelcomeFarm from "@/components/home/WelcomeFarm";
+import WelcomeAdmin from "@/components/home/WelcomeAdmin";
 import Service from "@/components/home/Service";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import Schedule from "@/components/home/Schedule";
@@ -11,27 +16,44 @@ import Ubication from "@/components/home/Ubication";
 
 export default function Home() {
   useBootstrap();
+
+  const { isAuthenticated, userRole } = useAuthStore(); // Obtener usuario autenticado
+
+  // Determinar Navbar y Welcome según el rol
+  let NavbarComponent = Navbar;
+  let WelcomeComponent = Welcome;
+  let showExtraSections = true;
+
+  if (isAuthenticated) {
+    if (userRole === "farmaceutico") {
+      NavbarComponent = NavbarFarm;
+      WelcomeComponent = WelcomeFarm;
+      showExtraSections = false;
+    }
+    if (userRole === "admin") {
+      NavbarComponent = NavbarAdmin;
+      WelcomeComponent = WelcomeAdmin;
+      showExtraSections = false;
+    }
+  }
   
   return (
-    <div className="min-h-screen bg-white text-gray-900"> {/* el div ocupe al menos la altura completa de la pantalla, color de fondo */}
-      {/* Navbar */}
-      <Navbar />
-      
-      {/* Welcome Section */}
-      <Welcome />
+    <div className="min-h-screen bg-white text-gray-900">
+      {/* Navbar según rol */}
+      <NavbarComponent />
 
-      {/* Services Section */}
-      <Service />
-      
-      {/* Horario Laboral */}
-      <Schedule />
+      {/* Welcome según rol */}
+      <WelcomeComponent />
 
-      {/* Ubicación */}
-      <Ubication />
-
-      {/* Footer */}
-      <Footer />
-
+       {/* Mostrar secciones solo si el usuario no es admin ni farmaceutico */}
+      {showExtraSections && (
+        <>
+          <Service />
+          <Schedule />
+          <Ubication />
+          <Footer />
+        </>
+      )}
     </div>
   );
 }
