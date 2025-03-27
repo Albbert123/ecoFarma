@@ -17,7 +17,7 @@ export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
     nombre: "",
     apellido: "",
     contraseña: "",
-    imagen: "",
+    imagen: process.env.DEFAULT_USER_IMAGE ?? "",
     rol: "usuario",
   });
 
