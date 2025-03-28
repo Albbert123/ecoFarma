@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from "@/stores/authStore";
 import { useState } from "react";
 
 interface ProfileFormProps {
@@ -14,6 +15,8 @@ interface ProfileFormProps {
     });
 
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+    const { userRole } = useAuthStore();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -69,7 +72,8 @@ interface ProfileFormProps {
             </div>
         </form>
         {/* Sección de eliminar cuenta */}
-        <div className="mt-8 text-center">
+        {userRole === "usuario" ? (
+            <div className="mt-8 text-center">
                 {showDeleteConfirm ? (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                         <p className="text-red-800 mb-4">¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.</p>
@@ -97,6 +101,7 @@ interface ProfileFormProps {
                     </button>
                 )}
             </div>
+        ) : null}
         </>
     );
 }
