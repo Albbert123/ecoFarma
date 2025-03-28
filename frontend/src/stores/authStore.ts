@@ -1,16 +1,6 @@
+import { AuthState } from "@/types/authTypes";
 import { UserRole } from "@/types/userTypes";
 import { create } from "zustand";
-
-interface AuthState {
-  token: string | null;
-  isAuthenticated: boolean;
-  userRole: UserRole | null;
-  userCorreo: string | null;
-  userImagen: string | null;
-  setUser: (token: string, role: UserRole, correo: string, imagen: string) => void;
-  logout: () => void;
-  isTokenExpired: () => boolean;
-}
 
 export const useAuthStore = create<AuthState>((set) => ({
   token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
@@ -38,9 +28,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.clear();
     }
     set({ token: null, isAuthenticated: false, userRole: null, userCorreo: null, userImagen: null });
-    // if (typeof window !== "undefined") {
-    //   window.location.href = redirectTo;
-    // }
   },
 
   isTokenExpired: () => {
