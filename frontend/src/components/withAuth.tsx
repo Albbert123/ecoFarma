@@ -10,15 +10,17 @@ import { useEffect, useState } from "react";
   * redirected to the login page.
 */
 
-export default function withAuth(Component: React.FC) {
+export default function withAuth(Component: React.FC, allowedRoles: string[]) {
   return function ProtectedRoute(props: any) {
-    const { isAuthenticated } = useAuthStore();
+    const { isAuthenticated, userRole } = useAuthStore();
     const router = useRouter();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       if (!isAuthenticated) {
         router.push("/login");
+      } else if (!allowedRoles.includes(userRole!)) {
+        router.push("/"); // Redirige a la página de inicio si no tiene permiso
       } else {
         setLoading(false);
       }

@@ -45,4 +45,4 @@ function ProfilePage() {
     );
 }
 
-export default withAuth(ProfilePage);
+export default withAuth(ProfilePage, ["usuario", "admin", "farmaceutico"]);
