@@ -20,3 +20,12 @@ export const loginUser = async (formData: LoginFormData) => {
     throw new Error(errorMessage);
   }
 };
+
+export const deleteUser = async (correo: string) => {
+  try {
+    await api.delete("/users/delete", { data: { correo } });
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al eliminar la cuenta";
+    throw new Error(errorMessage);
+  }
+} 

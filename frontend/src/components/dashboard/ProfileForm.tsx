@@ -1,14 +1,19 @@
-// /components/dashboard/ProfileForm.tsx
 "use client";
 
 import { useState } from "react";
 
-export default function ProfileForm() {
+interface ProfileFormProps {
+    onDeleteAccount?: () => void; // Nueva prop para manejar la eliminación
+  }
+
+  export default function ProfileForm({ onDeleteAccount }: ProfileFormProps) {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
         email: ""
     });
+
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -63,6 +68,35 @@ export default function ProfileForm() {
                 <button type="submit" className="px-4 py-2 bg-gray-800 text-white rounded-md">Actualizar información</button>
             </div>
         </form>
+        {/* Sección de eliminar cuenta */}
+        <div className="mt-8 text-center">
+                {showDeleteConfirm ? (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <p className="text-red-800 mb-4">¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+                        <div className="flex justify-center gap-x-10">
+                            <button 
+                                onClick={() => setShowDeleteConfirm(false)}
+                                className="px-4 py-2 border rounded-md text-gray-700"
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                onClick={onDeleteAccount}
+                                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                            >
+                                Confirmar eliminación
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <button 
+                        onClick={() => setShowDeleteConfirm(true)}
+                        className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                    >
+                        Eliminar cuenta
+                    </button>
+                )}
+            </div>
         </>
     );
 }
