@@ -17,3 +17,6 @@ class UserRepository:
         }
         db["Persona"].insert_one(new_user)
         return new_user
+
+    def delete_user(self, correo: str):
+        return db["Persona"].delete_one({"correo": correo})

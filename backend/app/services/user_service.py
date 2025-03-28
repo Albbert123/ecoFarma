@@ -1,5 +1,7 @@
 import bcrypt
 from datetime import timedelta
+
+from fastapi import HTTPException
 from app.repositories.user_repository import UserRepository
 from app.models.user_model import UserCreate, UserLogin, UserResponse
 from app.auth.jwt_handler import create_access_token
@@ -41,3 +43,11 @@ class UserService:
         )
 
         return UserResponse(**userDB, token=token)
+
+    def delete_user(self, correo: str):
+        result = self.user_repo.delete_user(correo)
+        if result.deleted_count == 0:
+            raise HTTPException(
+                status_code=404, detail="Usuario no encontrado"
+            )
+        return {"message": "Usuario eliminado correctamente"}
