@@ -2,9 +2,6 @@
 
 import React from "react";
 import { useAuthStore } from "@/stores/authStore";
-import Navbar from "@/components/home/Navbar";
-import NavbarFarm from "@/components/home/NavbarFarm";
-import NavbarAdmin from "@/components/home/NavbarAdmin";
 import Footer from "@/components/home/Footer";
 import Welcome from "@/components/home/Welcome";
 import WelcomeFarm from "@/components/home/WelcomeFarm";
@@ -19,19 +16,16 @@ export default function Home() {
 
   const { isAuthenticated, userRole } = useAuthStore(); // Obtener usuario autenticado
 
-  // Determinar Navbar y Welcome según el rol
-  let NavbarComponent = Navbar;
+  // Determinar Welcome según el rol
   let WelcomeComponent = Welcome;
   let showExtraSections = true;
 
   if (isAuthenticated) {
     if (userRole === "farmaceutico") {
-      NavbarComponent = NavbarFarm;
       WelcomeComponent = WelcomeFarm;
       showExtraSections = false;
     }
     if (userRole === "admin") {
-      NavbarComponent = NavbarAdmin;
       WelcomeComponent = WelcomeAdmin;
       showExtraSections = false;
     }
@@ -39,9 +33,6 @@ export default function Home() {
   
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      {/* Navbar según rol */}
-      <NavbarComponent />
-
       {/* Welcome según rol */}
       <WelcomeComponent />
 

@@ -13,6 +13,10 @@ export default function ProfileMenu() {
     const menuRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
 
+    // ⛔ Evitar problemas de hidratación con un estado que solo se activa en el cliente
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => setIsClient(true), []);
+
     const handleProfileClick = () => {
         if (!isAuthenticated) {
             router.push("/login");
@@ -37,55 +41,68 @@ export default function ProfileMenu() {
         };
     }, [menuOpen]);
 
-    // Imagen de perfil o por defecto
-    const profileImage = (userImagen && userImagen.trim() !== "") ? userImagen : "/images/default-profile.png";
+    // Función para cerrar el menú
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
+
+   // Determinar la imagen de perfil en la renderización
+   const profileImage = isAuthenticated && userImagen && userImagen?.trim() !== "" 
+   ? userImagen 
+   : "/images/default-profile.png";
+
+   if (!isClient) return null; // ⛔ Evita que se renderice en SSR
 
     return (
         <div className="relative" ref={menuRef}>
 
             {/* Icono de perfil o imagen de usuario */}
-<div 
-    className="flex items-center gap-1 cursor-pointer" 
-    onClick={handleProfileClick}
->
-    {isAuthenticated ? (
-        <img 
-            src={profileImage} 
-            alt="Perfil"
-            className="w-7 h-7 rounded-full border border-gray-300 object-cover mt-[-3.5px]"
-        />
-    ) : (
-        <FaUser className="text-gray-900 text-xl hover:text-blue-600" />
-    )}
-    {isAuthenticated && <span className="text-gray-600 text-sm mt-[1px]">▼</span>}
-</div>
+            <div 
+                className="flex items-center gap-1 cursor-pointer" 
+                onClick={handleProfileClick}
+            >
+                {isAuthenticated ? (
+                    <img 
+                        src={profileImage} 
+                        alt="Perfil"
+                        className="w-7 h-7 rounded-full border border-gray-300 object-cover mt-[-3.5px]"
+                    />
+                ) : (
+                    <FaUser className="text-gray-900 text-xl hover:text-blue-600" />
+                )}
+                {isAuthenticated && <span className="text-gray-600 text-sm mt-[1px]">▼</span>}
+            </div>
             {/* Menú desplegable */}
             {menuOpen && isAuthenticated && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50">
                     {userRole === "usuario" ? (
                         <>
                             <Link 
-                                href="/orders" 
-                                className="block px-4 py-2 hover:bg-gray-100" 
-                                style={{ textDecoration: 'none', color: 'inherit'}}
-                                >Mis encargos
-                            </Link>
-                            <Link 
-                                href="/reminders" 
-                                className="block px-4 py-2 hover:bg-gray-100" 
-                                style={{ textDecoration: 'none', color: 'inherit'}}
-                                >Mis recordatorios
-                            </Link>
-                            <Link 
-                                href="/prescriptions" 
+                                href="/myPrescriptions" 
                                 className="block px-4 py-2 hover:bg-gray-100"
                                 style={{ textDecoration: 'none', color: 'inherit'}}
+                                onClick={closeMenu}
                                 >Mis recetas
                             </Link>
                             <Link 
-                                href="/search-history" 
+                                href="/myOrders" 
+                                className="block px-4 py-2 hover:bg-gray-100" 
+                                style={{ textDecoration: 'none', color: 'inherit'}}
+                                onClick={closeMenu}
+                                >Mis encargos
+                            </Link>
+                            <Link 
+                                href="/myReminders" 
+                                className="block px-4 py-2 hover:bg-gray-100" 
+                                style={{ textDecoration: 'none', color: 'inherit'}}
+                                onClick={closeMenu}
+                                >Mis recordatorios
+                            </Link> 
+                            <Link 
+                                href="/mySearchHistory" 
                                 className="block px-4 py-2 hover:bg-gray-100"
                                 style={{ textDecoration: 'none', color: 'inherit'}}
+                                onClick={closeMenu}
                                 >Historial de búsqueda
                             </Link>
                         </>
@@ -94,6 +111,7 @@ export default function ProfileMenu() {
                         href="/profile" 
                         className="block px-4 py-2 hover:bg-gray-100"
                         style={{ textDecoration: 'none', color: 'inherit'}}
+                        onClick={closeMenu}
                         >Mi cuenta
                     </Link>
 
@@ -104,7 +122,10 @@ export default function ProfileMenu() {
                         onClick={() => {
                             logout();
                             toast.success("Cierre de sesión exitoso 👋");
-                            setMenuOpen(false);
+                            closeMenu();
+                            setTimeout(() => {
+                                router.replace("/");
+                            }, 8);
                         }} 
                         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
                         >Cerrar sesión

@@ -29,20 +29,21 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-4">
-      <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
-
-        {/* Botón de cierre (X) */}
-        <button
-          onClick={() => router.push("/")}
-          className="absolute top-14 right-45 p-2 rounded-full hover:bg-gray-200 transition flex items-center justify-center"
-          style={{ width: "50px", height: "50px" }} // Tamaño más grande
-        >
-          <ImCross size={40} className="text-black-600 hover:text-black transition" />
-        </button>
+    <div className="flex justify-center items-center mt-10 p-4">
+      <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg relative">
+ 
+        {/* Botón de cierre (X) - Ahora dentro de la caja y alineado a la derecha */}
+        <div className="flex justify-end"> {/* Contenedor flex para alinear a la derecha */}
+          <button
+            onClick={() => router.push("/")}
+            className="p-1 rounded-full hover:bg-gray-200 transition"
+          >
+            <ImCross size={20} className="text-gray-600 hover:text-black" /> {/* Tamaño reducido */}
+          </button>
+        </div>
 
         {/*Title*/}
-        <h2 className="text-3xl font-semibold text-center">Iniciar sesión</h2>
+        <h2 className="text-3xl font-semibold text-center mt-2">Iniciar sesión</h2>
         
         {/*Link to register*/}
         <p className="text-center text-gray-600 py-3">

@@ -2,7 +2,7 @@
 
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /*
   * withAuth is a higher-order component that checks if the user is authenticated
@@ -14,13 +14,20 @@ export default function withAuth(Component: React.FC) {
   return function ProtectedRoute(props: any) {
     const { isAuthenticated } = useAuthStore();
     const router = useRouter();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       if (!isAuthenticated) {
         router.push("/login");
+      } else {
+        setLoading(false);
       }
     }, [isAuthenticated]);
 
-    return isAuthenticated ? <Component {...props} /> : null;
+    if (loading) {
+      return <div></div>; // Muestra un loading en lugar de cambiar la estructura
+    }
+
+    return <Component {...props} />;
   };
 }
