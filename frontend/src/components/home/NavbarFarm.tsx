@@ -10,7 +10,13 @@ export default function NavbarFarm() {
     return (
         <nav className="flex justify-between items-center px-8 py-1 bg-white shadow-md">
             {/* Logo */}
-            <div className="text-2xl font-bold text-gray-800">ECOFARMA</div>
+            <Link 
+                href="/" 
+                className="text-2xl font-bold text-gray-800 cursor-pointer"
+                style={{ textDecoration: 'none', color: 'inherit'}}
+                >
+                ECOFARMA
+            </Link>
 
             {/* Mobile Menu Button */}
             <button 

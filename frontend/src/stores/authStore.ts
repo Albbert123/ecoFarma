@@ -35,8 +35,12 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.removeItem("userRole");
       localStorage.removeItem("userCorreo");
       localStorage.removeItem("userImagen");
+      localStorage.clear();
     }
     set({ token: null, isAuthenticated: false, userRole: null, userCorreo: null, userImagen: null });
+    // if (typeof window !== "undefined") {
+    //   window.location.href = redirectTo;
+    // }
   },
 
   isTokenExpired: () => {
