@@ -66,7 +66,7 @@ interface ProfileFormProps {
                     onChange={handleChange}
                     className="mt-1 p-2 w-full border rounded-md" />
             </div>
-            <div className="mt-6 flex justify-end space-x-4">
+            <div className="mt-6 flex justify-end gap-x-5">
                 <button type="reset" className="px-4 py-2 border rounded-md text-gray-700">Descartar</button>
                 <button type="submit" className="px-4 py-2 bg-gray-800 text-white rounded-md">Actualizar información</button>
             </div>
