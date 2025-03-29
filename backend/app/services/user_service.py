@@ -23,11 +23,14 @@ class UserService:
         ).decode('utf-8')
         new_user = self.user_repo.create_user(user, hashed_password)
 
-        # Generar el token después del registro
-        token = create_access_token(
-            data={"correo": new_user["correo"], "rol": new_user["rol"]},
-            expires_delta=timedelta(minutes=60)
-        )
+        token = None
+
+        if not user.fromAdmin:
+            # Generar el token después del registro
+            token = create_access_token(
+                data={"correo": new_user["correo"], "rol": new_user["rol"]},
+                expires_delta=timedelta(minutes=60)
+            )
 
         return UserResponse(**new_user, token=token)
 

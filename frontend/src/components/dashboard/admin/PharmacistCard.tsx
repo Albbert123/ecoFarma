@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { FaTrash, FaChevronUp } from "react-icons/fa";
-import { PharmCardData, UserCardData } from "@/types/userTypes";
+import { PharmCardData } from "@/types/userTypes";
 
 type PharmCardProps = {
     pharm: PharmCardData;

@@ -19,6 +19,7 @@ export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
     contraseña: "",
     imagen: "",
     rol: "usuario",
+    fromAdmin: false,
   });
 
   const router = useRouter(); // Hook para redirección

@@ -9,6 +9,7 @@ class UserCreate(BaseModel):
     contraseña: str
     imagen: str
     rol: str
+    fromAdmin: Optional[bool] = False
 
 
 class UserResponse(BaseModel):

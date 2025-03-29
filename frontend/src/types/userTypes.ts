@@ -5,6 +5,7 @@ export interface RegisterFormData {
     contraseña: string;
     imagen: string;
     rol: string;
+    fromAdmin?: boolean;
 }
 
 export interface LoginFormData {
