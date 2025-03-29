@@ -25,4 +25,11 @@ export interface UserCardData {
     rol: string;
     encargos: string[];
     consultas: string[];
-}   
+}  
+
+export interface PharmCardData {
+    correo: string;
+    nombre: string;
+    apellido: string;
+    rol: string;
+} 
