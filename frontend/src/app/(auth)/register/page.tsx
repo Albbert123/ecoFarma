@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RegisterForm from "@/components/auth/RegisterForm";
-import { registerUser } from "@/services/authService";
+import { registerUser } from "@/services/userService";
 import axios from "axios";
 import { RegisterFormData } from "@/types/userTypes";
 import { useAuthStore } from "@/stores/authStore";
@@ -18,7 +18,7 @@ export default function RegisterPage() {
   const handleRegister = async (formData: RegisterFormData) => {
     try {
       const userData = await registerUser(formData);
-      setUser(userData.token, userData.rol, userData.correo, userData.imagen);
+      setUser(userData?.token, userData?.rol, userData?.correo, userData?.imagen);
       router.push("/");
     } catch (err: any) {
       setError(err.message);

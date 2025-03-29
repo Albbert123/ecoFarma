@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Body, HTTPException, Depends
 from app.models.user_model import UserCreate, UserLogin, UserResponse
 from app.services.user_service import UserService
@@ -28,3 +29,16 @@ async def delete_user(
     user_service: UserService = Depends()
 ):
     return user_service.delete_user(correo)
+
+
+@router.get("/user", response_model=UserResponse)
+async def get_user(
+    correo: str = Body(..., embed=True),
+    user_service: UserService = Depends()
+):
+    return user_service.get_user_by_email(correo)
+
+
+@router.get("/all", response_model=List[UserResponse])
+async def get_users(user_service: UserService = Depends()):
+    return user_service.get_users()

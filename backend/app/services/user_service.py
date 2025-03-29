@@ -14,6 +14,9 @@ class UserService:
     def get_user_by_email(self, correo: str):
         return self.user_repo.get_user_by_email(correo)
 
+    def get_users(self):
+        return self.user_repo.get_users()
+
     def create_user(self, user: UserCreate):
         hashed_password = bcrypt.hashpw(
             user.contraseña.encode('utf-8'), bcrypt.gensalt()

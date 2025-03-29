@@ -2,18 +2,10 @@
 
 import React, { useState } from "react";
 import { FaTrash, FaChevronUp } from "react-icons/fa";
-
-type User = {
-  id: number;
-  nombre: string;
-  apellido: string;
-  correo: string;
-  encargos: string[];
-  consultas: string[];
-};
+import { UserCardData } from "@/types/userTypes";
 
 type UserCardProps = {
-  user: User;
+    user: UserCardData;
 };
 
 const UserCard: React.FC<UserCardProps> = ({ user }) => {
@@ -34,10 +26,10 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
                 {/* Contenido centrado con alineación fija del apellido */}
                 <div className="flex-1 grid grid-cols-[auto_500px] items-center">
                     <span className="min-w-[100px]">
-                    <strong>Nombre:</strong> {user.nombre}
+                    <strong>Nombre:</strong> {user?.nombre}
                     </span>
                     <span>
-                    <strong>Apellido:</strong> {user.apellido}
+                    <strong>Apellido:</strong> {user?.apellido}
                     </span>
                 </div>
 
@@ -52,7 +44,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
             {expanded && (
             <div className="mt-2 bg-gray-100 p-2 rounded">
                 <p>
-                    <strong>Correo:</strong> {user.correo}
+                    <strong>Correo:</strong> {user?.correo}
                 </p>
 
                 <div>
@@ -60,22 +52,24 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
                         <strong>Encargos activos:</strong>
                     </p>
                     <ul>
-                        {user.encargos.map((encargo, index) => (
+                        {user?.encargos?.map((encargo, index) => (
                             <li key={index}>• {encargo}</li>
                         ))}
                     </ul>
                 </div>
+
 
                 <div>
                     <p>
                         <strong>Consultas activas:</strong>
                     </p>
                     <ul>
-                        {user.consultas.map((consulta, index) => (
-                        <li key={index}>• {consulta}</li>
+                        {user?.consultas?.map((consulta, index) => (
+                            <li key={index}>• {consulta}</li>
                         ))}
                     </ul>
                 </div>
+
             </div>
             )}
         </div>

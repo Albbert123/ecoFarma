@@ -17,3 +17,12 @@ export enum UserRole {
     Farmaceutico = "farmaceutico",
     Admin = "admin",
 }
+
+export interface UserCardData {
+    correo: string;
+    nombre: string;
+    apellido: string;
+    rol: string;
+    encargos: string[];
+    consultas: string[];
+}   
