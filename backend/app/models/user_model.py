@@ -12,6 +12,14 @@ class UserCreate(BaseModel):
     fromAdmin: Optional[bool] = False
 
 
+class UserUpdate(BaseModel):
+    correo: str
+    new_correo: Optional[str] = None
+    nombre: str
+    apellido: str
+    imagen: str
+
+
 class UserResponse(BaseModel):
     correo: str
     nombre: str

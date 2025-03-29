@@ -13,6 +13,14 @@ export interface LoginFormData {
     contraseña: string;
 }
 
+export interface UpdateFormData {
+    nombre: string;
+    apellido: string;
+    correo: string;
+    new_correo?: string;
+    imagen: string;
+}
+
 export enum UserRole {
     Usuario = "usuario",
     Farmaceutico = "farmaceutico",
