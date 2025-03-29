@@ -6,7 +6,8 @@ import { useBootstrap } from "@/hooks/useBootstrap";
 import { FaSearch } from "react-icons/fa";
 import withAuth from "@/components/withAuth";
 import { UserCardData } from "@/types/userTypes";
-import { getUsers } from "@/services/userService";
+import { deleteUser, getUsers } from "@/services/userService";
+import toast from "react-hot-toast";
 
 function ManageUsersPage() {
   useBootstrap();
@@ -43,6 +44,17 @@ function ManageUsersPage() {
     return fullName.includes(searchQuery);
   });
 
+  const handleDeleteAccount = async (correo: string) => {
+    try {
+        await deleteUser(correo);
+        setUsers((prevUsers) => prevUsers.filter((user) => user.correo !== correo));
+        toast.success("Cuenta eliminada correctamente");
+    } catch (error) {
+        toast.error("Error al eliminar la cuenta");
+        console.error("Delete account error:", error);
+    }
+};
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-center mb-10 py-4">GESTIONAR USUARIOS</h1>
@@ -71,7 +83,7 @@ function ManageUsersPage() {
       {error && <p className="text-red-500">{error}</p>}
       <div>
         {filteredUsers.map((user) => (
-          <UserCard key={user?.correo} user={user} />
+          <UserCard key={user?.correo} user={user} onDelete={handleDeleteAccount}/>
         ))}
       </div>
     </div>

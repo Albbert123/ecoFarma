@@ -6,10 +6,12 @@ import { UserCardData } from "@/types/userTypes";
 
 type UserCardProps = {
     user: UserCardData;
+    onDelete: (correo: string) => void;
 };
 
-const UserCard: React.FC<UserCardProps> = ({ user }) => {
+const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
   const [expanded, setExpanded] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   return (
     <div className="relative flex items-start gap-2">
@@ -75,9 +77,29 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
         </div>
 
         {/* Botón eliminar */}
-        <button className="text-red-600 h-12 flex items-center justify-center">
-            <FaTrash />
-        </button>
+        {!showConfirm ? (
+            <button 
+                className="text-red-600 h-12 flex items-center justify-center"
+                onClick={() => setShowConfirm(true)} // Mostrar confirmación
+            >
+                <FaTrash />
+            </button>
+        ) : (
+            <div className="flex items-center gap-2">
+                <button 
+                    className="text-green-600 h-12 flex items-center justify-center"
+                    onClick={() => onDelete(user.correo)} // Confirmar eliminación
+                >
+                    ✅
+                </button>
+                <button 
+                    className="text-gray-600 h-12 flex items-center justify-center"
+                    onClick={() => setShowConfirm(false)} // Cancelar eliminación
+                >
+                    ❌
+                </button>
+            </div>
+        )}
     </div>
   );
 };
