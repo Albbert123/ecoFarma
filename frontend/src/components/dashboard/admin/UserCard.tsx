@@ -16,93 +16,93 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
   const { userRole } = useAuthStore();
 
   return (
-    <div className="relative flex items-start gap-2">
+    <div className="relative flex flex-col sm:flex-row sm:items-start gap-2">
         {/* Tarjeta de usuario */}
-        <div
-            className={`border rounded-lg p-3 mb-4 w-full bg-gray-100 transition-all ${
-            expanded ? "pb-4" : "h-12 flex items-center"
-        }`}
-        >
-            <div
-                className="flex justify-between items-center w-full h-full cursor-pointer p-2"
-                onClick={() => setExpanded(!expanded)}
-            >
-                {/* Contenido centrado con alineación fija del apellido */}
-                <div className="flex-1 grid grid-cols-[auto_500px] items-center">
-                    <span className="min-w-[100px]">
-                    <strong>Nombre:</strong> {user?.nombre}
-                    </span>
-                    <span>
-                    <strong>Apellido:</strong> {user?.apellido}
-                    </span>
+        <div className={`border rounded-lg p-3 mb-4 w-full bg-gray-100 transition-all ${expanded ? "pb-4" : "min-h-12"}`}>
+            {/* Contenedor principal con posición relativa */}
+            <div className="relative w-full h-full">
+                {/* Contenido del usuario */}
+                <div 
+                    className="pr-8 cursor-pointer" // Deja espacio para la flecha
+                    onClick={() => setExpanded(!expanded)}
+                >
+                    {/* Nombre y apellido en columna en móvil, en fila en desktop */}
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                        <span className="whitespace-nowrap">
+                            <strong>Nombre:</strong> {user?.nombre}
+                        </span>
+                        <span className="whitespace-nowrap">
+                            <strong>Apellido:</strong> {user?.apellido}
+                        </span>
+                    </div>
                 </div>
 
-                {/* Flecha centrada */}
-                <div className="flex items-center justify-center h-full">
+                {/* Flecha posicionada absolutamente en la esquina superior derecha */}
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                     <FaChevronUp
-                    className={`transition-transform ${expanded ? "rotate-180" : ""}`}
+                        className={`transition-transform ${expanded ? "rotate-180" : ""}`}
                     />
                 </div>
             </div>
 
             {expanded && (
-            <div className="mt-2 bg-gray-100 p-2 rounded">
-                <p>
-                    <strong>Correo:</strong> {user?.correo}
-                </p>
-
-                <div>
+                <div className="mt-4 bg-gray-100 p-2 rounded">
                     <p>
-                        <strong>Encargos activos:</strong>
+                        <strong>Correo:</strong> {user?.correo}
                     </p>
-                    <ul>
-                        {user?.encargos?.map((encargo, index) => (
-                            <li key={index}>• {encargo}</li>
-                        ))}
-                    </ul>
+
+                    {user?.encargos?.length > 0 && (
+                        <div className="mt-2">
+                            <p><strong>Encargos activos:</strong></p>
+                            <ul>
+                                {user.encargos.map((encargo, index) => (
+                                    <li key={index}>• {encargo}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {user?.consultas?.length > 0 && (
+                        <div className="mt-2">
+                            <p><strong>Consultas activas:</strong></p>
+                            <ul>
+                                {user.consultas.map((consulta, index) => (
+                                    <li key={index}>• {consulta}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
-
-
-                <div>
-                    <p>
-                        <strong>Consultas activas:</strong>
-                    </p>
-                    <ul>
-                        {user?.consultas?.map((consulta, index) => (
-                            <li key={index}>• {consulta}</li>
-                        ))}
-                    </ul>
-                </div>
-
-            </div>
             )}
         </div>
 
-        {/* Botón eliminar */}
+        {/* Botón eliminar (responsivo) */}
         {userRole === "admin" && (
-            !showConfirm ? (
-                <button 
-                    className="text-red-600 h-12 flex items-center justify-center"
-                    onClick={() => setShowConfirm(true)} // Mostrar confirmación
-                >
-                    <FaTrash />
-                </button>
-            ) : (
-                <div className="flex items-center gap-2">
+            <div className={`flex ${showConfirm ? 'flex-row' : ''} gap-2 mb-4 sm:mb-0 sm:self-center`}>
+                {!showConfirm ? (
                     <button 
-                        className="text-green-600 h-12 flex items-center justify-center"
-                        onClick={() => onDelete && onDelete(user.correo)} // Confirmar eliminación
+                        className="text-red-600 h-12 w-12 flex items-center justify-center"
+                        onClick={() => setShowConfirm(true)}
                     >
-                        ✅
+                        <FaTrash />
                     </button>
-                    <button 
-                        className="text-gray-600 h-12 flex items-center justify-center"
-                        onClick={() => setShowConfirm(false)} // Cancelar eliminación
-                    >
-                        ❌
-                    </button>
-                </div>
-            )   
+                ) : (
+                    <>
+                        <button 
+                            className="text-green-600 h-12 w-12 flex items-center justify-center"
+                            onClick={() => onDelete && onDelete(user.correo)}
+                        >
+                            ✅
+                        </button>
+                        <button 
+                            className="text-gray-600 h-12 w-12 flex items-center justify-center"
+                            onClick={() => setShowConfirm(false)}
+                        >
+                            ❌
+                        </button>
+                    </>
+                )}
+            </div>
         )}
     </div>
   );
