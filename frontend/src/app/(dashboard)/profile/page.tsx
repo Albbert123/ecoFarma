@@ -7,7 +7,7 @@ import withAuth from "@/components/withAuth";
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { deleteUser } from "@/services/authService";
+import { deleteUser } from "@/services/userService";
 
 function ProfilePage() {
     useBootstrap();

@@ -5,6 +5,7 @@ export interface RegisterFormData {
     contraseña: string;
     imagen: string;
     rol: string;
+    fromAdmin?: boolean;
 }
 
 export interface LoginFormData {
@@ -17,3 +18,19 @@ export enum UserRole {
     Farmaceutico = "farmaceutico",
     Admin = "admin",
 }
+
+export interface UserCardData {
+    correo: string;
+    nombre: string;
+    apellido: string;
+    rol: string;
+    encargos: string[];
+    consultas: string[];
+}  
+
+export interface PharmCardData {
+    correo: string;
+    nombre: string;
+    apellido: string;
+    rol: string;
+} 

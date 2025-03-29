@@ -6,10 +6,9 @@ import { useBootstrap } from "@/hooks/useBootstrap";
 import { FaSearch } from "react-icons/fa";
 import withAuth from "@/components/withAuth";
 import { UserCardData } from "@/types/userTypes";
-import { deleteUser, getUsers } from "@/services/userService";
-import toast from "react-hot-toast";
+import { getUsers } from "@/services/userService";
 
-function ManageUsersPage() {
+function ConsultUsersPage() {
   useBootstrap();
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState<UserCardData[]>([]); // Estado para los usuarios
@@ -44,22 +43,11 @@ function ManageUsersPage() {
     return fullName.includes(searchQuery);
   });
 
-  const handleDeleteAccount = async (correo: string) => {
-    try {
-        await deleteUser(correo);
-        setUsers((prevUsers) => prevUsers.filter((user) => user.correo !== correo));
-        toast.success("Cuenta eliminada correctamente");
-    } catch (error) {
-        toast.error("Error al eliminar la cuenta");
-        console.error("Delete account error:", error);
-    }
-};
-
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-10 py-4">GESTIONAR USUARIOS</h1>
+      <h1 className="text-3xl font-bold text-center mb-10 py-4">CONSULTAR USUARIOS</h1>
 
-      {/* Contenedor de búsqueda y botón - Icono a la derecha sin solapamiento */}
+      {/* Contenedor de búsqueda - Icono a la derecha sin solapamiento */}
       <div className="flex justify-between items-center mb-6">
         <div className="relative w-2/5">
           <input
@@ -73,9 +61,6 @@ function ManageUsersPage() {
             <FaSearch className="text-gray-400 text-lg" />
           </div>
         </div>
-        <button className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-900 transition">
-          Añadir usuario
-        </button>
       </div>
 
       {/* Lista de usuarios */}
@@ -83,11 +68,11 @@ function ManageUsersPage() {
       {error && <p className="text-red-500">{error}</p>}
       <div>
         {filteredUsers.map((user) => (
-          <UserCard key={user?.correo} user={user} onDelete={handleDeleteAccount}/>
+          <UserCard key={user?.correo} user={user} />
         ))}
       </div>
     </div>
   );
 }
 
-export default withAuth(ManageUsersPage, ["admin"]);
+export default withAuth(ConsultUsersPage, ["farmaceutico"]);

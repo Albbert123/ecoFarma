@@ -6,7 +6,7 @@ import LoginForm from "@/components/auth/LoginForm";
 import { useAuthStore } from "@/stores/authStore";
 import { LoginFormData } from "@/types/userTypes";
 import axios from "axios";
-import { loginUser } from "@/services/authService";
+import { loginUser } from "@/services/userService";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import toast from "react-hot-toast";
 
@@ -19,7 +19,7 @@ export default function LoginPage() {
   const handleLogin = async (formData: LoginFormData) => {
     try {
       const userData = await loginUser(formData);
-      setUser(userData.token, userData.rol, userData.correo, userData.imagen); // Guardar en authStore
+      setUser(userData?.token, userData?.rol, userData?.correo, userData?.imagen); // Guardar en authStore
       toast.success("Inicio de sesión exitoso 🎉");
       router.push("/");
     } catch (err: any) {

@@ -14,17 +14,23 @@ class UserService:
     def get_user_by_email(self, correo: str):
         return self.user_repo.get_user_by_email(correo)
 
+    def get_users(self):
+        return self.user_repo.get_users()
+
     def create_user(self, user: UserCreate):
         hashed_password = bcrypt.hashpw(
             user.contraseña.encode('utf-8'), bcrypt.gensalt()
         ).decode('utf-8')
         new_user = self.user_repo.create_user(user, hashed_password)
 
-        # Generar el token después del registro
-        token = create_access_token(
-            data={"correo": new_user["correo"], "rol": new_user["rol"]},
-            expires_delta=timedelta(minutes=60)
-        )
+        token = None
+
+        if not user.fromAdmin:
+            # Generar el token después del registro
+            token = create_access_token(
+                data={"correo": new_user["correo"], "rol": new_user["rol"]},
+                expires_delta=timedelta(minutes=60)
+            )
 
         return UserResponse(**new_user, token=token)
 
