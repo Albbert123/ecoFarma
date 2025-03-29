@@ -63,17 +63,17 @@ export default function Welcome() {
                 <p className="mt-6 mb-4 text-lg">Elige qué quieres hacer:</p>
     
                 <div className="mt-15 flex flex-wrap justify-center gap-4">
-                    <Link href="/manage-orders">
+                    <Link href="/pharm/manage-orders">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Gestionar encargos
                         </button>
                     </Link>
-                    <Link href="/user-advice">
+                    <Link href="/pharm/user-advice">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Asesoramiento a usuarios
                         </button>
                     </Link>
-                    <Link href="/consult-users">
+                    <Link href="/pharm/consult-users">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Consultar usuarios
                         </button>

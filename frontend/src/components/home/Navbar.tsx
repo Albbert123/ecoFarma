@@ -106,21 +106,21 @@ export default function Navbar() {
                 {/* Links */}
                 <div className={`md:flex space-x-6 ${isOpen ? "block" : "hidden"} absolute md:static bg-white w-full md:w-auto left-0 top-16 p-4 md:p-0 shadow-md md:shadow-none`}>
                     <Link 
-                        href="/manage-orders" 
+                        href="/pharm/manage-orders" 
                         className="block md:inline text-gray-900 py-2" 
                         style={{ textDecoration: 'none', color: 'inherit'}}
                         >
                         Gestión de encargos
                     </Link>
                     <Link 
-                        href="/user-advice" 
+                        href="/pharm/user-advice" 
                         className="block md:inline text-gray-900 py-2" 
                         style={{ textDecoration: 'none', color: 'inherit'}}
                         >
                         Asesoramiento a usuarios
                     </Link>
                     <Link 
-                        href="/consult-users" 
+                        href="/pharm/consult-users" 
                         className="block md:inline text-gray-900 py-2" 
                         style={{ textDecoration: 'none', color: 'inherit'}}
                         >

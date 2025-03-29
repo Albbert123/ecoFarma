@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { FaTrash, FaChevronUp } from "react-icons/fa";
 import { PharmCardData } from "@/types/userTypes";
+import { useAuthStore } from "@/stores/authStore";
 
 type PharmCardProps = {
     pharm: PharmCardData;
@@ -12,6 +13,7 @@ type PharmCardProps = {
 const PharmacistCard: React.FC<PharmCardProps> = ({ pharm, onDelete }) => {
   const [expanded, setExpanded] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const { userRole } = useAuthStore();
 
   return (
     <div className="relative flex items-start gap-2">
@@ -53,28 +55,30 @@ const PharmacistCard: React.FC<PharmCardProps> = ({ pharm, onDelete }) => {
         </div>
 
         {/* Botón eliminar */}
-        {!showConfirm ? (
-            <button 
-                className="text-red-600 h-12 flex items-center justify-center"
-                onClick={() => setShowConfirm(true)} // Mostrar confirmación
-            >
-                <FaTrash />
-            </button>
-        ) : (
-            <div className="flex items-center gap-2">
+        {userRole === "admin" && (
+            !showConfirm ? (
                 <button 
-                    className="text-green-600 h-12 flex items-center justify-center"
-                    onClick={() => onDelete(pharm.correo)} // Confirmar eliminación
+                    className="text-red-600 h-12 flex items-center justify-center"
+                    onClick={() => setShowConfirm(true)} // Mostrar confirmación
                 >
-                    ✅
+                    <FaTrash />
                 </button>
-                <button 
-                    className="text-gray-600 h-12 flex items-center justify-center"
-                    onClick={() => setShowConfirm(false)} // Cancelar eliminación
-                >
-                    ❌
-                </button>
-            </div>
+            ) : (
+                <div className="flex items-center gap-2">
+                    <button 
+                        className="text-green-600 h-12 flex items-center justify-center"
+                        onClick={() => onDelete(pharm.correo)} // Confirmar eliminación
+                    >
+                        ✅
+                    </button>
+                    <button 
+                        className="text-gray-600 h-12 flex items-center justify-center"
+                        onClick={() => setShowConfirm(false)} // Cancelar eliminación
+                    >
+                        ❌
+                    </button>
+                </div>
+            )
         )}
     </div>
   );
