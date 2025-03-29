@@ -1,4 +1,4 @@
-import { LoginFormData, RegisterFormData } from "@/types/userTypes";
+import { LoginFormData, RegisterFormData, UpdateFormData } from "@/types/userTypes";
 import { api } from "./api";
 
 export const registerUser = async (formData: RegisterFormData) => {
@@ -29,6 +29,16 @@ export const deleteUser = async (correo: string) => {
     throw new Error(errorMessage);
   }
 } 
+
+export const updateUser = async (formData: UpdateFormData) => {
+  try {
+    const response = await api.put("/users/update", formData);
+    return response.data; // Retorna los datos del usuario actualizados
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al actualizar el usuario";
+    throw new Error(errorMessage);
+  }
+}
 
 export const getUser = async (correo: string) => {
   try {

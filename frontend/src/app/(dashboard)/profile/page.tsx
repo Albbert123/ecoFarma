@@ -1,5 +1,5 @@
-// /app/profile/page.tsx
 "use client";
+
 import DashboardNav from "@/components/dashboard/DashboardNav";
 import ProfileForm from "@/components/dashboard/ProfileForm";
 import { useBootstrap } from "@/hooks/useBootstrap";
@@ -7,12 +7,29 @@ import withAuth from "@/components/withAuth";
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { deleteUser } from "@/services/userService";
+import { deleteUser, updateUser } from "@/services/userService";
+import { UpdateFormData } from "@/types/userTypes";
+import { useState } from "react";
 
 function ProfilePage() {
     useBootstrap();
     const router = useRouter();
-    const { logout, userCorreo } = useAuthStore();
+    const [error, setError] = useState<string | undefined>();
+    const { setUser, logout, userCorreo, token, userRole } = useAuthStore();
+
+    const handleUpdateProfile = async (formData: UpdateFormData) => {
+        try {
+            const userData = await updateUser(formData);
+            if (token && userRole) {
+                setUser(token, userRole, userData?.new_correo ?? userCorreo, userData?.imagen, userData?.nombre, userData?.apellido);
+            }
+            toast.success("Actualizado con éxito 🎉");
+            setError("");
+        } catch (err: any) {
+            // console.error("Error updating user profile:", err);
+            setError(err.message); // Establecer el mensaje de error
+        }
+    };
 
     const handleDeleteAccount = async () => {
         try {
@@ -40,7 +57,7 @@ function ProfilePage() {
             {/* Sub-navbar de perfil */}
             <DashboardNav />
 
-            <ProfileForm onDeleteAccount={handleDeleteAccount} />
+            <ProfileForm onDeleteAccount={handleDeleteAccount} onUpdateProfile={handleUpdateProfile} error={error}/>
         </div>
     );
 }

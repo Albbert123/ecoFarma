@@ -8,15 +8,19 @@ export const useAuthStore = create<AuthState>((set) => ({
   userRole: typeof window !== "undefined" ? (JSON.parse(localStorage.getItem("userRole") || "null") as UserRole | null) : null,
   userCorreo: typeof window !== "undefined" ? localStorage.getItem("userCorreo") : null,
   userImagen: typeof window !== "undefined" ? localStorage.getItem("userImagen") : null,
+  userNombre: typeof window !== "undefined" ? localStorage.getItem("userNombre") : null,
+  userApellido: typeof window !== "undefined" ? localStorage.getItem("userApellido") : null,
 
-  setUser: (token, role, correo, imagen) => {
+  setUser: (token, role, correo, imagen, nombre, apellido) => {
     if (typeof window !== "undefined") {
       localStorage.setItem("token", token);
       localStorage.setItem("userRole", JSON.stringify(role));
       localStorage.setItem("userCorreo", correo);
       localStorage.setItem("userImagen", imagen);
+      localStorage.setItem("userNombre", nombre);
+      localStorage.setItem("userApellido", apellido);
     }
-    set({ token, isAuthenticated: true, userRole: role, userCorreo: correo, userImagen: imagen });
+    set({ token, isAuthenticated: true, userRole: role, userCorreo: correo, userImagen: imagen, userNombre: nombre, userApellido: apellido });
   },
 
   logout: () => {
@@ -25,9 +29,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.removeItem("userRole");
       localStorage.removeItem("userCorreo");
       localStorage.removeItem("userImagen");
+      localStorage.removeItem("userNombre");
+      localStorage.removeItem("userApellido");
       localStorage.clear();
     }
-    set({ token: null, isAuthenticated: false, userRole: null, userCorreo: null, userImagen: null });
+    set({ token: null, isAuthenticated: false, userRole: null, userCorreo: null, userImagen: null, userNombre: null, userApellido: null });
   },
 
   isTokenExpired: () => {

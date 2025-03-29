@@ -1,22 +1,27 @@
 "use client";
 
 import { useAuthStore } from "@/stores/authStore";
+import { UpdateFormData } from "@/types/userTypes";
 import { useState } from "react";
 
 interface ProfileFormProps {
-    onDeleteAccount?: () => void; // Nueva prop para manejar la eliminación
+    onDeleteAccount?: () => void;
+    onUpdateProfile: (formData: UpdateFormData) => void;
+    error?: string;
   }
 
-  export default function ProfileForm({ onDeleteAccount }: ProfileFormProps) {
+  export default function ProfileForm({ onDeleteAccount, onUpdateProfile, error }: ProfileFormProps) {
+    const { userRole, userCorreo, userImagen, userNombre, userApellido } = useAuthStore();
+
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        email: ""
+        nombre: userNombre || "",
+        apellido: userApellido || "",
+        correo: userCorreo || "",
+        new_correo: userCorreo || "",
+        imagen: userImagen || "",
     });
 
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-    const { userRole } = useAuthStore();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,7 +29,7 @@ interface ProfileFormProps {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Updated profile:", formData);
+        onUpdateProfile(formData);
     };
 
     return (
@@ -42,8 +47,8 @@ interface ProfileFormProps {
                     <label className="block text-sm font-medium text-gray-700">Nombre</label>
                     <input
                         type="text"
-                        name="firstName"
-                        value={formData.firstName}
+                        name="nombre"
+                        value={formData.nombre}
                         onChange={handleChange}
                         className="mt-1 p-2 w-full border rounded-md" />
                 </div>
@@ -51,8 +56,8 @@ interface ProfileFormProps {
                     <label className="block text-sm font-medium text-gray-700">Apellido</label>
                     <input
                         type="text"
-                        name="lastName"
-                        value={formData.lastName}
+                        name="apellido"
+                        value={formData.apellido}
                         onChange={handleChange}
                         className="mt-1 p-2 w-full border rounded-md" />
                 </div>
@@ -61,8 +66,8 @@ interface ProfileFormProps {
                 <label className="block text-sm font-medium text-gray-700">Correo</label>
                 <input
                     type="email"
-                    name="email"
-                    value={formData.email}
+                    name="new_correo"
+                    value={formData.new_correo}
                     onChange={handleChange}
                     className="mt-1 p-2 w-full border rounded-md" />
             </div>
@@ -70,6 +75,8 @@ interface ProfileFormProps {
                 <button type="reset" className="px-4 py-2 border rounded-md text-gray-700">Descartar</button>
                 <button type="submit" className="px-4 py-2 bg-gray-800 text-white rounded-md">Actualizar información</button>
             </div>
+            {/* Mensaje de error */}
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}   
         </form>
         {/* Sección de eliminar cuenta */}
         {userRole === "usuario" ? (

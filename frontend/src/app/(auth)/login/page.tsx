@@ -19,7 +19,7 @@ export default function LoginPage() {
   const handleLogin = async (formData: LoginFormData) => {
     try {
       const userData = await loginUser(formData);
-      setUser(userData?.token, userData?.rol, userData?.correo, userData?.imagen); // Guardar en authStore
+      setUser(userData?.token, userData?.rol, userData?.correo, userData?.imagen, userData?.nombre, userData?.apellido); // Guardar en authStore
       toast.success("Inicio de sesión exitoso 🎉");
       router.push("/");
     } catch (err: any) {
