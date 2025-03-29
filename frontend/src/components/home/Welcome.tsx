@@ -90,22 +90,22 @@ export default function Welcome() {
                 <p className="mt-6 mb-4 text-lg">Elige qué quieres hacer:</p>
     
                 <div className="mt-15 flex flex-wrap justify-center gap-4">
-                    <Link href="/manage-products">
+                    <Link href="/admin/manage-products">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Gestionar productos
                         </button>
                     </Link>
-                    <Link href="/manage-pharmacists">
+                    <Link href="/admin/manage-pharmacists">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Gestionar farmacéuticos
                         </button>
                     </Link>
-                    <Link href="/manage-users">
+                    <Link href="/admin/manage-users">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Gestionar usuarios
                         </button>
                     </Link>
-                    <Link href="/statistics">
+                    <Link href="/admin/statistics">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Estadísticas
                         </button>

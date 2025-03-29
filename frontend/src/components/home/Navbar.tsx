@@ -13,7 +13,7 @@ export default function Navbar() {
     const [isClient, setIsClient] = useState(false);
     useEffect(() => setIsClient(true), []);
     if (!isClient) return null; // ⛔ Evita que se renderice en SSR
-    
+
     if (userRole === "usuario" || !isAuthenticated) {
         return (
             <nav className="flex justify-between items-center px-8 py-1 bg-white shadow-md">
@@ -155,28 +155,28 @@ export default function Navbar() {
                 {/* Links */}
                 <div className={`md:flex space-x-6 ${isOpen ? "block" : "hidden"} absolute md:static bg-white w-full md:w-auto left-0 top-16 p-4 md:p-0 shadow-md md:shadow-none`}>
                     <Link 
-                        href="/manage-products" 
+                        href="/admin/manage-products" 
                         className="block md:inline text-gray-900 py-2"
                         style={{ textDecoration: 'none', color: 'inherit'}}
                         >
                         Gestión de productos
                     </Link>
                     <Link 
-                        href="/manage-pharmacists" 
+                        href="/admin/manage-pharmacists" 
                         className="block md:inline text-gray-900 py-2"
                         style={{ textDecoration: 'none', color: 'inherit'}}
                         >
                         Gestión de farmacéuticos
                     </Link>
                     <Link 
-                        href="/manage-users" 
+                        href="/admin/manage-users" 
                         className="block md:inline text-gray-900 py-2"
                         style={{ textDecoration: 'none', color: 'inherit'}}
                         >
                         Gestión de usuarios
                     </Link>
                     <Link 
-                        href="/statistics" 
+                        href="/admin/reports" 
                         className="block md:inline text-gray-900 py-2"
                         style={{ textDecoration: 'none', color: 'inherit'}}
                         >
