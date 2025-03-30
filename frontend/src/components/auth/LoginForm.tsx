@@ -60,7 +60,7 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
               type="email"
               name="correo"
               placeholder="Correo *"
-              className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
+              className="w-full px-3 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-base"
               value={formData.correo}
               onChange={handleChange}
               required
@@ -72,7 +72,7 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
               type="password"
               name="contraseña"
               placeholder="Contraseña *"
-              className="w-full min-w-[400px] px-2 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-lg"
+              className="w-full px-3 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-base"
               value={formData.contraseña}
               onChange={handleChange}
               required

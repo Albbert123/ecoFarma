@@ -1,4 +1,4 @@
-import { LoginFormData, RegisterFormData, UpdateFormData } from "@/types/userTypes";
+import { ForgotPasswordFormData, LoginFormData, RegisterFormData, UpdateFormData } from "@/types/userTypes";
 import { api } from "./api";
 
 export const registerUser = async (formData: RegisterFormData) => {
@@ -36,6 +36,26 @@ export const updateUser = async (formData: UpdateFormData) => {
     return response.data; // Retorna los datos del usuario actualizados
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al actualizar el usuario";
+    throw new Error(errorMessage);
+  }
+}
+
+export const sendResetCode = async (correo: string) => {
+  try {
+    const response = await api.post("/users/send-reset-code", {  correo  });
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al enviar el código de recuperación";
+    throw new Error(errorMessage);  
+  }
+}
+
+export const resetPassword = async (formData: ForgotPasswordFormData) => {
+  try {
+    await api.post("/users/reset-password", formData);
+    return true; // Retorna true si el reseteo fue exitoso
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al resetear la contraseña";
     throw new Error(errorMessage);
   }
 }
