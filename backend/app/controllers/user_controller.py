@@ -3,6 +3,7 @@ from fastapi import APIRouter, Body, HTTPException, Depends
 from app.models.user_model import (
     UserCreate,
     UserLogin,
+    UserResetPassword,
     UserResponse,
     UserUpdate,
 )
@@ -56,6 +57,29 @@ async def update_user(user: UserUpdate, user_service: UserService = Depends()):
     # Realizar la actualización
     updated_user = user_service.update_user(user)
 
+    return updated_user
+
+
+@router.post("/send-reset-code")
+async def send_reset_code(
+    correo: str = Body(..., embed=True),
+    user_service: UserService = Depends()
+):
+    print(correo)
+    # Obtener el usuario ORIGINAL por su correo actual
+    existing_user = user_service.get_user_by_email(correo)
+
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="Correo no encontrado")
+    return user_service.send_reset_code(correo)
+
+
+@router.post("/reset-password")
+async def update_password(
+    user: UserResetPassword, user_service: UserService = Depends()
+):
+    # Realizar la actualización
+    updated_user = user_service.reset_password(user)
     return updated_user
 
 

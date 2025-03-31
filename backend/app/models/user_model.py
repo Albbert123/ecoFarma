@@ -20,6 +20,13 @@ class UserUpdate(BaseModel):
     imagen: str
 
 
+class UserResetPassword(BaseModel):
+    correo: str
+    code: str
+    new_contraseña: str
+    token: str
+
+
 class UserResponse(BaseModel):
     correo: str
     nombre: str

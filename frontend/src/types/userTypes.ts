@@ -1,3 +1,4 @@
+import ForgotPasswordForm from '../components/auth/ForgotPasswordForm';
 export interface RegisterFormData {
     correo: string;
     nombre: string;
@@ -11,6 +12,13 @@ export interface RegisterFormData {
 export interface LoginFormData {
     correo: string;
     contraseña: string;
+}
+
+export interface ForgotPasswordFormData {
+    correo: string;
+    code: string;
+    new_contraseña: string;
+    token: string;
 }
 
 export interface UpdateFormData {

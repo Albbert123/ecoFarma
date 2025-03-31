@@ -36,3 +36,15 @@ class UserRepository:
             raise ValueError("Usuario no encontrado")
 
         return updated_user
+
+    def update_password_only(self, correo: str, new_password: str):
+        updated_user = db["Persona"].find_one_and_update(
+            {"correo": correo},
+            {"$set": {"contraseña": new_password}},
+            return_document=ReturnDocument.AFTER
+        )
+
+        if not updated_user:
+            raise ValueError("Usuario no encontrado")
+
+        return updated_user
