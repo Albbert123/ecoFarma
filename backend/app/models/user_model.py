@@ -10,6 +10,7 @@ class UserCreate(BaseModel):
     imagen: str
     rol: str
     fromAdmin: Optional[bool] = False
+    fromGoogle: Optional[bool] = False
 
 
 class UserUpdate(BaseModel):
@@ -34,6 +35,7 @@ class UserResponse(BaseModel):
     imagen: str
     rol: str
     token: Optional[str] = None
+    fromGoogle: Optional[bool] = False
 
 
 class UserLogin(BaseModel):

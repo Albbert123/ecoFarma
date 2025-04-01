@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImCross } from "react-icons/im";
+import { FaGoogle } from "react-icons/fa";
 import { LoginFormData } from "@/types/userTypes";
+import { loginWithGoogle } from "@/services/googleService";
 
 interface LoginFormProps {
   onSubmit: (formData: LoginFormData) => void;
@@ -95,6 +97,15 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
             className="w-full bg-black text-white p-2 rounded mt-4"
           >
             Iniciar sesión
+          </button>
+
+          <button
+            type="button"
+            onClick={loginWithGoogle}
+            className="w-full flex items-center justify-center bg-red-600 text-white p-2 rounded mt-4"
+          >
+            <FaGoogle className="mr-2" />
+            Iniciar sesión con Google
           </button>
         </form>
       </div>
