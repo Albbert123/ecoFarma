@@ -1,11 +1,100 @@
-import requests
+from urllib.parse import urlencode
+from bson import ObjectId
+from dotenv import load_dotenv
+from fastapi import Request
+from fastapi.responses import RedirectResponse
+from authlib.integrations.starlette_client import OAuth
+from jose import jwt
+from app.services.user_service import UserService
+from app.models.user_model import UserCreate
+from app.auth.jwt_handler import create_access_token
+import os
 
-GOOGLE_USER_INFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo"
+load_dotenv()
+
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
+
+oauth = OAuth()
+oauth.register(
+    name="google",
+    client_id=GOOGLE_CLIENT_ID,
+    client_secret=GOOGLE_CLIENT_SECRET,
+    authorize_url="https://accounts.google.com/o/oauth2/auth",
+    authorize_params={"scope": "openid email profile"},
+    access_token_url="https://oauth2.googleapis.com/token",
+    userinfo_endpoint="https://www.googleapis.com/oauth2/v3/userinfo",
+    jwks_uri="https://www.googleapis.com/oauth2/v3/certs",
+    server_metadata_url=(
+        "https://accounts.google.com/.well-known/openid-configuration"
+    ),
+    client_kwargs={"scope": "openid email profile"},
+)
 
 
-def get_google_user_data(access_token: str):
-    """Obtiene los datos del usuario desde Google."""
-    headers = {"Authorization": f"Bearer {access_token}"}
-    response = requests.get(GOOGLE_USER_INFO_URL, headers=headers)
-    response.raise_for_status()
-    return response.json()  # Devuelve nombre, correo, apellido
+def get_google_auth_redirect(request: Request):
+    """Genera la URL de redirección a Google para autenticación."""
+    return oauth.google.authorize_redirect(request, REDIRECT_URI)
+
+
+async def handle_google_callback(request: Request, user_service: UserService):
+    """Procesa la respuesta de Google y maneja el login o registro."""
+    token = await oauth.google.authorize_access_token(request)
+    id_token = token.get("id_token")
+    if not id_token:
+        raise ValueError("El token devuelto por Google no contiene un id.")
+
+    google_user = jwt.decode(
+        id_token,
+        key=None,
+        options={"verify_signature": False},
+        audience=GOOGLE_CLIENT_ID,
+        access_token=token.get("access_token"),
+    )
+
+    nombre = google_user.get("given_name", "")
+    apellido = google_user.get("family_name", "")
+    correo = google_user.get("email", "")
+    imagen = google_user.get("picture", "")
+
+    existing_user = user_service.get_user_by_email(correo)
+
+    if existing_user:
+        if isinstance(existing_user["_id"], ObjectId):
+            existing_user["_id"] = str(existing_user["_id"])
+        jwt_token = create_access_token(existing_user)
+        user_data = {
+            "token": jwt_token,
+            "rol": existing_user["rol"],
+            "correo": existing_user["correo"],
+            "imagen": existing_user.get("imagen", ""),
+            "nombre": existing_user["nombre"],
+            "apellido": existing_user["apellido"],
+            "fromGoogle": (
+                "true" if existing_user.get("fromGoogle", False) else "false"
+            ),
+        }
+    else:
+        new_user = user_service.create_user(UserCreate(
+            nombre=nombre,
+            apellido=apellido,
+            correo=correo,
+            contraseña="google_auth",
+            rol="usuario",
+            imagen=imagen,
+            fromAdmin=False,
+            fromGoogle=True,
+        ))
+        user_data = {
+            "token": new_user.token,
+            "rol": new_user.rol,
+            "correo": new_user.correo,
+            "imagen": new_user.imagen,
+            "nombre": new_user.nombre,
+            "apellido": new_user.apellido,
+            "fromGoogle": "true" if new_user.fromGoogle else "false",
+        }
+
+    redirect_url = f"http://localhost:3000/login?{urlencode(user_data)}"
+    return RedirectResponse(url=redirect_url)
