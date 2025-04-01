@@ -15,20 +15,23 @@ load_dotenv()
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("REDIRECT_URI")
+TOKEN_URL = os.getenv("TOKEN_URL")
+USER_INFO_URL = os.getenv("USER_INFO_URL")
+AUTHORIZATION_URL = os.getenv("AUTHORIZATION_URL")
+JWKS_URI = os.getenv("JWKS_URI")
+METADATA_URL = os.getenv("METADATA_URL")
 
 oauth = OAuth()
 oauth.register(
     name="google",
     client_id=GOOGLE_CLIENT_ID,
     client_secret=GOOGLE_CLIENT_SECRET,
-    authorize_url="https://accounts.google.com/o/oauth2/auth",
+    authorize_url=AUTHORIZATION_URL,
     authorize_params={"scope": "openid email profile"},
-    access_token_url="https://oauth2.googleapis.com/token",
-    userinfo_endpoint="https://www.googleapis.com/oauth2/v3/userinfo",
-    jwks_uri="https://www.googleapis.com/oauth2/v3/certs",
-    server_metadata_url=(
-        "https://accounts.google.com/.well-known/openid-configuration"
-    ),
+    access_token_url=TOKEN_URL,
+    userinfo_endpoint=USER_INFO_URL,
+    jwks_uri=JWKS_URI,
+    server_metadata_url=(METADATA_URL),
     client_kwargs={"scope": "openid email profile"},
 )
 
