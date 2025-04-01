@@ -12,7 +12,7 @@ interface ProfileFormProps {
   }
 
   export default function ProfileForm({ onDeleteAccount, onUpdateProfile, error }: ProfileFormProps) {
-    const { userRole, userCorreo, userImagen, userNombre, userApellido } = useAuthStore();
+    const { userRole, userCorreo, userImagen, userNombre, userApellido, userFromGoogle } = useAuthStore();
 
     const [formData, setFormData] = useState({
         nombre: userNombre || "",
@@ -126,7 +126,14 @@ interface ProfileFormProps {
                     name="new_correo"
                     value={formData.new_correo}
                     onChange={handleChange}
-                    className="mt-1 p-2 w-full border rounded-md" />
+                    className="mt-1 p-2 w-full border rounded-md" 
+                    readOnly={userFromGoogle}
+                />
+                {userFromGoogle && (
+                    <p className="text-sm text-gray-500 mt-1">
+                        El correo no se puede editar porque está vinculado a tu cuenta de Google.
+                    </p>
+                )}
             </div>
             <div className="mt-6 flex justify-end gap-x-5">
                 <button type="reset" className="px-4 py-2 border rounded-md text-gray-700">Descartar</button>

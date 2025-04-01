@@ -15,13 +15,13 @@ function ProfilePage() {
     useBootstrap();
     const router = useRouter();
     const [error, setError] = useState<string | undefined>();
-    const { setUser, logout, userCorreo, token, userRole } = useAuthStore();
+    const { setUser, logout, userCorreo, token, userRole, userFromGoogle } = useAuthStore();
 
     const handleUpdateProfile = async (formData: UpdateFormData) => {
         try {
             const userData = await updateUser(formData);
             if (token && userRole) {
-                setUser(token, userRole, userData?.new_correo ?? userCorreo, userData?.imagen, userData?.nombre, userData?.apellido);
+                setUser(token, userRole, userData?.new_correo ?? userCorreo, userData?.imagen, userData?.nombre, userData?.apellido, userFromGoogle);
             }
             toast.success("Actualizado con éxito 🎉");
             setError("");

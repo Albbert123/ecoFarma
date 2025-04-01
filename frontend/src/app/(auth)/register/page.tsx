@@ -18,7 +18,7 @@ export default function RegisterPage() {
   const handleRegister = async (formData: RegisterFormData) => {
     try {
       const userData = await registerUser(formData);
-      setUser(userData?.token, userData?.rol, userData?.correo, userData?.imagen, userData?.nombre, userData?.apellido); // Guardar en authStore
+      setUser(userData?.token, userData?.rol, userData?.correo, userData?.imagen, userData?.nombre, userData?.apellido, userData?.fromGoogle); // Guardar en authStore
       setError("");
       router.push("/");
     } catch (err: any) {

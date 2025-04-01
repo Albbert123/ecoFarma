@@ -51,6 +51,12 @@ class UserService:
         ):
             return None
 
+        if userDB["fromGoogle"]:
+            raise HTTPException(
+                status_code=400,
+                detail="Inicie sesión con Google"
+            )
+
         # Generar token
         token = create_access_token(
             data={"correo": userDB["correo"], "rol": userDB["rol"]},

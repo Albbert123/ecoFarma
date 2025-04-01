@@ -7,6 +7,7 @@ export interface RegisterFormData {
     imagen: string;
     rol: string;
     fromAdmin?: boolean;
+    fromGoogle?: boolean;
 }
 
 export interface LoginFormData {
