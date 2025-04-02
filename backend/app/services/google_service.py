@@ -1,3 +1,4 @@
+from datetime import timedelta
 from urllib.parse import urlencode
 from bson import ObjectId
 from dotenv import load_dotenv
@@ -66,7 +67,9 @@ async def handle_google_callback(request: Request, user_service: UserService):
     if existing_user:
         if isinstance(existing_user["_id"], ObjectId):
             existing_user["_id"] = str(existing_user["_id"])
-        jwt_token = create_access_token(existing_user)
+        jwt_token = create_access_token(
+            existing_user, expires_delta=timedelta(minutes=60)
+        )
         user_data = {
             "token": jwt_token,
             "rol": existing_user["rol"],

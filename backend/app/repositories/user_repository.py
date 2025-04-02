@@ -27,10 +27,20 @@ class UserRepository:
         return db["Persona"].delete_one({"correo": correo})
 
     def update_user(self, user_data: UserUpdate):
+        # Preparar los datos para la actualización
+        update_fields = user_data.dict()
+
+        # Si `new_correo` tiene un valor, sobrescribir `correo`
+        # con `new_correo`
+        if "new_correo" in update_fields and update_fields["new_correo"]:
+            update_fields["correo"] = update_fields.pop("new_correo")
+
+        # Actualizar el usuario en la base de datos
         updated_user = db["Persona"].find_one_and_update(
-            {"correo": user_data.correo},  # Buscar por correo
-            {"$set": user_data.dict()},  # Actualizar los campos recibidos
-            return_document=ReturnDocument.AFTER  # Retorna el documento
+            {"correo": user_data.correo},  # Buscar por el correo original
+            {"$set": update_fields},  # Actualizar los campos
+            return_document=ReturnDocument.AFTER
+            # Retorna el documento actualizado
         )
 
         if not updated_user:
