@@ -99,6 +99,16 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
             Iniciar sesión
           </button>
 
+           {/*Google login button*/}
+           <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">O</span>
+            </div>
+          </div>
+
           <button
             type="button"
             onClick={loginWithGoogle}
