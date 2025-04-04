@@ -53,7 +53,7 @@ function ManagePharmacistsPage() {
             toast.success("Cuenta eliminada correctamente");
         } catch (error) {
             toast.error("Error al eliminar la cuenta");
-            console.error("Delete account error:", error);
+            // console.error("Delete account error:", error);
         }
     };
 
@@ -65,7 +65,7 @@ function ManagePharmacistsPage() {
             setShowForm(false); // Ocultar el formulario después de añadir
         } catch (error) {
             toast.error("Error al añadir el farmacéutico");
-            console.error("Add pharmacist error:", error);
+            // console.error("Add pharmacist error:", error);
         }
     };
 

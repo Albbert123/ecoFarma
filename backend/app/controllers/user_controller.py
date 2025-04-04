@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Body, HTTPException, Depends
+from fastapi import APIRouter, Body, HTTPException, Depends, Request
 from app.models.user_model import (
     UserCreate,
     UserLogin,
@@ -94,3 +94,24 @@ async def get_user(
 @router.get("/all", response_model=List[UserResponse])
 async def get_users(user_service: UserService = Depends()):
     return user_service.get_users()
+
+
+@router.post("/refresh-token")
+async def refresh_token_endpoint(
+    request: Request, user_service: UserService = Depends()
+):
+    token = request.headers.get("Authorization")
+    if not token or not token.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401, detail="Token no proporcionado o inválido"
+        )
+
+    token = token.split("Bearer ")[1]  # Extraer solo el token
+    new_token = user_service.refresh_user_token(token)
+
+    if not new_token:
+        raise HTTPException(
+            status_code=401, detail="Token inválido o expirado"
+        )
+
+    return {"access_token": new_token}

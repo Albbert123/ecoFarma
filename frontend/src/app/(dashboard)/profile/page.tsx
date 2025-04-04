@@ -48,7 +48,7 @@ function ProfilePage() {
             }, 8);
         } catch (error) {
             toast.error("Error al eliminar la cuenta");
-            console.error("Delete account error:", error);
+            // console.error("Delete account error:", error);
         }
     };
 

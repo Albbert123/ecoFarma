@@ -14,6 +14,7 @@ from app.models.user_model import (
 )
 from app.auth.jwt_handler import create_access_token, verify_token
 from app.services.email_service import send_email
+from app.auth.jwt_handler import refresh_token
 
 
 class UserService:
@@ -38,7 +39,7 @@ class UserService:
             # Generar el token después del registro
             token = create_access_token(
                 data={"correo": new_user["correo"], "rol": new_user["rol"]},
-                expires_delta=timedelta(minutes=60)
+                expires_delta=timedelta(minutes=30)
             )
 
         return UserResponse(**new_user, token=token)
@@ -60,7 +61,7 @@ class UserService:
         # Generar token
         token = create_access_token(
             data={"correo": userDB["correo"], "rol": userDB["rol"]},
-            expires_delta=timedelta(minutes=60)
+            expires_delta=timedelta(minutes=30)
         )
 
         return UserResponse(**userDB, token=token)
@@ -149,3 +150,11 @@ class UserService:
 
         except JWTError:
             raise HTTPException(status_code=400, detail="Token invalido")
+
+    def refresh_user_token(self, token: str):
+        """Renueva el token del usuario."""
+        new_token = refresh_token(token)
+        if not new_token:
+            return None
+
+        return new_token

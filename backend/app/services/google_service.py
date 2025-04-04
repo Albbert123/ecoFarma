@@ -68,7 +68,7 @@ async def handle_google_callback(request: Request, user_service: UserService):
         if isinstance(existing_user["_id"], ObjectId):
             existing_user["_id"] = str(existing_user["_id"])
         jwt_token = create_access_token(
-            existing_user, expires_delta=timedelta(minutes=60)
+            existing_user, expires_delta=timedelta(minutes=30)
         )
         user_data = {
             "token": jwt_token,

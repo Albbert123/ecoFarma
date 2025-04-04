@@ -51,7 +51,7 @@ function ManageUsersPage() {
         toast.success("Cuenta eliminada correctamente");
     } catch (error) {
         toast.error("Error al eliminar la cuenta");
-        console.error("Delete account error:", error);
+        // .error("Delete account error:", error);
     }
 };
 

@@ -79,3 +79,14 @@ export const getUsers = async () => {
     throw new Error(errorMessage);
   }
 }
+
+export const refreshToken = async (token: string) => {
+  try {
+    const response = await api.post("/users/refresh-token", null, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.access_token;
+  } catch (error: any) {
+    throw new Error("Error al renovar el token");
+  }
+};
