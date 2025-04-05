@@ -9,8 +9,9 @@ export default function ShopPage() {
     // Datos de ejemplo (deberías reemplazarlos con tus datos reales o llamadas a API)
     const products = [
         {
-            name: 'Paracetamol geomg',
+            name: 'Paracetamol 100mg',
             price: 8.99,
+            image: '/images/encargo.jpg',
             laboratory: 'Pfizer',
             category: 'Analgésicos y Antilinflamatorios',
             prescription: 'Sin Prescripción',
@@ -20,6 +21,27 @@ export default function ShopPage() {
         {
             name: 'Paracetamol 2',
             price: 8.99,
+            image: '/images/encargo.jpg',
+            laboratory: 'Pfizer',
+            category: 'Analgésicos y Antilinflamatorios',
+            prescription: 'Sin Prescripción',
+            commercialization: 'Comercializados',
+            authorization: 'Autorizados'
+        },
+        {
+            name: 'Paracetamol 3',
+            price: 8.99,
+            image: '/images/encargo.jpg',
+            laboratory: 'Pfizer',
+            category: 'Analgésicos y Antilinflamatorios',
+            prescription: 'Sin Prescripción',
+            commercialization: 'Comercializados',
+            authorization: 'Autorizados'
+        },
+        {
+            name: 'Paracetamol 4',
+            price: 8.99,
+            image: '/images/encargo.jpg',
             laboratory: 'Pfizer',
             category: 'Analgésicos y Antilinflamatorios',
             prescription: 'Sin Prescripción',
@@ -32,12 +54,14 @@ export default function ShopPage() {
         {
         name: 'Ibuprofeno 400mg',
         price: 5.99,
+        image: '/images/encargo.jpg',
         laboratory: 'Normon',
         category: 'Analgésicos y Antilinflamatorios'
         },
         {
         name: 'Vitamina C',
         price: 12.50,
+        image: '/images/encargo.jpg',
         laboratory: 'Cinfa',
         category: 'Suplementos'
         }

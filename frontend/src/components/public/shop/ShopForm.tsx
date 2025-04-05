@@ -80,7 +80,7 @@ export default function ShopForm({
       <div className="mb-6">
         <input
           type="text"
-          placeholder="Buscar productos..."
+          placeholder="Qué te ocurre, qué productos necesitas..."
           className="w-full p-2 border rounded"
           value={searchTerm}
           onChange={handleSearchChange}
@@ -101,6 +101,10 @@ export default function ShopForm({
         >
           Recomendaciones ({recommendations.length})
         </button>
+
+        <div className="mt-4 text-sm text-center text-gray-500">
+          <p>¡Valora el resultado de la búsqueda!</p>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
@@ -147,23 +151,20 @@ export default function ShopForm({
           </div>
         )}
 
-        {/* Columna de filtros para desktop */}
-        {activeTab === 'products' && (
-          <div className="hidden md:block w-full md:w-1/4">
-            <FiltersForm 
-              laboratories={laboratories}
-              categories={categories}
-              filters={filters} // Pasamos los filtros actuales
-              onFilterChange={handleFilterChange} // Pasamos el handler
-            />
-          </div>
-        )}
+        {/* Columna de filtros para desktop - Siempre visible */}
+        <div className="hidden md:block w-full md:w-1/4">
+          <FiltersForm 
+            laboratories={laboratories}
+            categories={categories}
+            filters={filters}
+            onFilterChange={handleFilterChange}
+          />
+        </div>
 
         {/* Contenido principal */}
-        <div className={`${activeTab === 'products' ? 'w-full md:w-3/4' : 'w-full'}`}>
-          {/* Resto del código permanece igual */}
+        <div className="w-full md:w-3/4">
           {activeTab === 'products' && (
-            <div className="space-y-4">
+           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-10"> {/* 3 columnas con menos gap */}
               {products.length > 0 ? (
                 products.map((product) => (
                   <ProductCard 
@@ -173,13 +174,15 @@ export default function ShopForm({
                   />
                 ))
               ) : (
-                <p className="text-gray-500">No se encontraron productos</p>
+                <div className="col-span-3 text-center py-5">
+                  <p className="text-gray-500 text-sm">No se encontraron productos</p>
+                </div>
               )}
             </div>
           )}
 
           {activeTab === 'recommendations' && (
-            <div className="space-y-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-10">
               {recommendations.length > 0 ? (
                 recommendations.map((product) => (
                   <ProductCard 
@@ -189,14 +192,10 @@ export default function ShopForm({
                   />
                 ))
               ) : (
-                <p className="text-gray-500">No hay recomendaciones disponibles</p>
+                <div className="col-span-3 text-center py-5">
+                  <p className="text-gray-500 text-sm">No hay recomendaciones disponibles</p>
+                </div>
               )}
-            </div>
-          )}
-
-          {activeTab === 'products' && (
-            <div className="mt-4 text-sm text-center text-gray-500">
-              <p>¡Valora el resultado de la búsqueda!</p>
             </div>
           )}
         </div>
