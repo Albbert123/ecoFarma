@@ -92,7 +92,7 @@ export default function Navbar() {
                     <Link href="/cart">
                         <FaShoppingCart className="text-gray-900 text-xl md:text-2xl hover:text-blue-600 transition-colors" />
                     </Link>
-                    <div className="md:scale-110"> {/* Escalamos el ProfileMenu en desktop */}
+                    <div className="md:scale-110 z-50"> {/* Escalamos el ProfileMenu en desktop */}
                         <ProfileMenu />
                     </div>
                 </div>
@@ -119,7 +119,7 @@ export default function Navbar() {
                 ])}
 
                 {/* Perfil */}
-                <div className="md:scale-110">
+                <div className="md:scale-110 z-50">
                     <ProfileMenu />
                 </div>
             </nav>
@@ -146,7 +146,7 @@ export default function Navbar() {
                 ])}
 
                 {/* Perfil */}
-                <div className="md:scale-110">
+                <div className="md:scale-110 z-50">
                     <ProfileMenu />
                 </div>
             </nav>
