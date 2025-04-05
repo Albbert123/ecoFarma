@@ -3,6 +3,8 @@ import bcrypt
 from jose import JWTError
 from fastapi import HTTPException
 from unittest.mock import patch
+from unittest.mock import Mock
+from app.services.user_service import UserService
 
 from app.models.user_model import (
     UserCreate,
@@ -11,10 +13,18 @@ from app.models.user_model import (
     UserUpdate,
     UserResponse
 )
-from ..mocks.mock_user_service import (
-    mock_user_repo,
-    user_service
-)
+
+
+@pytest.fixture
+def mock_user_repo():
+    return Mock()
+
+
+@pytest.fixture
+def user_service(mock_user_repo):
+    service = UserService()
+    service.user_repo = mock_user_repo
+    return service
 
 
 # Test cases
