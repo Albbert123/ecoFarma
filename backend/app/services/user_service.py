@@ -31,7 +31,7 @@ class UserService:
         hashed_password = bcrypt.hashpw(
             user.contraseña.encode('utf-8'), bcrypt.gensalt()
         ).decode('utf-8')
-        new_user = self.user_repo.create_user(user, hashed_password)
+        new_user = self.user_repo.create_user(user.dict(), hashed_password)
 
         token = None
 
