@@ -1,9 +1,11 @@
-"use client";
-
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import FiltersForm from './FiltersForm';
+import ProductCard from './ProductCard';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface ShopFormProps {
   products: any[];
+  recommendations?: any[];
   laboratories: string[];
   categories: string[];
   onAddToCart: (product: any) => void;
@@ -11,8 +13,18 @@ interface ShopFormProps {
   onFilterChange: (filters: any) => void;
 }
 
+interface Filters {
+  laboratory: string[];
+  category: string[];
+  prescription: string[];
+  commercialization: string[];
+  authorization: string[];
+  priceRange: string[];
+}
+
 export default function ShopForm({
   products,
+  recommendations = [],
   laboratories,
   categories,
   onAddToCart,
@@ -20,30 +32,51 @@ export default function ShopForm({
   onFilterChange
 }: ShopFormProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({
-    laboratory: '',
-    category: '',
-    prescription: '',
-    commercialization: '',
-    authorization: '',
-    priceRange: ''
+  const [activeTab, setActiveTab] = useState<'products' | 'recommendations'>('products');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [filters, setFilters] = useState<Filters>({
+    laboratory: [],
+    category: [],
+    prescription: [],
+    commercialization: [],
+    authorization: [],
+    priceRange: []
   });
+  const filtersRef = useRef<HTMLDivElement>(null);
+
+  // Cerrar filtros al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filtersRef.current && !filtersRef.current.contains(event.target as Node)) {
+        setShowMobileFilters(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     onSearch(e.target.value);
   };
 
-  const handleFilterUpdate = (filterType: string, value: string) => {
-    const newFilters = { ...filters, [filterType]: value };
+  const toggleMobileFilters = () => {
+    setShowMobileFilters(!showMobileFilters);
+  };
+
+  const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
-    onFilterChange(newFilters);
+    onFilterChange(newFilters); // Pasamos los filtros al componente padre si es necesario
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Resultados de la búsqueda</h1>
+    <div className="container mx-auto p-4 relative">
+      <h1 className="text-2xl text-center font-bold mb-4 py-3">Resultados de la búsqueda</h1>
       
+      {/* Barra de búsqueda */}
       <div className="mb-6">
         <input
           type="text"
@@ -54,119 +87,118 @@ export default function ShopForm({
         />
       </div>
 
+      {/* Tabs Navigation */}
+      <div className="flex border-b mb-4">
+        <button
+          className={`py-2 px-4 font-medium ${activeTab === 'products' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+          onClick={() => setActiveTab('products')}
+        >
+          Productos ({products.length})
+        </button>
+        <button
+          className={`py-2 px-4 font-medium ${activeTab === 'recommendations' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+          onClick={() => setActiveTab('recommendations')}
+        >
+          Recomendaciones ({recommendations.length})
+        </button>
+      </div>
+
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Filtros */}
-        <div className="w-full md:w-1/4 bg-gray-100 p-4 rounded">
-          <h2 className="font-bold mb-3">Laboratorio</h2>
-          <ul className="space-y-2">
-            {laboratories.map((lab) => (
-              <li key={lab}>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="laboratory"
-                    className="mr-2"
-                    onChange={() => handleFilterUpdate('laboratory', lab)}
-                  />
-                  {lab}
-                </label>
-              </li>
-            ))}
-          </ul>
-
-          <h2 className="font-bold mt-4 mb-3">Categoría</h2>
-          <ul className="space-y-2">
-            {categories.map((cat) => (
-              <li key={cat}>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="category"
-                    className="mr-2"
-                    onChange={() => handleFilterUpdate('category', cat)}
-                  />
-                  {cat}
-                </label>
-              </li>
-            ))}
-          </ul>
-
-          <h2 className="font-bold mt-4 mb-3">Prescripción</h2>
-          <ul className="space-y-2">
-            <li>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="prescription"
-                  className="mr-2"
-                  onChange={() => handleFilterUpdate('prescription', 'Con Prescripción')}
-                />
-                Con Prescripción
-              </label>
-            </li>
-            <li>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="prescription"
-                  className="mr-2"
-                  onChange={() => handleFilterUpdate('prescription', 'Sin Prescripción')}
-                />
-                Sin Prescripción
-              </label>
-            </li>
-          </ul>
-
-          <h2 className="font-bold mt-4 mb-3">Precio</h2>
-          <ul className="space-y-2">
-            {['menos de €10', '€10 a €20', '€20 a €30', '€30 a €40', 'más de €40'].map((range) => (
-              <li key={range}>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="priceRange"
-                    className="mr-2"
-                    onChange={() => handleFilterUpdate('priceRange', range)}
-                  />
-                  {range}
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Resultados */}
-        <div className="w-full md:w-3/4">
-          <div className="mb-4">
-            <h2 className="text-xl font-semibold">Q. {searchTerm || 'Paracetamol'}</h2>
-            <p className="text-sm text-gray-600">1 elemento encontrado para ***</p>
+        {/* Botón de filtros móvil - Más discreto */}
+        {activeTab === 'products' && (
+          <div className="md:hidden">
+            <button
+              onClick={toggleMobileFilters}
+              className="mb-4 flex items-center gap-1 text-gray-600 hover:text-gray-800 text-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              Filtros
+            </button>
           </div>
+        )}
 
-          <div className="bg-white p-4 rounded shadow">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="font-medium">Productos (1)</h3>
-              <span className="text-sm">Recomendaciones (2)</span>
+        {/* Popup de filtros para móvil */}
+        {showMobileFilters && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden">
+            <div 
+              ref={filtersRef}
+              className="absolute right-0 top-0 h-full w-4/5 max-w-md bg-white shadow-xl overflow-y-auto"
+            >
+              <div className="p-4 sticky top-0 bg-white border-b flex justify-between items-center">
+                <h2 className="text-lg font-medium">Filtros</h2>
+                <button 
+                  onClick={toggleMobileFilters}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <XMarkIcon className="h-6 w-6" />
+                </button>
+              </div>
+              <div className="p-4">
+                <FiltersForm 
+                  laboratories={laboratories}
+                  categories={categories}
+                  filters={filters} // Pasamos los filtros actuales
+                  onFilterChange={handleFilterChange} // Pasamos el handler
+                />
+              </div>
             </div>
+          </div>
+        )}
 
-            <div className="border-t pt-4">
-              {products.map((product) => (
-                <div key={product.name} className="mb-6">
-                  <h4 className="text-lg font-medium">{product.name}</h4>
-                  <p className="text-xl font-bold">{product.price} €</p>
-                  <button
-                    onClick={() => onAddToCart(product)}
-                    className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                  >
-                    Agregar al carrito
-                  </button>
-                </div>
-              ))}
+        {/* Columna de filtros para desktop */}
+        {activeTab === 'products' && (
+          <div className="hidden md:block w-full md:w-1/4">
+            <FiltersForm 
+              laboratories={laboratories}
+              categories={categories}
+              filters={filters} // Pasamos los filtros actuales
+              onFilterChange={handleFilterChange} // Pasamos el handler
+            />
+          </div>
+        )}
+
+        {/* Contenido principal */}
+        <div className={`${activeTab === 'products' ? 'w-full md:w-3/4' : 'w-full'}`}>
+          {/* Resto del código permanece igual */}
+          {activeTab === 'products' && (
+            <div className="space-y-4">
+              {products.length > 0 ? (
+                products.map((product) => (
+                  <ProductCard 
+                    key={`product-${product.id || product.name}`}
+                    product={product}
+                    onAddToCart={onAddToCart}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-500">No se encontraron productos</p>
+              )}
             </div>
+          )}
 
-            <div className="mt-4 text-sm">
+          {activeTab === 'recommendations' && (
+            <div className="space-y-4">
+              {recommendations.length > 0 ? (
+                recommendations.map((product) => (
+                  <ProductCard 
+                    key={`recommendation-${product.id || product.name}`}
+                    product={product}
+                    onAddToCart={onAddToCart}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-500">No hay recomendaciones disponibles</p>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'products' && (
+            <div className="mt-4 text-sm text-center text-gray-500">
               <p>¡Valora el resultado de la búsqueda!</p>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

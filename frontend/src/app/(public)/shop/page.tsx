@@ -2,56 +2,93 @@
 
 import ShopForm from '@/components/public/shop/ShopForm';
 import { useBootstrap } from '@/hooks/useBootstrap';
+import { laboratories, categories } from '@/constants/constants'
 
 export default function ShopPage() {
     useBootstrap();
-  // Datos de ejemplo (deberías reemplazarlos con tus datos reales o llamadas a API)
-  const products = [
-    {
-      name: 'Paracetamol geomg',
-      price: 8.99,
-      laboratory: 'Pfizer',
-      category: 'Analgésicos y Antilinflamatorios',
-      prescription: 'Sin Prescripción',
-      commercialization: 'Comercializados',
-      authorization: 'Autorizados'
-    }
-  ];
+    // Datos de ejemplo (deberías reemplazarlos con tus datos reales o llamadas a API)
+    const products = [
+        {
+            name: 'Paracetamol geomg',
+            price: 8.99,
+            laboratory: 'Pfizer',
+            category: 'Analgésicos y Antilinflamatorios',
+            prescription: 'Sin Prescripción',
+            commercialization: 'Comercializados',
+            authorization: 'Autorizados'
+        },
+        {
+            name: 'Paracetamol 2',
+            price: 8.99,
+            laboratory: 'Pfizer',
+            category: 'Analgésicos y Antilinflamatorios',
+            prescription: 'Sin Prescripción',
+            commercialization: 'Comercializados',
+            authorization: 'Autorizados'
+        }
+    ];
 
-  const laboratories = [
-    'Pfizer', 'Bristol-Myers', 'Grünenthal', 'Sandoz', 'Cinfa', 
-    'Normon', 'Ferrer Internacional', 'Kern', 'Otros'
-  ];
+    const recommendations = [
+        {
+        name: 'Ibuprofeno 400mg',
+        price: 5.99,
+        laboratory: 'Normon',
+        category: 'Analgésicos y Antilinflamatorios'
+        },
+        {
+        name: 'Vitamina C',
+        price: 12.50,
+        laboratory: 'Cinfa',
+        category: 'Suplementos'
+        }
+    ];
 
-  const categories = [
-    'Analgésicos y Antilinflamatorios', 'Antibióticos', 'Antivirales',
-    'Antifúngicos', 'Cardiovasculares', 'Antidiabéticos', 'Psicotrópicos',
-    'Ectopeficientes', 'Gastrointestinales', 'Respiratorios', 'Otros'
-  ];
+    const handleAddToCart = (product: any) => {
+        // Lógica para agregar al carrito
+        console.log('Producto agregado:', product);
+    };
 
-  const handleAddToCart = (product: any) => {
-    // Lógica para agregar al carrito
-    console.log('Producto agregado:', product);
-  };
+    const handleSearch = (searchTerm: string) => {
+        // Lógica de búsqueda
+        console.log('Buscando:', searchTerm);
+    };
 
-  const handleSearch = (searchTerm: string) => {
-    // Lógica de búsqueda
-    console.log('Buscando:', searchTerm);
-  };
+    const handleFilterChange = (newFilters: any) => {
+        console.log('Filtros actualizados:', newFilters);
+        // Aquí implementarías la lógica para filtrar los productos
+        // basado en los arrays de filtros recibidos
+        
+        // Ejemplo básico:
+        // const filteredProducts = allProducts.filter(product => {
+        //   // Filtro por laboratorio
+        //   if (newFilters.laboratory.length > 0 && 
+        //       !newFilters.laboratory.includes(product.laboratory)) {
+        //     return false;
+        //   }
+          
+        //   // Filtro por categoría
+        //   if (newFilters.category.length > 0 && 
+        //       !newFilters.category.includes(product.category)) {
+        //     return false;
+        //   }
+          
+        //   // ... otros filtros
+          
+        //   return true;
+        // });
+        
+        // setProducts(filteredProducts);
+      };
 
-  const handleFilterChange = (filters: any) => {
-    // Lógica para manejar cambios en los filtros
-    console.log('Filtros actualizados:', filters);
-  };
-
-  return (
-    <ShopForm 
-      products={products}
-      laboratories={laboratories}
-      categories={categories}
-      onAddToCart={handleAddToCart}
-      onSearch={handleSearch}
-      onFilterChange={handleFilterChange}
-    />
-  );
+    return (
+        <ShopForm 
+        products={products}
+        recommendations={recommendations}
+        laboratories={laboratories}
+        categories={categories}
+        onAddToCart={handleAddToCart}
+        onSearch={handleSearch}
+        onFilterChange={handleFilterChange}
+        />
+    );
 }
