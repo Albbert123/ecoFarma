@@ -23,7 +23,7 @@ export default function Service() {
                         tiempo esperando en la cola. ¡Llega, coge tus productos y listo!
                         </p>
                         <Link
-                            href="/tienda"
+                            href="/shop"
                             className="inline-block mt-4 px-6 py-2 border rounded-full hover:bg-blue-100 hover:text-white transition"
                             style={{ textDecoration: 'none', color: 'inherit'}}
                         >
