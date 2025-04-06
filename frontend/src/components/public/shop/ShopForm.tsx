@@ -3,25 +3,7 @@ import FiltersForm from './FiltersForm';
 import ProductCard from './ProductCard';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
-
-interface ShopFormProps {
-  products: any[];
-  recommendations?: any[];
-  laboratories: string[];
-  categories: string[];
-  onAddToCart: (product: any) => void;
-  onSearch: (term: string) => void;
-  onFilterChange: (filters: any) => void;
-}
-
-interface Filters {
-  laboratory: string[];
-  category: string[];
-  prescription: string[];
-  commercialization: string[];
-  authorization: string[];
-  priceRange: string[];
-}
+import { Filters, ShopFormProps } from '@/types/productTypes';
 
 export default function ShopForm({
   products,
@@ -186,7 +168,7 @@ export default function ShopForm({
               {products.length > 0 ? (
                 products.map((product) => (
                   <ProductCard 
-                    key={`product-${product.id || product.name}`}
+                    key={`product-${product.nregistro || product.name}`}
                     product={product}
                     onAddToCart={onAddToCart}
                   />
@@ -204,7 +186,7 @@ export default function ShopForm({
               {recommendations.length > 0 ? (
                 recommendations.map((product) => (
                   <ProductCard 
-                    key={`recommendation-${product.id || product.name}`}
+                    key={`recommendation-${product.nregistro || product.name}`}
                     product={product}
                     onAddToCart={onAddToCart}
                   />

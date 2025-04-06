@@ -1,18 +1,4 @@
-import { useState } from 'react';
-
-interface FiltersFormProps {
-  laboratories: string[];
-  categories: string[];
-  filters: {
-    laboratory: string[];
-    category: string[];
-    prescription: string[];
-    commercialization: string[];
-    authorization: string[];
-    priceRange: string[];
-  };
-  onFilterChange: (filters: any) => void;
-}
+import { FiltersFormProps } from '@/types/productTypes';
 
 export default function FiltersForm({ 
     laboratories, 
@@ -26,13 +12,13 @@ export default function FiltersForm({
         if (isChecked) {
           // Agregar el filtro
           newFilters[filterType as keyof typeof filters] = [
-            ...newFilters[filterType as keyof typeof filters],
+            ...(newFilters[filterType as keyof typeof filters] || []),
             value
           ];
         } else {
           // Remover el filtro
           newFilters[filterType as keyof typeof filters] = 
-            newFilters[filterType as keyof typeof filters].filter(item => item !== value);
+            (newFilters[filterType as keyof typeof filters] || []).filter(item => item !== value);
         }
     
         onFilterChange(newFilters);
@@ -40,7 +26,7 @@ export default function FiltersForm({
 
     // Función para verificar si un filtro está seleccionado
     const isChecked = (filterType: string, value: string) => {
-        return filters[filterType as keyof typeof filters].includes(value);
+        return (filters[filterType as keyof typeof filters] ?? []).includes(value);
     };
 
   return (

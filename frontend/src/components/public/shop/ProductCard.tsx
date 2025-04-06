@@ -1,16 +1,6 @@
-interface ProductCardProps {
-    product: {
-      id?: string;
-      name: string;
-      price: number;
-      image?: string;
-      laboratory?: string;
-      category?: string;
-    };
-    onAddToCart: (product: any) => void;
-  }
-  
-  export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+import { ProductCardProps } from "@/types/productTypes";
+
+export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
     // Usamos tu imagen encargo.jpg como placeholder
     const productImage = product.image || '/images/encargo.jpg';
   
@@ -28,7 +18,7 @@ interface ProductCardProps {
         {/* Detalles del producto */}
         <div className="p-3 flex flex-col flex-grow">
             <h5 className="text-base font-medium mb-1 line-clamp-2">{product.name}</h5>
-            <p className="text-lg mt-auto mb-2">{product.price.toFixed(2)} €</p>
+            <p className="text-lg mt-auto mb-2">{product?.price?.toFixed(2)} €</p>
             <button
             onClick={() => onAddToCart(product)}
             className="w-full bg-blue-500 hover:bg-blue-600 text-white py-1.5 px-2 rounded text-sm transition-colors"
