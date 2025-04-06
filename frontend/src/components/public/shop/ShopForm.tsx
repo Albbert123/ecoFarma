@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import FiltersForm from './FiltersForm';
 import ProductCard from './ProductCard';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
 interface ShopFormProps {
   products: any[];
@@ -34,6 +35,7 @@ export default function ShopForm({
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'products' | 'recommendations'>('products');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [rating, setRating] = useState<'up' | 'down' | null>(null);
   const [filters, setFilters] = useState<Filters>({
     laboratory: [],
     category: [],
@@ -87,7 +89,7 @@ export default function ShopForm({
         />
       </div>
 
-      {/* Tabs Navigation */}
+      {/* Tabs Navigation - Modificado para incluir la valoración */}
       <div className="flex border-b mb-4">
         <button
           className={`py-2 px-4 font-medium ${activeTab === 'products' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
@@ -102,8 +104,24 @@ export default function ShopForm({
           Recomendaciones ({recommendations.length})
         </button>
 
-        <div className="mt-4 text-sm text-center text-gray-500">
-          <p>¡Valora el resultado de la búsqueda!</p>
+        <div className="ml-auto flex items-center gap-2">
+          <span className="text-sm text-gray-500">
+            {activeTab === 'products' 
+              ? '¡Valora el resultado de la búsqueda!' 
+              : '¡Valora el resultado de la recomendación!'}
+          </span>
+          <button 
+  onClick={() => setRating('up')}
+  className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
+>
+  <ThumbsUp className="h-5 w-5" />
+</button>
+<button 
+  onClick={() => setRating('down')}
+  className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+>
+  <ThumbsDown className="h-5 w-5" />
+</button>
         </div>
       </div>
 
