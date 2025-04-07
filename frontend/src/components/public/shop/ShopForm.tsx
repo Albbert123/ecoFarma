@@ -16,6 +16,8 @@ export default function ShopForm({
 }: ShopFormProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'products' | 'recommendations'>('products');
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 9;
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [rating, setRating] = useState<'up' | 'down' | null>(null);
   const [filters, setFilters] = useState<Filters>({
@@ -27,6 +29,23 @@ export default function ShopForm({
     priceRange: []
   });
   const filtersRef = useRef<HTMLDivElement>(null);
+
+  // Cálculo de productos visibles en la página actual
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Total de páginas
+  const totalPages = Math.ceil(products.length / productsPerPage);
+
+  // Resetear a la página 1 cuando cambie la búsqueda o los productos
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, products]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   // Cerrar filtros al hacer clic fuera
   useEffect(() => {
@@ -93,17 +112,17 @@ export default function ShopForm({
               : '¡Valora el resultado de la recomendación!'}
           </span>
           <button 
-  onClick={() => setRating('up')}
-  className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
->
-  <ThumbsUp className="h-5 w-5" />
-</button>
-<button 
-  onClick={() => setRating('down')}
-  className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
->
-  <ThumbsDown className="h-5 w-5" />
-</button>
+            onClick={() => setRating('up')}
+            className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
+          >
+            <ThumbsUp className="h-5 w-5" />
+          </button>
+          <button 
+            onClick={() => setRating('down')}
+            className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+          >
+            <ThumbsDown className="h-5 w-5" />
+          </button>
         </div>
       </div>
 
@@ -166,7 +185,7 @@ export default function ShopForm({
           {activeTab === 'products' && (
            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-10"> {/* 3 columnas con menos gap */}
               {products.length > 0 ? (
-                products.map((product) => (
+                currentProducts.map((product) => (
                   <ProductCard 
                     key={`product-${product.nregistro || product.name}`}
                     product={product}
@@ -200,6 +219,33 @@ export default function ShopForm({
           )}
         </div>
       </div>
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-3 space-x-2">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Anterior
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-3 py-1 border rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -8,7 +8,7 @@ router = APIRouter()
 
 @router.get("/", response_model=List[Product])
 async def get_all_products(product_service: ProductService = Depends()):
-    return product_service.get_products(6)
+    return product_service.get_products(12)
 
 
 @router.get("/{nregistro}", response_model=Product)

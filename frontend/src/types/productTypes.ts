@@ -75,3 +75,18 @@ export interface ProductFormData {
     stock: number;
     principleAct?: string;
 }
+
+export interface ProductSummary {
+    nregistro: string;
+    name: string;
+    price: number;
+    stock: number;
+    image?: string;
+    principleAct: string;
+  }
+  
+  export interface ProductStoreState {
+    products: ProductSummary[];
+    setProductsStore: (products: ProductSummary[]) => void;
+    clearProducts: () => void;
+  }

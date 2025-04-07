@@ -4,20 +4,32 @@ import { useState, useEffect } from 'react';
 import ShopForm from '@/components/public/shop/ShopForm';
 import { useBootstrap } from '@/hooks/useBootstrap';
 import { laboratories, categories } from '@/constants/constants';
-import { Filters, Product } from '@/types/productTypes';
+import { Filters, Product, ProductSummary } from '@/types/productTypes';
 import { getProducts } from '@/services/productService';
+import { useProductStore } from "@/stores/productStore";
 
 export default function ShopPage() {
     useBootstrap();
 
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const setProductsStore = useProductStore((state) => state.setProductsStore);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const fetchedProducts = await getProducts();
                 setProducts(fetchedProducts);
+
+                const summarized = fetchedProducts.map((p: ProductSummary) => ({
+                    nregistro: p.nregistro,
+                    name: p.name,
+                    price: p.price,
+                    stock: p.stock,
+                    image: p.image,
+                    principleAct: p.principleAct
+                }));
+                setProductsStore(summarized);
             } catch (error) {
                 console.error('Error al obtener los productos:', error);
             } finally {
@@ -60,7 +72,7 @@ export default function ShopPage() {
     };
 
     if (loading) {
-        return <p>Cargando productos...</p>;
+        return <p></p>;
     }
 
     return (
