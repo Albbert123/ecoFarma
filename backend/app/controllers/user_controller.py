@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Body, HTTPException, Depends, Request
+from fastapi import APIRouter, Body, HTTPException, Depends, Path, Request
 from app.models.user_model import (
     UserCreate,
     UserLogin,
@@ -29,15 +29,15 @@ async def login(user: UserLogin, user_service: UserService = Depends()):
     return user_data
 
 
-@router.delete("/delete")
+@router.delete("/{correo}")
 async def delete_user(
-    correo: str = Body(..., embed=True),
+    correo: str = Path(..., description="Correo del usuario a eliminar"),
     user_service: UserService = Depends()
 ):
     return user_service.delete_user(correo)
 
 
-@router.put("/update")
+@router.put("/{correo}")
 async def update_user(user: UserUpdate, user_service: UserService = Depends()):
     # Obtener el usuario ORIGINAL por su correo actual
     existing_user = user_service.get_user_by_email(user.correo)
@@ -83,15 +83,18 @@ async def update_password(
     return updated_user
 
 
-@router.get("/user", response_model=UserResponse)
+@router.get("/{correo}", response_model=UserResponse)
 async def get_user(
-    correo: str = Body(..., embed=True),
+    correo: str = Path(..., description="Correo del usuario a consular"),
     user_service: UserService = Depends()
 ):
-    return user_service.get_user_by_email(correo)
+    user = user_service.get_user_by_email(correo)
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    return user
 
 
-@router.get("/all", response_model=List[UserResponse])
+@router.get("/", response_model=List[UserResponse])
 async def get_users(user_service: UserService = Depends()):
     return user_service.get_users()
 

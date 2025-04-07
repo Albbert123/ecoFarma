@@ -40,11 +40,11 @@ export interface Product {
     stock?: number;
     principleAct?: string;
     dosis?: string;
-    prescription?: string;
-    commercialization?: string;
-    authorization?: string;
-    estupefaciente?: string;
-    psicotropico?: string;
+    prescription?: boolean;
+    commercialization?: boolean;
+    authorization?: boolean;
+    estupefaciente?: boolean;
+    psicotropico?: boolean;
     advertencias?: string;
     contraindications?: string;
     comoTomar?: string;
@@ -52,4 +52,26 @@ export interface Product {
     posologia?: string;
     conservacion?: string;
     embedding?: number[];
+}
+
+export interface UpdateProductData {
+    name?: string;
+    description?: string;
+    price?: number;
+    image?: string;
+    laboratory?: string;
+    category?: string;
+    stock?: number;
+}
+
+export interface ProductFormData {
+    nregistro: string;
+    name: string;
+    description?: string;
+    price: number;
+    image?: string;
+    laboratory: string;
+    category: string;
+    stock: number;
+    principleAct?: string;
 }
