@@ -11,6 +11,42 @@ class ProductRepository:
     def get_products(self, limit: int = 25):
         return list(db["Producto"].find({}, {"_id": 0}).limit(limit))
 
+    def get_products_by_advanced_query(self, filters: dict, limit: int = 25):
+        query = {}
+
+        # Búsqueda exacta
+        if filters.get("prescription") is not None:
+            query["prescription"] = filters["prescription"]
+        if filters.get("category"):
+            query["category"] = filters["category"]
+
+        # Búsqueda por regex (case insensitive)
+        if filters.get("principleAct") is not None:
+            query["principleAct"] = {
+                "$regex": filters["principleAct"],
+                "$options": "i"
+            }
+
+        if filters.get("laboratory") is not None:
+            query["laboratory"] = {
+                "$regex": filters["laboratory"],
+                "$options": "i"
+            }
+
+        # Rango de precios
+        if (
+            filters.get("min_price") is not None
+            or filters.get("max_price") is not None
+        ):
+            price_query = {}
+            if filters.get("min_price") is not None:
+                price_query["$gte"] = filters["min_price"]
+            if filters.get("max_price") is not None:
+                price_query["$lte"] = filters["max_price"]
+            query["price"] = price_query
+
+        return list(db["Producto"].find(query, {"_id": 0}).limit(limit))
+
     def create_product(self, product_data: Product):
         db["Producto"].insert_one(product_data.dict())
         return product_data.dict()

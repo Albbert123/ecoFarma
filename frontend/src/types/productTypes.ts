@@ -41,10 +41,6 @@ export interface Product {
     principleAct?: string;
     dosis?: string;
     prescription?: boolean;
-    commercialization?: boolean;
-    authorization?: boolean;
-    estupefaciente?: boolean;
-    psicotropico?: boolean;
     advertencias?: string;
     contraindications?: string;
     comoTomar?: string;
@@ -83,6 +79,9 @@ export interface ProductSummary {
     stock: number;
     image?: string;
     principleAct: string;
+    laboratory?: string;
+    category?: string;
+    prescription?: boolean;
   }
   
   export interface ProductStoreState {
@@ -90,3 +89,13 @@ export interface ProductSummary {
     setProductsStore: (products: ProductSummary[]) => void;
     clearProducts: () => void;
   }
+
+  export type ProductFilters = {
+    prescription?: boolean;
+    category?: string;
+    principleAct?: string;
+    laboratory?: string;
+    min_price?: number;
+    max_price?: number;
+    limit?: number;
+  };

@@ -5,7 +5,7 @@ import ShopForm from '@/components/public/shop/ShopForm';
 import { useBootstrap } from '@/hooks/useBootstrap';
 import { laboratories, categories } from '@/constants/constants';
 import { Filters, Product, ProductSummary } from '@/types/productTypes';
-import { getProducts } from '@/services/productService';
+import { getFilteredProducts, getProducts } from '@/services/productService';
 import { useProductStore } from "@/stores/productStore";
 
 export default function ShopPage() {
@@ -14,21 +14,28 @@ export default function ShopPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const setProductsStore = useProductStore((state) => state.setProductsStore);
+    const clearProducts = useProductStore((state) => state.clearProducts);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const fetchedProducts = await getProducts();
-                setProducts(fetchedProducts);
+                const filteredProducts = await getFilteredProducts({prescription: false, limit: 30});
+                setProducts(filteredProducts);
 
-                const summarized = fetchedProducts.map((p: ProductSummary) => ({
+                const summarized = filteredProducts.map((p) => ({
                     nregistro: p.nregistro,
                     name: p.name,
-                    price: p.price,
-                    stock: p.stock,
-                    image: p.image,
-                    principleAct: p.principleAct
+                    price: p.price ?? 0,
+                    stock: p.stock ?? 0,
+                    image: p.image ?? '',
+                    principleAct: p.principleAct ?? '',
+                    laboratory: p.laboratory ?? '',
+                    category: p.category ?? '',
+                    prescription: p.prescription ?? false,
                 }));
+                console.log('Productos filtrados:', filteredProducts);
+                console.log('Productos resumidos:', summarized);
+                clearProducts();
                 setProductsStore(summarized);
             } catch (error) {
                 console.error('Error al obtener los productos:', error);

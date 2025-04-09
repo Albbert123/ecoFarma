@@ -19,6 +19,9 @@ class ProductService:
     def get_products(self, limit: int = 25):
         return self.product_repo.get_products(limit)
 
+    def get_products_by_filters(self, filters: dict, limit: int = 25):
+        return self.product_repo.get_products_by_advanced_query(filters, limit)
+
     def create_product(self, product: Product):
         existing = self.product_repo.get_product_by_nregistro(
             product.nregistro

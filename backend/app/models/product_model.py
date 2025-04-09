@@ -14,10 +14,6 @@ class Product(BaseModel):
     principleAct: Optional[str] = None
     dosis: Optional[str] = None
     prescription: Optional[bool] = None
-    commercialization: Optional[bool] = None
-    authorization: Optional[bool] = None
-    estupefaciente: Optional[bool] = None
-    psicotropico: Optional[bool] = None
     advertencias: Optional[str] = None
     contraindications: Optional[str] = None
     comoTomar: Optional[str] = None
