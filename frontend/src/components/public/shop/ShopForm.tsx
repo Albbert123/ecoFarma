@@ -123,81 +123,121 @@ export default function ShopForm({
         />
       </div>
 
-      {/* Tabs Navigation - Modificado para incluir la valoración */}
-      <div className="flex border-b mb-4">
-        <button
-          className={`py-2 px-4 font-medium ${activeTab === 'products' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-          onClick={() => setActiveTab('products')}
-        >
-          Productos ({products.length})
-        </button>
-        <button
-          className={`py-2 px-4 font-medium ${activeTab === 'recommendations' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-          onClick={() => setActiveTab('recommendations')}
-        >
-          Recomendaciones ({recommendations.length})
-        </button>
-
-        {/* Ordenacion */}
-        <div className="ml-4">
-          <select 
-            onChange={(e) => onSortChange(e.target.value)}
-            className="p-1 border rounded text-sm"
-            defaultValue="sin-prescripcion"  // <- Esto establece el valor por defecto
+      {/* Tabs Navigation - Reorganizado para mobile */}
+      <div className="flex flex-col md:flex-row border-b mb-4">
+        <div className="flex flex-1">
+          <button
+            className={`py-2 px-4 font-medium ${activeTab === 'products' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+            onClick={() => setActiveTab('products')}
           >
-            <option value="sin-prescripcion">Sin prescripción primero</option>
-            <option value="con-prescripcion">Con prescripción primero</option>
-            <option value="mas-baratos">Más baratos primero</option>
-            <option value="mas-caros">Más caros primero</option>
-            <option value="a-z">A-Z</option>
-            <option value="z-a">Z-A</option>
-          </select>
+            Productos ({products.length})
+          </button>
+          <button
+            className={`py-2 px-4 font-medium ${activeTab === 'recommendations' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+            onClick={() => setActiveTab('recommendations')}
+          >
+            Recomendaciones ({recommendations.length})
+          </button>
         </div>
 
-        {/* Valoración */}
-        <div className="ml-auto flex items-center gap-2">
-          <span className="text-sm text-gray-500">
-            {activeTab === 'products' 
-              ? '¡Valora el resultado de la búsqueda!' 
-              : '¡Valora el resultado de la recomendación!'}
-          </span>
-          <button 
-            onClick={() => setRating('up')}
-            className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
-          >
-            <ThumbsUp className="h-5 w-5" />
-          </button>
-          <button 
-            onClick={() => setRating('down')}
-            className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
-          >
-            <ThumbsDown className="h-5 w-5" />
-          </button>
+        {/* Fila para desktop - Ordenación y Valoración */}
+        <div className="hidden md:flex items-center gap-4">
+          {/* Ordenacion */}
+          <div className="flex items-center">
+            <select 
+              onChange={(e) => onSortChange(e.target.value)}
+              className="p-1 border rounded text-sm"
+              defaultValue="sin-prescripcion"
+            >
+              <option value="sin-prescripcion">Sin prescripción primero</option>
+              <option value="con-prescripcion">Con prescripción primero</option>
+              <option value="mas-baratos">Más baratos primero</option>
+              <option value="mas-caros">Más caros primero</option>
+              <option value="a-z">A-Z</option>
+              <option value="z-a">Z-A</option>
+            </select>
+          </div>
+
+          {/* Valoración */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-500">
+              {activeTab === 'products' 
+                ? '¡Valora el resultado de la búsqueda!' 
+                : '¡Valora el resultado de la recomendación!'}
+            </span>
+            <button 
+              onClick={() => setRating('up')}
+              className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
+            >
+              <ThumbsUp className="h-5 w-5" />
+            </button>
+            <button 
+              onClick={() => setRating('down')}
+              className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+            >
+              <ThumbsDown className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Botón de filtros móvil - Más discreto */}
-        {activeTab === 'products' && (
-          <div className="md:hidden">
-            <button
-              onClick={toggleMobileFilters}
-              className="mb-4 flex items-center gap-1 text-gray-600 hover:text-gray-800 text-sm"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-              </svg>
-              Filtros
-            </button>
-          </div>
-        )}
+      {/* Fila para móviles - Filtros y Ordenación */}
+      <div className="flex md:hidden items-center justify-between mt-2 mb-3">
+          <button
+            onClick={toggleMobileFilters}
+            className="flex items-center gap-1 text-gray-600 hover:text-gray-800 text-sm"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+            Filtros
+          </button>
 
+          <div className="flex items-center">
+            <select 
+              onChange={(e) => onSortChange(e.target.value)}
+              className="p-1 border rounded text-sm"
+              defaultValue="sin-prescripcion"
+            >
+              <option value="sin-prescripcion">Sin prescripción primero</option>
+              <option value="con-prescripcion">Con prescripción primero</option>
+              <option value="mas-baratos">Más baratos primero</option>
+              <option value="mas-caros">Más caros primero</option>
+              <option value="a-z">A-Z</option>
+              <option value="z-a">Z-A</option>
+            </select>
+          </div>
+        </div>
+
+
+      {/* Valoración para móviles (debajo de todo) */}
+      <div className="md:hidden flex items-center justify-center gap-2 mt-4 mb-10">
+        <span className="text-sm text-gray-500">
+          {activeTab === 'products' 
+            ? '¡Valora el resultado de la búsqueda!' 
+            : '¡Valora el resultado de la recomendación!'}
+        </span>
+        <button 
+          onClick={() => setRating('up')}
+          className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
+        >
+          <ThumbsUp className="h-5 w-5" />
+        </button>
+        <button 
+          onClick={() => setRating('down')}
+          className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+        >
+          <ThumbsDown className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Popup de filtros para móvil */}
         {showMobileFilters && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden">
+          <div className="fixed inset-0 bg-black bg-opacity-50 md:hidden">
             <div 
               ref={filtersRef}
-              className="absolute right-0 top-0 h-full w-4/5 max-w-md bg-white shadow-xl overflow-y-auto"
+              className="absolute right-0 top-16 h-[calc(100%-4rem)] w-4/5 max-w-md bg-white shadow-xl overflow-y-auto"
             >
               <div className="p-4 sticky top-0 bg-white border-b flex justify-between items-center">
                 <h2 className="text-lg font-medium">Filtros</h2>
