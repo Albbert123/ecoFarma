@@ -23,9 +23,6 @@ class ProductService:
     def get_products_by_filters(self, filters: dict, limit: int = 30):
         query = {}
 
-        # print("Labs del front:", filters.get("laboratory"))
-        # print("LAB_MAPPING.keys:", list(LAB_MAPPING.keys()))
-
         # Mapear laboratorios
         if filters.get("laboratory"):
             mapped_labs = [
@@ -35,10 +32,6 @@ class ProductService:
             ]
             if mapped_labs:
                 query["laboratory"] = {"$in": mapped_labs}
-            # print(mapped_labs)
-
-        print("Cats del front:", filters.get("category"))
-        print("CAT_MAPPING.keys:", list(CATEGORIES_MAPPING.keys()))
 
         # Mapear categorías simplificadas (front) a categorías reales (backend)
         if filters.get("category"):
@@ -50,7 +43,6 @@ class ProductService:
 
             if mapped_categories:
                 query["category"] = {"$in": mapped_categories}
-                print("Mapped categories:", mapped_categories)
 
         # Filtrar por prescripción
         if filters.get("prescription") is not None:

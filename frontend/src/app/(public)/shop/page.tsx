@@ -21,22 +21,8 @@ export default function ShopPage() {
             try {
                 const filteredProducts = await getFilteredProducts({prescription: false, limit: 30});
                 setProducts(filteredProducts);
-
-                // const summarized = filteredProducts.map((p) => ({
-                //     nregistro: p.nregistro,
-                //     name: p.name,
-                //     price: p.price ?? 0,
-                //     stock: p.stock ?? 0,
-                //     image: p.image ?? '',
-                //     principleAct: p.principleAct ?? '',
-                //     laboratory: p.laboratory ?? '',
-                //     category: p.category ?? '',
-                //     prescription: p.prescription ?? false,
-                // }));
                 console.log('Productos filtrados:', filteredProducts);
-                // console.log('Productos resumidos:', summarized);
                 clearProducts();
-                // setProductsStore(summarized);
             } catch (error) {
                 console.error('Error al obtener los productos:', error);
             } finally {
@@ -74,9 +60,19 @@ export default function ShopPage() {
         console.log('Buscando:', searchTerm);
     };
 
-    const handleFilterChange = async (newFilters: Filters) => {
-        console.log('Filtros actualizados:', newFilters);
-    
+    const summarize = (products: Product[]) => products.map((p) => ({
+        nregistro: p.nregistro,
+        name: p.name,
+        price: p.price ?? 0,
+        stock: p.stock ?? 0,
+        image: p.image ?? '',
+        principleAct: p.principleAct ?? '',
+        laboratory: p.laboratory ?? '',
+        category: p.category ?? '',
+        prescription: p.prescription ?? false,
+    }));
+
+    const buildFiltersQuery = (newFilters: Filters): any =>{
         const filtersQuery: any = {};
     
         // Multiple laboratories
@@ -94,31 +90,65 @@ export default function ShopPage() {
             const pres = newFilters.prescription[0];
             if (pres === "true") {
                 filtersQuery.prescription = true;
-            }
-            else if (pres === "false") {
+            } else if (pres === "false") {
                 filtersQuery.prescription = false;
             }
         }
     
         // Price range
         if (newFilters.priceRange?.length) {
-            newFilters.priceRange.forEach((rangeStr) => {
+            let min = Infinity;
+            let max = -Infinity;
+    
+            newFilters.priceRange.forEach((rangeStr: string) => {
                 if (rangeStr.includes("Menos de")) {
-                    filtersQuery.max_price = 10;
+                    min = Math.min(min, 0);
+                    max = Math.max(max, 10);
                 } else if (rangeStr.includes("Más de")) {
-                    filtersQuery.min_price = 40;
+                    min = Math.min(min, 40);
+                    max = Math.max(max, 1000); // suponiendo 1000 como techo
                 } else {
                     // Rango como "€10 a €20"
                     const cleaned = rangeStr.replace(/[€ ]/g, "").split("a");
                     if (cleaned.length === 2) {
-                        filtersQuery.min_price = cleaned[0];
-                        filtersQuery.max_price = cleaned[1];
+                        const low = parseFloat(cleaned[0]);
+                        const high = parseFloat(cleaned[1]);
+                        min = Math.min(min, low);
+                        max = Math.max(max, high);
                     }
                 }
             });
+    
+            if (min !== Infinity) filtersQuery.min_price = min;
+            if (max !== -Infinity) filtersQuery.max_price = max;
         }
     
+        return filtersQuery;
+    }
+    
+    const handleFilterChange = async (newFilters: Filters) => {
+        console.log('Filtros actualizados:', newFilters);
+
+        const noFiltersSelected =
+        (!newFilters.laboratory || newFilters.laboratory.length === 0) &&
+        (!newFilters.category || newFilters.category.length === 0) &&
+        (!newFilters.prescription || newFilters.prescription.length === 0) &&
+        (!newFilters.priceRange || newFilters.priceRange.length === 0);
+
+        if (noFiltersSelected) {
+            try {
+                const filteredProducts = await getFilteredProducts({ prescription: false, limit: 30 });
+                setProducts(filteredProducts);
+                clearProducts();
+                setProductsStore(summarize(filteredProducts));
+            } catch (error) {
+                console.error("Error al resetear productos:", error);
+            }
+            return;
+        }
+   
         try {
+            const filtersQuery = buildFiltersQuery(newFilters);
             console.log("Filtros aplicados:", filtersQuery);
             if (Object.keys(filtersQuery).length === 0) {
                 return;
@@ -126,20 +156,9 @@ export default function ShopPage() {
             const filteredProducts = await getFilteredProducts(filtersQuery);
             setProducts(filteredProducts);
     
-            const summarized = filteredProducts.map((p) => ({
-                nregistro: p.nregistro,
-                name: p.name,
-                price: p.price ?? 0,
-                stock: p.stock ?? 0,
-                image: p.image ?? '',
-                principleAct: p.principleAct ?? '',
-                laboratory: p.laboratory ?? '',
-                category: p.category ?? '',
-                prescription: p.prescription ?? false,
-            }));
-    
             clearProducts();
-            setProductsStore(summarized);
+            setProductsStore(summarize(filteredProducts));
+
         } catch (error) {
             console.error("Error al aplicar filtros:", error);
         }

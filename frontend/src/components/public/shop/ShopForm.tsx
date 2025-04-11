@@ -4,6 +4,7 @@ import ProductCard from './ProductCard';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Filters, ShopFormProps } from '@/types/productTypes';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function ShopForm({
   products,
@@ -27,6 +28,8 @@ export default function ShopForm({
     priceRange: []
   });
   const filtersRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Cálculo de productos visibles en la página actual
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -59,6 +62,19 @@ export default function ShopForm({
     };
   }, []);
 
+  useEffect(() => {
+    const newFilters: Filters = {
+      laboratory: searchParams.getAll("laboratory"),
+      category: searchParams.getAll("category"),
+      prescription: searchParams.getAll("prescription"),
+      priceRange: searchParams.getAll("priceRange"),
+    };
+
+    setFilters(newFilters);
+    onFilterChange(newFilters); // Opcional: para notificar al padre
+
+  }, [searchParams]);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     onSearch(e.target.value);
@@ -71,6 +87,24 @@ export default function ShopForm({
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
     onFilterChange(newFilters); // Pasamos los filtros al componente padre si es necesario
+
+    const query = new URLSearchParams();
+
+    Object.entries(newFilters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        if (Array.isArray(value)) {
+          value.forEach((val) => query.append(key, val));
+        } else {
+          query.append(key, value.toString());
+        }
+      }
+    });
+
+    // // Puedes añadir otros params si los necesitas, como paginación o límite
+    // query.set('limit', '30');
+
+    router.replace(`/shop?${query.toString()}`, { scroll: false });
+
   };
 
   return (
