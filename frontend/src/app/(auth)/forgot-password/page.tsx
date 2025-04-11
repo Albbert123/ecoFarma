@@ -22,6 +22,7 @@ export default function ForgotPasswordPage() {
       setToken(response.token); // Guardar token
       setCorreo(correo); // Guardar correo
       setStep(2); // Pasar al siguiente paso
+      setError(""); // Limpiar error
     } catch (err: any) {
       setError(err.message);
     }

@@ -12,13 +12,13 @@ class UserRepository:
 
     def create_user(self, user: UserCreate, hashed_password: str):
         new_user = {
-            "correo": user.correo,
-            "nombre": user.nombre,
-            "apellido": user.apellido,
+            "correo": user["correo"],
+            "nombre": user["nombre"],
+            "apellido": user["apellido"],
+            "rol": user["rol"],
+            "imagen": user["imagen"],
+            "fromGoogle": user["fromGoogle"],
             "contraseña": hashed_password,
-            "imagen": user.imagen,
-            "rol": user.rol,
-            "fromGoogle": user.fromGoogle
         }
         db["Persona"].insert_one(new_user)
         return new_user

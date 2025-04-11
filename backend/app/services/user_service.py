@@ -109,7 +109,7 @@ class UserService:
                 content=html_content
             )
 
-            if status_code != 202:
+            if status_code != 200:
                 raise HTTPException(
                     status_code=500,
                     detail="El correo no pudo ser enviado"

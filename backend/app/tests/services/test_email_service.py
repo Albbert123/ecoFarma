@@ -1,14 +1,12 @@
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from app.services.email_service import send_email
 
 
-@patch("app.services.email_service.SendGridAPIClient")
-def test_send_email_success(mock_sendgrid_client):
-    # Simular una respuesta con status_code 202 (éxito)
-    mock_client_instance = MagicMock()
-    mock_client_instance.send.return_value.status_code = 202
-    mock_sendgrid_client.return_value = mock_client_instance
+@patch("app.services.email_service.resend.Emails.send")
+def test_send_email_success(mock_resend_send):
+    # Simular una respuesta exitosa con un ID
+    mock_resend_send.return_value = {"id": "email_1234"}
 
     status_code = send_email(
         to_email="test@example.com",
@@ -16,17 +14,14 @@ def test_send_email_success(mock_sendgrid_client):
         content="<p>Test Content</p>"
     )
 
-    assert status_code == 202
-    mock_sendgrid_client.assert_called_once()
-    mock_client_instance.send.assert_called_once()
+    assert status_code == 200
+    mock_resend_send.assert_called_once()
 
 
-@patch("app.services.email_service.SendGridAPIClient")
-def test_send_email_failure(mock_sendgrid_client):
+@patch("app.services.email_service.resend.Emails.send")
+def test_send_email_failure(mock_resend_send):
     # Simular un error al enviar el correo
-    mock_client_instance = MagicMock()
-    mock_client_instance.send.side_effect = Exception("Error de red")
-    mock_sendgrid_client.return_value = mock_client_instance
+    mock_resend_send.side_effect = Exception("Error de red")
 
     with pytest.raises(Exception) as exc_info:
         send_email(
@@ -36,5 +31,4 @@ def test_send_email_failure(mock_sendgrid_client):
         )
 
     assert "Error de red" in str(exc_info.value)
-    mock_sendgrid_client.assert_called_once()
-    mock_client_instance.send.assert_called_once()
+    mock_resend_send.assert_called_once()

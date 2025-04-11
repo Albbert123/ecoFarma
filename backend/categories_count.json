@@ -1,0 +1,698 @@
+[
+    {
+        "category": "ANTIPSICÓTICOS",
+        "count": 132
+    },
+    {
+        "category": "OTROS ANALGÉSICOS Y ANTIPIRÉTICOS",
+        "count": 108
+    },
+    {
+        "category": "INMUNOSUPRESORES",
+        "count": 106
+    },
+    {
+        "category": "FÁRMACOS HIPOGLUCEMIANTES EXCLUYENDO INSULINAS",
+        "count": 98
+    },
+    {
+        "category": "ANTAGONISTAS DE LOS RECEPTORES DE ANGIOTENSINA II, COMBINACIONES",
+        "count": 90
+    },
+    {
+        "category": "PRODUCTOS ANTIINFLAMATORIOS Y ANTIRREUMÁTICOS NO ESTEROIDEOS",
+        "count": 84
+    },
+    {
+        "category": "ANTIDEPRESIVOS",
+        "count": 83
+    },
+    {
+        "category": "OPIOIDES",
+        "count": 77
+    },
+    {
+        "category": "AGENTES MODIFICADORES DE LOS LÍPIDOS, MONOFÁRMACOS",
+        "count": 68
+    },
+    {
+        "category": "ANTAGONISTAS DE LOS RECEPTORES DE ANGIOTENSINA II, MONOTERAPIA",
+        "count": 68
+    },
+    {
+        "category": "Inhibidores de la proteinquinasa",
+        "count": 60
+    },
+    {
+        "category": "AGENTES CONTRA LA ÚLCERA PÉPTICA Y EL REFLUJO GASTROESOFÁGICO (RGE/GORD)",
+        "count": 57
+    },
+    {
+        "category": "ANTIEPILÉPTICOS",
+        "count": 56
+    },
+    {
+        "category": "AGENTES ANTITROMBÓTICOS",
+        "count": 54
+    },
+    {
+        "category": "VITAMINA K Y OTROS HEMOSTÁTICOS",
+        "count": 52
+    },
+    {
+        "category": "ANTIVIRALES DE ACCIÓN DIRECTA",
+        "count": 47
+    },
+    {
+        "category": "ADRENÉRGICOS, INHALATORIOS",
+        "count": 45
+    },
+    {
+        "category": "OTROS PRODUCTOS DE USO UROLÓGICO, INCLUYENDO ANTIESPASMÓDICOS",
+        "count": 44
+    },
+    {
+        "category": "FÁRMACOS ANTI-DEMENCIA",
+        "count": 44
+    },
+    {
+        "category": "ANTICONCEPTIVOS HORMONALES PARA USO SISTÉMICO",
+        "count": 38
+    },
+    {
+        "category": "ANTIHISTAMÍNICOS PARA USO SISTÉMICO",
+        "count": 38
+    },
+    {
+        "category": "ANTIMICÓTICOS PARA USO SISTÉMICO",
+        "count": 34
+    },
+    {
+        "category": "AGENTES DOPAMINÉRGICOS",
+        "count": 31
+    },
+    {
+        "category": "FÁRMACOS USADOS EN LA HIPERTROFIA PROSTÁTICA BENIGNA",
+        "count": 30
+    },
+    {
+        "category": "Anticuerpos monoclonales y anticuerpos conjugados con fármacos",
+        "count": 28
+    },
+    {
+        "category": "EXPECTORANTES, EXCLUYENDO COMBINACIONES CON SUPRESORES DE LA TOS",
+        "count": 27
+    },
+    {
+        "category": "PREPARADOS CONTRA EL GLAUCOMA Y MIÓTICOS1)",
+        "count": 27
+    },
+    {
+        "category": "INHIBIDORES DE LA ECA, COMBINACIONES",
+        "count": 27
+    },
+    {
+        "category": "BLOQUEANTES SELECTIVOS DE CANALES DE CALCIO CON EFECTOS PRINCIPALMENTE VASCULARES",
+        "count": 26
+    },
+    {
+        "category": "ANTAGONISTAS DE HORMONAS Y AGENTES RELACIONADOS",
+        "count": 25
+    },
+    {
+        "category": "PREPARADOS ANTIMIGRAÑOSOS",
+        "count": 25
+    },
+    {
+        "category": "INHIBIDORES DE LA ECA, MONOFÁRMACOS",
+        "count": 25
+    },
+    {
+        "category": "FÁRMACOS USADOS EN DESÓRDENES ADICTIVOS",
+        "count": 23
+    },
+    {
+        "category": "ANSIOLÍTICOS",
+        "count": 23
+    },
+    {
+        "category": "AGENTES BETA-BLOQUEANTES",
+        "count": 21
+    },
+    {
+        "category": "AGENTES MODIFICADORES DE LOS LÍPIDOS, COMBINACIONES",
+        "count": 20
+    },
+    {
+        "category": "HORMONAS DEL LÓBULO ANTERIOR DE LA HIPÓFISIS Y SUS ANÁLOGOS",
+        "count": 20
+    },
+    {
+        "category": "PREPARADOS PARA LA GARGANTA",
+        "count": 19
+    },
+    {
+        "category": "DESCONGESTIVOS Y OTROS PREPARADOS NASALES PARA USO TÓPICO",
+        "count": 19
+    },
+    {
+        "category": "SOLUCIONES I.V.",
+        "count": 19
+    },
+    {
+        "category": "INMUNOESTIMULANTES",
+        "count": 19
+    },
+    {
+        "category": "VACUNAS ANTIVIRALES",
+        "count": 18
+    },
+    {
+        "category": "OTROS AGENTES CONTRA PADECIMIENTOS OBSTRUCTIVOS DE LAS",
+        "count": 18
+    },
+    {
+        "category": "OTROS ANTIBACTERIANOS BETALACTÁMICOS",
+        "count": 18
+    },
+    {
+        "category": "OTROS AGENTES CONTRA PADECIMIENTOS OBSTRUCTIVOS DE LAS VÍAS RESPIRATORIAS, INHALATORIOS",
+        "count": 18
+    },
+    {
+        "category": "FÁRMACOS PARA EL ESTREÑIMIENTO",
+        "count": 17
+    },
+    {
+        "category": "PRODUCTOS TÓPICOS PARA EL DOLOR ARTICULAR Y MUSCULAR",
+        "count": 17
+    },
+    {
+        "category": "SUPRESORES DE LA TOS, EXCLUYENDO COMBINACIONES CON EXPECTORANTES",
+        "count": 17
+    },
+    {
+        "category": "ANTISÉPTICOS Y DESINFECTANTES",
+        "count": 17
+    },
+    {
+        "category": "ANESTÉSICOS LOCALES",
+        "count": 16
+    },
+    {
+        "category": "OTROS PREPARADOS ANTIANÉMICOS",
+        "count": 16
+    },
+    {
+        "category": "OTROS OFTALMOLÓGICOS",
+        "count": 15
+    },
+    {
+        "category": "TODO EL RESTO DE LOS PRODUCTOS TERAPÉUTICOS",
+        "count": 15
+    },
+    {
+        "category": "QUINOLONAS ANTIBACTERIANAS",
+        "count": 15
+    },
+    {
+        "category": "OTROS ANTIBACTERIANOS",
+        "count": 15
+    },
+    {
+        "category": "AGENTES ANTIINFLAMATORIOS",
+        "count": 14
+    },
+    {
+        "category": "ANTIFÚNGICOS PARA USO TÓPICO",
+        "count": 14
+    },
+    {
+        "category": "GONADOTROFINAS Y OTROS ESTIMULANTES DE LA OVULACIÓN",
+        "count": 14
+    },
+    {
+        "category": "OTROS AGENTES ANTINEOPLÁSICOS",
+        "count": 13
+    },
+    {
+        "category": "MACRÓLIDOS, LINCOSAMIDAS Y ESTREPTOGRAMINAS",
+        "count": 13
+    },
+    {
+        "category": "ANTIMETABOLITOS",
+        "count": 13
+    },
+    {
+        "category": "ANESTÉSICOS GENERALES",
+        "count": 12
+    },
+    {
+        "category": "HIPNÓTICOS Y SEDANTES",
+        "count": 12
+    },
+    {
+        "category": "AGENTES ANTIPARATIROIDEOS",
+        "count": 12
+    },
+    {
+        "category": "AGENTES RELAJANTES MUSCULARES DE ACCIÓN PERIFÉRICA",
+        "count": 11
+    },
+    {
+        "category": "Antagonistas de la aldosterona y otros agentes ahorradores de potasio",
+        "count": 11
+    },
+    {
+        "category": "ANTIBACTERIANOS BETALACTÁMICOS, PENICILINAS",
+        "count": 11
+    },
+    {
+        "category": "CORTICOSTEROIDES, MONOFÁRMACOS",
+        "count": 11
+    },
+    {
+        "category": "PSICOESTIMULANTES, AGENTES UTILIZADOS PARA LA ADHD Y NOOTRÓPICOS",
+        "count": 11
+    },
+    {
+        "category": "INSULINAS Y ANÁLOGOS",
+        "count": 11
+    },
+    {
+        "category": "ALCALOIDES DE PLANTAS Y OTROS PRODUCTOS NATURALES",
+        "count": 10
+    },
+    {
+        "category": "AGENTES QUE AFECTAN LA ESTRUCTURA ÓSEA Y LA MINERALIZACIÓN",
+        "count": 10
+    },
+    {
+        "category": "DESCONGESTIVOS Y ANTIALÉRGICOS",
+        "count": 10
+    },
+    {
+        "category": "OTROS PREPARADOS PARA EL CORAZÓN",
+        "count": 9
+    },
+    {
+        "category": "PREPARADOS DE HORMONA TIROIDEA",
+        "count": 9
+    },
+    {
+        "category": "AGENTES ANTIINFLAMATORIOS INTESTINALES",
+        "count": 9
+    },
+    {
+        "category": "QUIMIOTERÁPICOS PARA USO TÓPICO",
+        "count": 9
+    },
+    {
+        "category": "OTROS PREPARADOS DERMATOLÓGICOS",
+        "count": 8
+    },
+    {
+        "category": "CORTICOSTEROIDES PARA USO SISTÉMICO, MONOFÁRMACOS",
+        "count": 8
+    },
+    {
+        "category": "ANTIÁCIDOS",
+        "count": 8
+    },
+    {
+        "category": "ANTIINFECCIOSOS",
+        "count": 8
+    },
+    {
+        "category": "ANTIINFECCIOSOS Y ANTISÉPTICOS EXCLUYENDO COMBINACIONES CON CORTICOSTEROIDES",
+        "count": 8
+    },
+    {
+        "category": "AGENTES ESTABILIZADORES DE CAPILARES",
+        "count": 8
+    },
+    {
+        "category": "PREPARADOS CONTRA LA OBESIDAD, EXCLUYENDO PRODUCTOS DIETÉTICOS",
+        "count": 7
+    },
+    {
+        "category": "ANTIPROPULSIVOS",
+        "count": 7
+    },
+    {
+        "category": "HORMONAS Y AGENTES RELACIONADOS",
+        "count": 7
+    },
+    {
+        "category": "OTROS ANTIHIPERTENSIVOS",
+        "count": 7
+    },
+    {
+        "category": "PREPARADOS ANTIGOTOSOS",
+        "count": 7
+    },
+    {
+        "category": "HORMONAS HIPOTALÁMICAS",
+        "count": 7
+    },
+    {
+        "category": "ANTIBIÓTICOS CITOTÓXICOS Y SUSTANCIAS RELACIONADAS",
+        "count": 7
+    },
+    {
+        "category": "VACUNAS ANTIBACTERIANAS",
+        "count": 7
+    },
+    {
+        "category": "HORMONAS DEL LÓBULO POSTERIOR DE LA HIPÓFISIS",
+        "count": 7
+    },
+    {
+        "category": "VACUNAS ANTIBACTERIANAS Y ANTIVIRALES COMBINADAS",
+        "count": 7
+    },
+    {
+        "category": "ANTIPRURIGINOSOS, INCLUYENDO ANTIHISTAMÍNÍCOS, ANESTÉSICOS, ETC.",
+        "count": 6
+    },
+    {
+        "category": "DIURÉTICOS DE TECHO ALTO",
+        "count": 6
+    },
+    {
+        "category": "AGENTES ALQUILANTES",
+        "count": 6
+    },
+    {
+        "category": "OTROS PRODUCTOS GINECOLÓGICOS",
+        "count": 6
+    },
+    {
+        "category": "OTROS PREPARADOS PARA EL RESFRÍADO",
+        "count": 6
+    },
+    {
+        "category": "TERAPIA ANTIVARICOSA",
+        "count": 6
+    },
+    {
+        "category": "VASODILATADORES USADOS EN ENFERMEDADES CARDÍACAS",
+        "count": 6
+    },
+    {
+        "category": "INMUNOGLOBULINAS",
+        "count": 5
+    },
+    {
+        "category": "PREPARADOS CON HIERRO",
+        "count": 5
+    },
+    {
+        "category": "ESTRÓGÉNOS",
+        "count": 5
+    },
+    {
+        "category": "MEDIOS DE CONTRASTE PARA RAYOS-X, IODADOS",
+        "count": 5
+    },
+    {
+        "category": "AGENTES ANTIADRENÉRGICOS DE ACCIÓN PERIFÉRICA",
+        "count": 5
+    },
+    {
+        "category": "TERAPIA CON IODO",
+        "count": 4
+    },
+    {
+        "category": "ANTIBIÓTICOS PARA USO TÓPICO",
+        "count": 4
+    },
+    {
+        "category": "ANTIINFECCIOSOS INTESTINALES",
+        "count": 4
+    },
+    {
+        "category": "DESCONGESTIVOS NASALES PARA USO SISTÉMICO",
+        "count": 4
+    },
+    {
+        "category": "PREPARADOS CONTRA EL VÉRTIGO",
+        "count": 4
+    },
+    {
+        "category": "DIURÉTICOS DE TECHO BAJO: TIAZIDAS",
+        "count": 4
+    },
+    {
+        "category": "ANTICONCEPTIVOS PARA USO TÓPICO",
+        "count": 4
+    },
+    {
+        "category": "MICROORGANISMOS ANTIDIARREICOS",
+        "count": 4
+    },
+    {
+        "category": "VITAMINAS DEL COMPLEJO B, INCLUYENDO COMBINACIONES",
+        "count": 4
+    },
+    {
+        "category": "AMINOGLUCÓSIDOS ANTIBACTERIANOS",
+        "count": 3
+    },
+    {
+        "category": "MULTIVITAMÍNICOS, COMBINACIONES",
+        "count": 3
+    },
+    {
+        "category": "COMBINACIONES DE SUPRESORES DE LA TOS Y EXPECTORANTES",
+        "count": 3
+    },
+    {
+        "category": "VITAMINAS A Y D, INCLUYENDO COMBINACIONES DE LAS DOS",
+        "count": 3
+    },
+    {
+        "category": "PROGESTÁGENOS",
+        "count": 3
+    },
+    {
+        "category": "AGENTES ANTIINFLAMATORIOS Y ANTIINFECCIOSOS EN COMBINACIÓN",
+        "count": 3
+    },
+    {
+        "category": "CORTICOSTEROIDES, OTRAS COMBINACIONES",
+        "count": 3
+    },
+    {
+        "category": "TETRACICLINAS",
+        "count": 3
+    },
+    {
+        "category": "MEDIOS DE CONTRASTE PARA ÍMÁGENES DE RESONANCIA MAGNÉTICA",
+        "count": 3
+    },
+    {
+        "category": "PROGESTÁGENOS Y ESTRÓGENOS EN COMBINACIÓN",
+        "count": 3
+    },
+    {
+        "category": "AGENTES DE USO TÓPICO PARA EL TRATAMIENTO DE HEMORROIDES Y FISURAS ANALES",
+        "count": 3
+    },
+    {
+        "category": "HORMONAS PARATIROIDEAS Y ANÁLOGOS",
+        "count": 3
+    },
+    {
+        "category": "OTROS FÁRMACOS PARA DESÓRDENES DEL SISTEMA MUSCULOESQUELÉTICOS",
+        "count": 3
+    },
+    {
+        "category": "OTROS PREPARADOS DE VITAMINAS, MONOFÁRMACOS",
+        "count": 2
+    },
+    {
+        "category": "FÁRMACOS PARA EL TRATAMIENTO DE LA TUBERCULOSIS",
+        "count": 2
+    },
+    {
+        "category": "TERAPIA BILIAR",
+        "count": 2
+    },
+    {
+        "category": "ANTIANDRÓGENOS",
+        "count": 2
+    },
+    {
+        "category": "VITAMINA B1, SOLA Y EN COMBINACIÓN CON VITAMINAS B6 Y B12",
+        "count": 2
+    },
+    {
+        "category": "DIURÉTICOS DE TECHO BAJO, EXCLUYENDO TIAZIDAS",
+        "count": 2
+    },
+    {
+        "category": "ELECTROLITOS CON CARBOHIDRATOS",
+        "count": 2
+    },
+    {
+        "category": "AGENTES DE DIAGNÓSTICO",
+        "count": 2
+    },
+    {
+        "category": "OTROS PRODUCTOS PARA EL TRACTO ALIMENTARIO Y METABOLISMO",
+        "count": 2
+    },
+    {
+        "category": "CORTICOSTEROIDES Y ANTIINFECCIOSOS EN COMBINACIÓN",
+        "count": 2
+    },
+    {
+        "category": "AGENTES CONTRA PADECIMIENTOS FUNCIONALES DEL ESTÓMAGO",
+        "count": 2
+    },
+    {
+        "category": "MIDRIÁTICOS Y CICLOPLÉJICOS",
+        "count": 2
+    },
+    {
+        "category": "ANTIEMÉTICOS Y FÁRMACOS PARA LAS NAUSEAS",
+        "count": 2
+    },
+    {
+        "category": "ANTIPSORIÁSICOS PARA USO TÓPICO",
+        "count": 2
+    },
+    {
+        "category": "PREPARADOS ANTI-ACNÉ PARA USO TÓPICO",
+        "count": 2
+    },
+    {
+        "category": "AGENTES CONTRA LA AMEBIASIS Y OTRAS ENFERMEDADES POR PROTOZOARIOS",
+        "count": 2
+    },
+    {
+        "category": "CALCIO",
+        "count": 2
+    },
+    {
+        "category": "AGENTES CONTRA TRASTORNOS VASCULARES OCULARES",
+        "count": 2
+    },
+    {
+        "category": "ANTIPALÚDICOS",
+        "count": 2
+    },
+    {
+        "category": "ESTIMULANTES CARDÍACOS EXCLUYENDO GLUCÓSIDOS CARDÍACOS",
+        "count": 2
+    },
+    {
+        "category": "CICATRIZANTES",
+        "count": 1
+    },
+    {
+        "category": "MEDIOS DE CONTRASTE PARA RAYOS-X, NO IODADOS",
+        "count": 1
+    },
+    {
+        "category": "SANGRE Y PRODUCTOS RELACIONADOS",
+        "count": 1
+    },
+    {
+        "category": "OTROS PRODUCTOS CON VITAMINAS, COMBINACIONES",
+        "count": 1
+    },
+    {
+        "category": "AGENTES RELAJANTES MUSCULARES DE ACCIÓN CENTRAL",
+        "count": 1
+    },
+    {
+        "category": "APÓSITOS CON MEDICAMENTOS",
+        "count": 1
+    },
+    {
+        "category": "VITAMINA B12 Y ÁCIDO FÓLICO",
+        "count": 1
+    },
+    {
+        "category": "OTROS AGENTES DIAGNÓSTICOS",
+        "count": 1
+    },
+    {
+        "category": "OTROS FÁRMACOS QUE ACTÚAN SOBRE EL SISTEMA NERVIOSO",
+        "count": 1
+    },
+    {
+        "category": "OTROS ANTIDIARREICOS",
+        "count": 1
+    },
+    {
+        "category": "OTROS PRODUCTOS RADIOFARMACÉUTICOS TERAPÉUTICOS",
+        "count": 1
+    },
+    {
+        "category": "DIURÉTICOS Y AGENTES AHORRADORES DE POTASIO EN COMBINACIÓN",
+        "count": 1
+    },
+    {
+        "category": "ECTOPARASITICIDAS, INCLUYENDO ESCABICIDAS",
+        "count": 1
+    },
+    {
+        "category": "DIGESTIVOS, INCLUYENDO ENZIMAS",
+        "count": 1
+    },
+    {
+        "category": "DETECCIÓN DE TUMORES",
+        "count": 1
+    },
+    {
+        "category": "AGENTES ANTICOLINÉRGICOS",
+        "count": 1
+    },
+    {
+        "category": "CORTICOSTEROIDES EN COMBINACIÓN CON ANTIBIÓTICOS",
+        "count": 1
+    },
+    {
+        "category": "AGENTES BETA-BLOQUEANTES Y OTROS DIURÉTICOS",
+        "count": 1
+    },
+    {
+        "category": "HORMONAS GLUCOGENOLÍTICAS",
+        "count": 1
+    },
+    {
+        "category": "ADRENÉRGICOS PARA USO SISTÉMICO",
+        "count": 1
+    },
+    {
+        "category": "AGENTES BETA-BLOQUEANTES, OTRAS COMBINACIONES",
+        "count": 1
+    },
+    {
+        "category": "ANTIFÚNGICOS PARA USO SISTÉMICO",
+        "count": 1
+    },
+    {
+        "category": "EMOLIENTES Y PROTECTORES",
+        "count": 1
+    },
+    {
+        "category": "VASODILATADORES PERIFÉRICOS",
+        "count": 1
+    },
+    {
+        "category": "ANDRÓGENOS",
+        "count": 1
+    },
+    {
+        "category": "PROPULSIVOS",
+        "count": 1
+    },
+    {
+        "category": "ANTIARRÍTMICOS DE CLASE I Y III",
+        "count": 1
+    }
+]

@@ -4,11 +4,13 @@ import Link from "next/link";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import ProfileMenu from "./ProfileMenu";
 import { useAuthStore } from "@/stores/authStore";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const { userRole, isAuthenticated } = useAuthStore();
     const [isClient, setIsClient] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => setIsClient(true), []);
     if (!isClient) return null;
@@ -24,6 +26,12 @@ export default function Navbar() {
 
     const desktopMenuStyles = "hidden md:flex space-x-6";
 
+    const getLinkClass = (path: string) =>
+        pathname === path 
+            ? "border-b-2 border-blue-700"
+            : null;
+
+
     const renderNavLinks = (links: { href: string; text: string }[]) => (
         <>
             {/* Menú móvil */}
@@ -32,7 +40,7 @@ export default function Navbar() {
                     <Link 
                         key={index}
                         href={link.href}
-                        className="block py-3 px-4 text-gray-900 hover:bg-gray-100"
+                        className={`block py-3 px-4 text-gray-900 hover:bg-gray-100 ${getLinkClass(link.href)}`}
                         style={{ textDecoration: 'none', color: 'inherit'}}
                         onClick={() => setIsOpen(false)}
                     >
@@ -47,7 +55,7 @@ export default function Navbar() {
                     <Link 
                         key={index}
                         href={link.href}
-                        className="py-2 md:py-3 text-gray-900 hover:text-blue-600 transition-colors"
+                        className={`py-2 md:py-3 text-gray-900 hover:text-blue-600 transition-colors ${getLinkClass(link.href)}`}
                         style={{ textDecoration: 'none', color: 'inherit'}}
                     >
                         {link.text}
@@ -84,7 +92,7 @@ export default function Navbar() {
                     <Link href="/cart">
                         <FaShoppingCart className="text-gray-900 text-xl md:text-2xl hover:text-blue-600 transition-colors" />
                     </Link>
-                    <div className="md:scale-110"> {/* Escalamos el ProfileMenu en desktop */}
+                    <div className="md:scale-110 z-50"> {/* Escalamos el ProfileMenu en desktop */}
                         <ProfileMenu />
                     </div>
                 </div>
@@ -111,7 +119,7 @@ export default function Navbar() {
                 ])}
 
                 {/* Perfil */}
-                <div className="md:scale-110">
+                <div className="md:scale-110 z-50">
                     <ProfileMenu />
                 </div>
             </nav>
@@ -138,7 +146,7 @@ export default function Navbar() {
                 ])}
 
                 {/* Perfil */}
-                <div className="md:scale-110">
+                <div className="md:scale-110 z-50">
                     <ProfileMenu />
                 </div>
             </nav>

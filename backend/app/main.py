@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from app.routes.user_routes import api_router as user_router
 from app.routes.images_routes import api_router as image_router
 from app.routes.google_routes import api_router as google_router
+from app.routes.product_routes import api_router as product_router  # ✅ Nuevo
+
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from dotenv import load_dotenv
@@ -11,14 +13,13 @@ load_dotenv()
 
 app = FastAPI()
 
-
-# Agregar el middleware de sesión
+# Middleware de sesión
 app.add_middleware(
     SessionMiddleware,
     secret_key=os.getenv("SECRET_KEY", "supersecretkey"),
 )
 
-# Agregar el middleware CORS
+# Middleware CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Cambiar en producción
@@ -27,10 +28,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Incluir las rutas de usuarios e imágenes
+# Incluir las rutas
 app.include_router(user_router)
 app.include_router(image_router)
 app.include_router(google_router)
+app.include_router(product_router)  # ✅ Nuevo
 
 
 @app.get("/")

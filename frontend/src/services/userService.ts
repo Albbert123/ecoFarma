@@ -23,7 +23,7 @@ export const loginUser = async (formData: LoginFormData) => {
 
 export const deleteUser = async (correo: string) => {
   try {
-    await api.delete("/users/delete", { data: { correo } });
+    await api.delete(`/users/${correo}`, { data: { correo } });
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al eliminar la cuenta";
     throw new Error(errorMessage);
@@ -32,7 +32,7 @@ export const deleteUser = async (correo: string) => {
 
 export const updateUser = async (formData: UpdateFormData) => {
   try {
-    const response = await api.put("/users/update", formData);
+    const response = await api.put(`/users/${formData.correo}`, formData);
     return response.data; // Retorna los datos del usuario actualizados
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al actualizar el usuario";
@@ -62,7 +62,7 @@ export const resetPassword = async (formData: ForgotPasswordFormData) => {
 
 export const getUser = async (correo: string) => {
   try {
-    const response = await api.get("/users/user", { data: { correo } });
+    const response = await api.get(`/users/${correo}`, { data: { correo } });
     return response.data; // Retorna los datos del usuario
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al obtener el usuario";
@@ -72,7 +72,7 @@ export const getUser = async (correo: string) => {
 
 export const getUsers = async () => {
   try {
-    const response = await api.get("users/all");
+    const response = await api.get("/users/");
     return response.data; // Retorna los datos de los usuarios
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al obtener los usuarios";

@@ -1,46 +1,43 @@
 import os
 from dotenv import load_dotenv
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+import resend
 
-# Cargar las variables de entorno desde el archivo .env
+# Cargar variables de entorno
 load_dotenv()
 
-# Obtener la API Key de SendGrid desde el archivo .env
-SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
-if not SENDGRID_API_KEY:
-    raise ValueError(
-        "La API Key de SendGrid no está configurada. "
-        "Verifica el archivo .env."
-    )
+if not RESEND_API_KEY:
+    raise ValueError("La API Key de Resend no está configurada.")
+
+# Configurar Resend
+resend.api_key = RESEND_API_KEY
 
 
 def send_email(to_email: str, subject: str, content: str):
     """
-    Envía un correo electrónico utilizando SendGrid.
+    Envía un correo electrónico utilizando Resend.
 
     :param to_email: Dirección de correo del destinatario.
     :param subject: Asunto del correo.
-    :param content: Contenido del correo.
+    :param content: Contenido HTML del correo.
+    :return: Código de estado simulado (200 si ok).
     """
     try:
-        # Crear el objeto de correo
-        message = Mail(
-            from_email="ecofarmabcn@gmail.com",
-            to_emails=to_email,
-            subject=subject,
-            html_content=content
-        )
+        response = resend.Emails.send({
+            "from": "EcoFarma <notificaciones@ecofarmabcn.forum>",
+            "to": [to_email],
+            "subject": subject,
+            "html": content,
+        })
 
-        # Enviar el correo utilizando la API de SendGrid
-        sg = SendGridAPIClient(SENDGRID_API_KEY)
-        response = sg.send(message)
-
-        # Logs para depuración
-        print(f"Correo enviado a {to_email}. Estado: {response.status_code}")
-        return response.status_code
+        if response.get("id"):
+            print(f"Correo enviado a {to_email} con ID {response['id']}")
+            return 200  # Éxito
+        else:
+            print(f"Fallo en el envío del correo: {response}")
+            return 500
 
     except Exception as e:
-        print(f"Error al enviar el correo: {e}")
+        print(f"Error al enviar el correo con Resend: {e}")
         raise

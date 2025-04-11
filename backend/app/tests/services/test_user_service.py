@@ -190,7 +190,7 @@ def test_send_reset_code_success(user_service):
 
     # Parchear directamente la función send_email en el módulo user_service
     with patch('app.services.user_service.send_email') as mock_send_email:
-        mock_send_email.return_value = 202
+        mock_send_email.return_value = 200
 
         with patch(
                 'app.services.user_service.create_access_token') as mock_token:
