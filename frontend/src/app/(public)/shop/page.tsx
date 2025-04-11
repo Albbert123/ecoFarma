@@ -20,6 +20,7 @@ export default function ShopPage() {
         const fetchProducts = async () => {
             try {
                 const filteredProducts = await getFilteredProducts({prescription: false, limit: 30});
+                handleSortChange('sin-prescripcion', filteredProducts);
                 setProducts(filteredProducts);
                 console.log('Productos filtrados:', filteredProducts);
                 clearProducts();
@@ -140,7 +141,7 @@ export default function ShopPage() {
                 const filteredProducts = await getFilteredProducts({ prescription: false, limit: 30 });
                 setProducts(filteredProducts);
                 clearProducts();
-                setProductsStore(summarize(filteredProducts));
+                // setProductsStore(summarize(filteredProducts));
             } catch (error) {
                 console.error("Error al resetear productos:", error);
             }
@@ -155,6 +156,7 @@ export default function ShopPage() {
             }
             const filteredProducts = await getFilteredProducts(filtersQuery);
             setProducts(filteredProducts);
+            handleSortChange('sin-prescripcion', filteredProducts);
     
             clearProducts();
             setProductsStore(summarize(filteredProducts));
@@ -163,6 +165,38 @@ export default function ShopPage() {
             console.error("Error al aplicar filtros:", error);
         }
     };
+
+    const handleSortChange = (sortOption: string, productsToSort = products) => {
+        let sortedProducts = [...productsToSort];
+        
+        switch(sortOption) {
+          case 'sin-prescripcion':
+            sortedProducts.sort((a, b) => (a.prescription === b.prescription) ? 0 : a.prescription ? 1 : -1);
+            break;
+          case 'con-prescripcion':
+            sortedProducts.sort((a, b) => (a.prescription === b.prescription) ? 0 : a.prescription ? -1 : 1);
+            break;
+          case 'mas-baratos':
+            sortedProducts.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+            break;
+          case 'mas-caros':
+            sortedProducts.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+            break;
+          case 'a-z':
+            sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+          case 'z-a':
+            sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+          default:
+            // No hacer nada o resetear al orden original
+            return;
+        }
+      
+        setProducts(sortedProducts);
+        // clearProducts();
+        // setProductsStore(summarize(sortedProducts));
+      };
     
 
     if (loading) {
@@ -178,6 +212,7 @@ export default function ShopPage() {
             onAddToCart={handleAddToCart}
             onSearch={handleSearch}
             onFilterChange={handleFilterChange}
+            onSortChange={handleSortChange}
         />
     );
 }

@@ -13,7 +13,8 @@ export default function ShopForm({
   categories,
   onAddToCart,
   onSearch,
-  onFilterChange
+  onFilterChange,
+  onSortChange
 }: ShopFormProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'products' | 'recommendations'>('products');
@@ -137,6 +138,23 @@ export default function ShopForm({
           Recomendaciones ({recommendations.length})
         </button>
 
+        {/* Ordenacion */}
+        <div className="ml-4">
+          <select 
+            onChange={(e) => onSortChange(e.target.value)}
+            className="p-1 border rounded text-sm"
+            defaultValue="sin-prescripcion"  // <- Esto establece el valor por defecto
+          >
+            <option value="sin-prescripcion">Sin prescripción primero</option>
+            <option value="con-prescripcion">Con prescripción primero</option>
+            <option value="mas-baratos">Más baratos primero</option>
+            <option value="mas-caros">Más caros primero</option>
+            <option value="a-z">A-Z</option>
+            <option value="z-a">Z-A</option>
+          </select>
+        </div>
+
+        {/* Valoración */}
         <div className="ml-auto flex items-center gap-2">
           <span className="text-sm text-gray-500">
             {activeTab === 'products' 
@@ -251,6 +269,8 @@ export default function ShopForm({
           )}
         </div>
       </div>
+
+      {/* Paginación */}
       {totalPages > 1 && (
         <div className="flex justify-center mt-3 space-x-2">
           <button

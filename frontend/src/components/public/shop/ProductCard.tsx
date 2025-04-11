@@ -19,12 +19,18 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         <div className="p-3 flex flex-col flex-grow">
             <p className="text-sm font-bold mb-2 line-clamp-2">{product.name}</p>
             <p className="text-md mt-auto mb-2">{product?.price?.toFixed(2)} €</p>
-            <button
-            onClick={() => onAddToCart(product)}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-1.5 px-2 rounded text-sm transition-colors"
-            >
-            Añadir al carrito
-            </button>
+            {product.prescription ? (
+              <div className="w-full bg-gray-400 text-white py-1.5 px-2 rounded text-sm text-center cursor-not-allowed">
+                Requiere receta
+              </div>
+            ) : (
+              <button
+                onClick={() => onAddToCart(product)}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-1.5 px-2 rounded text-sm transition-colors"
+              >
+                Añadir al carrito
+              </button>
+            )}
         </div>
       </div>
     );

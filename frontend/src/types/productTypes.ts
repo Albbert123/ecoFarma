@@ -6,6 +6,7 @@ export interface ShopFormProps {
   onAddToCart: (product: Product) => void;
   onSearch: (term: string) => void;
   onFilterChange: (filters: Filters) => void;
+  onSortChange: (sortOption: string) => void;
 }
 
 export interface ProductCardProps {
