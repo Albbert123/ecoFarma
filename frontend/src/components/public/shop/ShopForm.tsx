@@ -24,8 +24,6 @@ export default function ShopForm({
     laboratory: [],
     category: [],
     prescription: [],
-    commercialization: [],
-    authorization: [],
     priceRange: []
   });
   const filtersRef = useRef<HTMLDivElement>(null);

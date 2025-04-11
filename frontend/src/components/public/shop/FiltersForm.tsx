@@ -72,8 +72,8 @@ export default function FiltersForm({
             <input
               type="checkbox"
               className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                onChange={(e) => handleFilterUpdate('prescription', 'Con Prescripción', e.target.checked)}
-                checked={isChecked('prescription', 'Con Prescripción')}
+                onChange={(e) => handleFilterUpdate('prescription', 'true', e.target.checked)}
+                checked={isChecked('prescription', 'true')}
             />
             {" "}Con Prescripción
           </label>
@@ -83,8 +83,8 @@ export default function FiltersForm({
             <input
               type="checkbox"
               className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-               onChange={(e) => handleFilterUpdate('prescription', 'Sin Prescripción', e.target.checked)}
-                checked={isChecked('prescription', 'Sin Prescripción')}
+               onChange={(e) => handleFilterUpdate('prescription', 'false', e.target.checked)}
+                checked={isChecked('prescription', 'false')}
             />
             {" "}Sin Prescripción
           </label>

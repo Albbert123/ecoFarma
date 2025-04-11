@@ -24,9 +24,6 @@ export const getFilteredProducts = async (
       const matchCategory =
         !filters.category || product.category?.toLowerCase().includes(filters.category.toLowerCase());
 
-      const matchPrinciple =
-        !filters.principleAct || product.principleAct?.toLowerCase().includes(filters.principleAct.toLowerCase());
-
       const matchLab =
         !filters.laboratory || product.laboratory?.toLowerCase().includes(filters.laboratory.toLowerCase());
 
@@ -39,12 +36,11 @@ export const getFilteredProducts = async (
       return (
         matchPrescription &&
         matchCategory &&
-        matchPrinciple &&
         matchLab &&
         matchPriceMin &&
         matchPriceMax
       );
-    }).slice(0, filters.limit || 25); // aplica el limit localmente también
+    }).slice(0, filters.limit || 30); // aplica el limit localmente también
   }
 
   // Si no se pasan productos, hace fetch del backend
@@ -53,7 +49,11 @@ export const getFilteredProducts = async (
 
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
-        queryParams.append(key, value.toString());
+        if (Array.isArray(value)) {
+          value.forEach((val) => queryParams.append(key, val));
+        } else {
+          queryParams.append(key, value.toString());
+        }
       }
     });
 

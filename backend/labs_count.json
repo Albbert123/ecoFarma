@@ -1,0 +1,794 @@
+[
+    {
+        "laboratory": "Laboratorios Cinfa S.A.",
+        "count": 296
+    },
+    {
+        "laboratory": "Laboratorios Normon S.A.",
+        "count": 281
+    },
+    {
+        "laboratory": "Laboratorio Stada S.L.",
+        "count": 270
+    },
+    {
+        "laboratory": "Sandoz Farmaceutica S.A.",
+        "count": 212
+    },
+    {
+        "laboratory": "Bayer Hispania S.L.",
+        "count": 73
+    },
+    {
+        "laboratory": "Tecnimede España Industria Farmaceutica S.A.",
+        "count": 67
+    },
+    {
+        "laboratory": "Pfizer S.L.",
+        "count": 65
+    },
+    {
+        "laboratory": "Glaxosmithkline S.A.",
+        "count": 61
+    },
+    {
+        "laboratory": "Novartis Europharm Limited",
+        "count": 50
+    },
+    {
+        "laboratory": "Bayer Ag",
+        "count": 47
+    },
+    {
+        "laboratory": "Pfizer Europe Ma Eeig",
+        "count": 44
+    },
+    {
+        "laboratory": "Adamed Laboratorios S.L.U.",
+        "count": 42
+    },
+    {
+        "laboratory": "Novo Nordisk A/S",
+        "count": 40
+    },
+    {
+        "laboratory": "Merck Sharp & Dohme B.V.",
+        "count": 39
+    },
+    {
+        "laboratory": "Viatris Limited",
+        "count": 34
+    },
+    {
+        "laboratory": "Boehringer Ingelheim International Gmbh",
+        "count": 34
+    },
+    {
+        "laboratory": "Jntl Consumer Health (Spain) S.L.",
+        "count": 30
+    },
+    {
+        "laboratory": "Glenmark Arzneimittel Gmbh",
+        "count": 29
+    },
+    {
+        "laboratory": "Organon Salud S.L.",
+        "count": 29
+    },
+    {
+        "laboratory": "Viatris Healthcare Limited",
+        "count": 27
+    },
+    {
+        "laboratory": "Novartis Farmaceutica S.A.",
+        "count": 27
+    },
+    {
+        "laboratory": "Janssen-Cilag International N.V",
+        "count": 26
+    },
+    {
+        "laboratory": "Astrazeneca Ab",
+        "count": 26
+    },
+    {
+        "laboratory": "Ferrer Internacional S.A.",
+        "count": 26
+    },
+    {
+        "laboratory": "Casen Recordati S.L.",
+        "count": 25
+    },
+    {
+        "laboratory": "Grünenthal Pharma S.A.",
+        "count": 25
+    },
+    {
+        "laboratory": "Haleon Spain S.A.",
+        "count": 25
+    },
+    {
+        "laboratory": "Abbvie Deutschland Gmbh & Co. Kg",
+        "count": 22
+    },
+    {
+        "laboratory": "Sandoz Gmbh",
+        "count": 22
+    },
+    {
+        "laboratory": "Chiesi España S.A.U.",
+        "count": 19
+    },
+    {
+        "laboratory": "Laboratorios Menarini S.A.",
+        "count": 18
+    },
+    {
+        "laboratory": "Menarini International Operations Luxembourg S.A.",
+        "count": 17
+    },
+    {
+        "laboratory": "Amgen Europe B.V.",
+        "count": 16
+    },
+    {
+        "laboratory": "Laboratorios Farmaceuticos Rovi S.A.",
+        "count": 15
+    },
+    {
+        "laboratory": "Reddy Pharma Iberia S.A.",
+        "count": 15
+    },
+    {
+        "laboratory": "Janssen Cilag S.A.",
+        "count": 15
+    },
+    {
+        "laboratory": "Bexal Farmaceutica S.A.",
+        "count": 15
+    },
+    {
+        "laboratory": "Ferring S.A.",
+        "count": 15
+    },
+    {
+        "laboratory": "Bristol-Myers Squibb Pharma Eeig",
+        "count": 14
+    },
+    {
+        "laboratory": "Les Laboratoires Servier",
+        "count": 13
+    },
+    {
+        "laboratory": "Gp Pharm S.A.",
+        "count": 12
+    },
+    {
+        "laboratory": "Abbvie Spain, S.L.U.",
+        "count": 12
+    },
+    {
+        "laboratory": "Zambon S.A.U.",
+        "count": 12
+    },
+    {
+        "laboratory": "Nordic Group B.V.",
+        "count": 11
+    },
+    {
+        "laboratory": "Medac Gesellschaft Für Klinische Spezialpräparate Gmbh",
+        "count": 11
+    },
+    {
+        "laboratory": "Merck Europe B.V.",
+        "count": 10
+    },
+    {
+        "laboratory": "Glaxosmithkline (Ireland) Limited",
+        "count": 10
+    },
+    {
+        "laboratory": "Laphysan S.A.U.",
+        "count": 10
+    },
+    {
+        "laboratory": "Laboratorios Bohm S.A.",
+        "count": 10
+    },
+    {
+        "laboratory": "Laboratorio Aldo Union S.L.",
+        "count": 10
+    },
+    {
+        "laboratory": "Aspen Pharma Trading Limited",
+        "count": 10
+    },
+    {
+        "laboratory": "Alfasigma España, S.L.",
+        "count": 10
+    },
+    {
+        "laboratory": "Sanofi Winthrop Industrie",
+        "count": 9
+    },
+    {
+        "laboratory": "Viiv Healthcare B.V.",
+        "count": 9
+    },
+    {
+        "laboratory": "Uxa Farma S.A.",
+        "count": 9
+    },
+    {
+        "laboratory": "Kern Pharma S.L.",
+        "count": 9
+    },
+    {
+        "laboratory": "Laboratorios Bial S.A.",
+        "count": 9
+    },
+    {
+        "laboratory": "Baxter S.L.",
+        "count": 8
+    },
+    {
+        "laboratory": "Alcon Healthcare S.A.",
+        "count": 8
+    },
+    {
+        "laboratory": "Csl Behring Gmbh",
+        "count": 8
+    },
+    {
+        "laboratory": "Swedish Orphan Biovitrum Ab (Publ)",
+        "count": 8
+    },
+    {
+        "laboratory": "Laboratorios Salvat S.A.",
+        "count": 8
+    },
+    {
+        "laboratory": "Laboratorios Grifols S.A.",
+        "count": 8
+    },
+    {
+        "laboratory": "Ibsa Farmaceutici Italia S.R.L.",
+        "count": 7
+    },
+    {
+        "laboratory": "Accord Healthcare S.L.U.",
+        "count": 7
+    },
+    {
+        "laboratory": "Laboratorios Gebro Pharma S.A.",
+        "count": 7
+    },
+    {
+        "laboratory": "Glaxosmithkline Biologicals",
+        "count": 7
+    },
+    {
+        "laboratory": "Menarini Consumer Healthcare S.A.U.",
+        "count": 6
+    },
+    {
+        "laboratory": "Amgen Technology (Ireland) Unlimited Company",
+        "count": 6
+    },
+    {
+        "laboratory": "Tarbis Farma S.L.",
+        "count": 6
+    },
+    {
+        "laboratory": "Merck S.L.",
+        "count": 6
+    },
+    {
+        "laboratory": "Viatris Pharmaceuticals S.L.U.",
+        "count": 6
+    },
+    {
+        "laboratory": "Laboratorio Generfarma S.L.",
+        "count": 6
+    },
+    {
+        "laboratory": "Mundipharma Pharmaceuticals S.L.",
+        "count": 5
+    },
+    {
+        "laboratory": "Glenmark Pharmaceuticals S.R.O.",
+        "count": 5
+    },
+    {
+        "laboratory": "Santen Oy",
+        "count": 5
+    },
+    {
+        "laboratory": "Wyeth Farma S.A.",
+        "count": 5
+    },
+    {
+        "laboratory": "Astellas Pharma Europe B.V.",
+        "count": 5
+    },
+    {
+        "laboratory": "Organon N.V.",
+        "count": 5
+    },
+    {
+        "laboratory": "Leo Pharma A/S",
+        "count": 5
+    },
+    {
+        "laboratory": "Merz Pharmaceuticals Gmbh",
+        "count": 5
+    },
+    {
+        "laboratory": "Takeda Pharma A/S",
+        "count": 5
+    },
+    {
+        "laboratory": "Glaxosmithkline Trading Services Limited",
+        "count": 5
+    },
+    {
+        "laboratory": "Astrazeneca Farmaceutica Spain S.A.",
+        "count": 5
+    },
+    {
+        "laboratory": "Cipla Europe",
+        "count": 5
+    },
+    {
+        "laboratory": "Qualix Pharma S.L.",
+        "count": 5
+    },
+    {
+        "laboratory": "Laboratoires Thea",
+        "count": 5
+    },
+    {
+        "laboratory": "Recordati Ireland Limited",
+        "count": 5
+    },
+    {
+        "laboratory": "M4 Pharma S.L.",
+        "count": 4
+    },
+    {
+        "laboratory": "Esteve Pharmaceuticals S.A.",
+        "count": 4
+    },
+    {
+        "laboratory": "Bausch & Lomb S.A.",
+        "count": 4
+    },
+    {
+        "laboratory": "Reva Health Europe S.L.",
+        "count": 4
+    },
+    {
+        "laboratory": "Sandoz Pharmaceuticals D.D.",
+        "count": 4
+    },
+    {
+        "laboratory": "Samsung Bioepis Nl B.V.",
+        "count": 4
+    },
+    {
+        "laboratory": "Ferring Pharmaceuticals A/S",
+        "count": 4
+    },
+    {
+        "laboratory": "Celltrion Healthcare Hungary Kft.",
+        "count": 4
+    },
+    {
+        "laboratory": "Ethyx Pharmaceuticals",
+        "count": 4
+    },
+    {
+        "laboratory": "Atnahs Pharma Netherlands Bv.",
+        "count": 3
+    },
+    {
+        "laboratory": "Biocodex",
+        "count": 3
+    },
+    {
+        "laboratory": "Krka D.D. Novo Mesto",
+        "count": 3
+    },
+    {
+        "laboratory": "Techdow Pharma Netherlands B.V.",
+        "count": 3
+    },
+    {
+        "laboratory": "Horus Pharma",
+        "count": 3
+    },
+    {
+        "laboratory": "Baxter Holding B.V.",
+        "count": 3
+    },
+    {
+        "laboratory": "Vinci Farma, S.A.",
+        "count": 3
+    },
+    {
+        "laboratory": "A. Menarini Latin America S.L.",
+        "count": 3
+    },
+    {
+        "laboratory": "Biogen Netherlands B.V.",
+        "count": 3
+    },
+    {
+        "laboratory": "Teva Pharma S.L.U.",
+        "count": 3
+    },
+    {
+        "laboratory": "Boehringer Ingelheim Espana S.A.",
+        "count": 3
+    },
+    {
+        "laboratory": "Orion Corporation",
+        "count": 3
+    },
+    {
+        "laboratory": "Guidotti Farma S.L.",
+        "count": 3
+    },
+    {
+        "laboratory": "Csl Behring S.A.",
+        "count": 3
+    },
+    {
+        "laboratory": "Pan Quimica Farmaceutica S.A.",
+        "count": 3
+    },
+    {
+        "laboratory": "Chiesi Farmaceutici S.P.A.",
+        "count": 3
+    },
+    {
+        "laboratory": "Roche Registration Gmbh",
+        "count": 3
+    },
+    {
+        "laboratory": "Ntc S.R.L.",
+        "count": 3
+    },
+    {
+        "laboratory": "B Braun Medical S.A.",
+        "count": 3
+    },
+    {
+        "laboratory": "Dr. Gerhard Mann Chem.-Pharm. Fabrik Gmbh",
+        "count": 3
+    },
+    {
+        "laboratory": "Merck Sharp & Dohme De Espana S.A.",
+        "count": 3
+    },
+    {
+        "laboratory": "Stada Genericos S.L.",
+        "count": 3
+    },
+    {
+        "laboratory": "Egis Pharmaceuticals Plc.",
+        "count": 3
+    },
+    {
+        "laboratory": "Hospira Invicta S.A.",
+        "count": 3
+    },
+    {
+        "laboratory": "Vegal Farmaceutica S.L.",
+        "count": 3
+    },
+    {
+        "laboratory": "Grünenthal Gmbh",
+        "count": 2
+    },
+    {
+        "laboratory": "Immedica Pharma Ab",
+        "count": 2
+    },
+    {
+        "laboratory": "B. Braun Melsungen Ag",
+        "count": 2
+    },
+    {
+        "laboratory": "Laboratorio Beta S.A.",
+        "count": 2
+    },
+    {
+        "laboratory": "Recordati Rare Diseases",
+        "count": 2
+    },
+    {
+        "laboratory": "Janssen Biologics B.V.",
+        "count": 2
+    },
+    {
+        "laboratory": "Janssen-Pharma S.L.",
+        "count": 2
+    },
+    {
+        "laboratory": "Laboratorios Lorien S.L.",
+        "count": 2
+    },
+    {
+        "laboratory": "Tillotts Pharma Spain, S.L.U.",
+        "count": 2
+    },
+    {
+        "laboratory": "Cheplapharm Arzneimittel Gmbh",
+        "count": 2
+    },
+    {
+        "laboratory": "Galenicum Derma S.L.U.",
+        "count": 2
+    },
+    {
+        "laboratory": "Exeltis Healthcare S.L.",
+        "count": 2
+    },
+    {
+        "laboratory": "Phoenix Labs Unlimited Company",
+        "count": 2
+    },
+    {
+        "laboratory": "Desma Laboratorio Farmaceutico S.L.",
+        "count": 2
+    },
+    {
+        "laboratory": "Covis Pharma Europe B.V.",
+        "count": 2
+    },
+    {
+        "laboratory": "Bausch + Lomb Ireland Limited",
+        "count": 2
+    },
+    {
+        "laboratory": "Mylan Pharmaceuticals S.L.",
+        "count": 2
+    },
+    {
+        "laboratory": "Laboratorios Servier S.L.",
+        "count": 2
+    },
+    {
+        "laboratory": "A. Menarini Industrie Farmaceutiche Riunite S.R.L.",
+        "count": 2
+    },
+    {
+        "laboratory": "Fidia Farmaceutici S.P.A.",
+        "count": 2
+    },
+    {
+        "laboratory": "Laboratorios Abello S.A.",
+        "count": 2
+    },
+    {
+        "laboratory": "L. Molteni & C. Dei Fratelli Alitti Societa Di Esercizio S.P.A.",
+        "count": 2
+    },
+    {
+        "laboratory": "Laboratoire X.O",
+        "count": 2
+    },
+    {
+        "laboratory": "Zambon S.P.A.",
+        "count": 2
+    },
+    {
+        "laboratory": "Omnivision Gmbh",
+        "count": 2
+    },
+    {
+        "laboratory": "Tillotts Pharma Gmbh",
+        "count": 2
+    },
+    {
+        "laboratory": "Glaxosmithkline Consumer Healthcare, S.A.",
+        "count": 2
+    },
+    {
+        "laboratory": "Stada Arzneimittel Ag",
+        "count": 2
+    },
+    {
+        "laboratory": "Kowa Pharmaceutical Europe Gmbh",
+        "count": 2
+    },
+    {
+        "laboratory": "Glaxo Group Limited",
+        "count": 2
+    },
+    {
+        "laboratory": "Daiichi Sankyo Europe Gmbh",
+        "count": 2
+    },
+    {
+        "laboratory": "Medical S.A.",
+        "count": 2
+    },
+    {
+        "laboratory": "Cipla Europe N.V.",
+        "count": 1
+    },
+    {
+        "laboratory": "Dr Reddy'S Laboratories (Uk) Limited",
+        "count": 1
+    },
+    {
+        "laboratory": "Pharmaswiss Ceska Republika S.R.O.",
+        "count": 1
+    },
+    {
+        "laboratory": "Acorda Therapeutics Ireland Limited",
+        "count": 1
+    },
+    {
+        "laboratory": "Medis Gmbh",
+        "count": 1
+    },
+    {
+        "laboratory": "Mcm Vaccine B.V.",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratoires Juvise Pharmaceuticals",
+        "count": 1
+    },
+    {
+        "laboratory": "Stiefel Farma S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Faes Farma S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Glaxosmithkline Vaccines S.R.L.",
+        "count": 1
+    },
+    {
+        "laboratory": "Pfizer Ireland Pharmaceuticals",
+        "count": 1
+    },
+    {
+        "laboratory": "Pharmaxis Europe Limited",
+        "count": 1
+    },
+    {
+        "laboratory": "Merck Sante",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratorio Tau S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Advanced Accelerator Applications",
+        "count": 1
+    },
+    {
+        "laboratory": "Glenwood Gmbh Pharmazeutische Erzeugnisse",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratorios Deiters S.L.",
+        "count": 1
+    },
+    {
+        "laboratory": "Gedeon Richter Plc.",
+        "count": 1
+    },
+    {
+        "laboratory": "Astellas Pharma S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Teva Gmbh",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratorios Fermon S.L.",
+        "count": 1
+    },
+    {
+        "laboratory": "Pharmis Biofarmaceutica Lda.",
+        "count": 1
+    },
+    {
+        "laboratory": "Fresenius Kabi Deutschland Gmbh",
+        "count": 1
+    },
+    {
+        "laboratory": "Swedish Orphan Biovitrum International Ab",
+        "count": 1
+    },
+    {
+        "laboratory": "Angelini Pharma Espana S.L.",
+        "count": 1
+    },
+    {
+        "laboratory": "Noridem Enterprises Limited",
+        "count": 1
+    },
+    {
+        "laboratory": "Instituto Grifols S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Eisai Gmbh",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratorios Leo Pharma S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratoires Doliage Developpement",
+        "count": 1
+    },
+    {
+        "laboratory": "Glaxo S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratori Guidotti S.P.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Medochemie Iberia S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Alfasigma S.P.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Recordati Industria Chimica E Farmaceutica S.P.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Teva B.V.",
+        "count": 1
+    },
+    {
+        "laboratory": "Apotheke Laboratorios S.L.",
+        "count": 1
+    },
+    {
+        "laboratory": "Pierre Fabre Iberica S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Bioprojet Ferrer",
+        "count": 1
+    },
+    {
+        "laboratory": "Fresenius Kabi España, S.A.U.",
+        "count": 1
+    },
+    {
+        "laboratory": "Eugia Pharma (Malta) Limited",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratorios Lesvi Sl",
+        "count": 1
+    },
+    {
+        "laboratory": "Laboratorios Thea S.A.",
+        "count": 1
+    },
+    {
+        "laboratory": "Fgk Pharmacovigilance Gmbh",
+        "count": 1
+    }
+]

@@ -17,7 +17,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   
         {/* Detalles del producto */}
         <div className="p-3 flex flex-col flex-grow">
-            <h6 className="text-base font-medium mb-2 line-clamp-2">{product.name}</h6>
+            <p className="text-sm font-bold mb-2 line-clamp-2">{product.name}</p>
             <p className="text-md mt-auto mb-2">{product?.price?.toFixed(2)} €</p>
             <button
             onClick={() => onAddToCart(product)}

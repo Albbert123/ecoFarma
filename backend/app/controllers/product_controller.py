@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Depends, Body, Query
 from app.models.product_model import Product
 from app.services.product_service import ProductService
@@ -13,19 +13,17 @@ async def get_all_products(product_service: ProductService = Depends()):
 
 @router.get("/filter", response_model=List[Product])
 async def filter_products(
-    prescription: bool = Query(None),
-    laboratory: str = Query(None),
-    principle_act: str = Query(None),
-    category: str = Query(None),
-    min_price: float = Query(None),
-    max_price: float = Query(None),
-    limit: int = Query(25),
+    prescription: Optional[bool] = Query(None),
+    laboratory: Optional[List[str]] = Query(None),
+    category: Optional[List[str]] = Query(None),
+    min_price: Optional[float] = Query(None),
+    max_price: Optional[float] = Query(None),
+    limit: int = Query(30),
     product_service: ProductService = Depends()
 ):
     filters = {
         "prescription": prescription,
         "laboratory": laboratory,
-        "principleAct": principle_act,
         "category": category,
         "min_price": min_price,
         "max_price": max_price,

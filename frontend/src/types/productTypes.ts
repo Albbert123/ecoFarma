@@ -24,8 +24,6 @@ export interface Filters {
   laboratory: string[];
   category: string[];
   prescription: string[];
-  commercialization?: string[];
-  authorization?: string[];
   priceRange: string[];
 }
 
@@ -85,7 +83,7 @@ export interface ProductSummary {
   }
   
   export interface ProductStoreState {
-    products: ProductSummary[];
+    productsStore: ProductSummary[];
     setProductsStore: (products: ProductSummary[]) => void;
     clearProducts: () => void;
   }
@@ -93,7 +91,6 @@ export interface ProductSummary {
   export type ProductFilters = {
     prescription?: boolean;
     category?: string;
-    principleAct?: string;
     laboratory?: string;
     min_price?: number;
     max_price?: number;
