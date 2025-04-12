@@ -14,10 +14,6 @@ class Product(BaseModel):
     principleAct: Optional[str] = None
     dosis: Optional[str] = None
     prescription: Optional[bool] = None
-    advertencias: Optional[str] = None
-    contraindications: Optional[str] = None
-    comoTomar: Optional[str] = None
-    reacciones: Optional[str] = None
-    posologia: Optional[str] = None
-    conservacion: Optional[str] = None
+    composition: Optional[str] = None
+    AdditionalInfo: Optional[str] = None
     embedding: Optional[List[float]] = None

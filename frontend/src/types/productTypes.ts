@@ -40,12 +40,8 @@ export interface Product {
     principleAct?: string;
     dosis?: string;
     prescription?: boolean;
-    advertencias?: string;
-    contraindications?: string;
-    comoTomar?: string;
-    reacciones?: string;
-    posologia?: string;
-    conservacion?: string;
+    composition?: string;
+    AdditionalInfo?: string;
     embedding?: number[];
 }
 
@@ -71,22 +67,23 @@ export interface ProductFormData {
     principleAct?: string;
 }
 
-export interface ProductSummary {
-    nregistro: string;
-    name: string;
-    price: number;
-    stock: number;
-    image?: string;
-    principleAct: string;
-    laboratory?: string;
-    category?: string;
-    prescription?: boolean;
-  }
+// export interface ProductSummary {
+//     nregistro: string;
+//     name: string;
+//     price: number;
+//     stock: number;
+//     image?: string;
+//     principleAct: string;
+//     laboratory?: string;
+//     category?: string;
+//     prescription?: boolean;
+//   }
   
   export interface ProductStoreState {
-    productsStore: ProductSummary[];
-    setProductsStore: (products: ProductSummary[]) => void;
+    productsStore: Product[];
+    setProductsStore: (products: Product[]) => void;
     clearProducts: () => void;
+    addProduct: (product: Product) => void;
   }
 
   export type ProductFilters = {
