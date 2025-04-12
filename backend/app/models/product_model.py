@@ -15,5 +15,5 @@ class Product(BaseModel):
     dosis: Optional[str] = None
     prescription: Optional[bool] = None
     composition: Optional[str] = None
-    additionalInfo: Optional[str] = None
+    AdditionalInfo: Optional[str] = None
     embedding: Optional[List[float]] = None

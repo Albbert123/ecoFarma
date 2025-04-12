@@ -41,7 +41,7 @@ export interface Product {
     dosis?: string;
     prescription?: boolean;
     composition?: string;
-    additionalInfo?: string;
+    AdditionalInfo?: string;
     embedding?: number[];
 }
 
@@ -83,6 +83,7 @@ export interface ProductFormData {
     productsStore: Product[];
     setProductsStore: (products: Product[]) => void;
     clearProducts: () => void;
+    addProduct: (product: Product) => void;
   }
 
   export type ProductFilters = {
