@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import ShopForm from '@/components/public/shop/ShopForm';
 import { useBootstrap } from '@/hooks/useBootstrap';
 import { laboratories, categories } from '@/constants/constants';
-import { Filters, Product, ProductSummary } from '@/types/productTypes';
+import { Filters, Product } from '@/types/productTypes';
 import { getFilteredProducts, getProducts } from '@/services/productService';
 import { useProductStore } from "@/stores/productStore";
 
@@ -61,17 +61,17 @@ export default function ShopPage() {
         console.log('Buscando:', searchTerm);
     };
 
-    const summarize = (products: Product[]) => products.map((p) => ({
-        nregistro: p.nregistro,
-        name: p.name,
-        price: p.price ?? 0,
-        stock: p.stock ?? 0,
-        image: p.image ?? '',
-        principleAct: p.principleAct ?? '',
-        laboratory: p.laboratory ?? '',
-        category: p.category ?? '',
-        prescription: p.prescription ?? false,
-    }));
+    // const summarize = (products: Product[]) => products.map((p) => ({
+    //     nregistro: p.nregistro,
+    //     name: p.name,
+    //     price: p.price ?? 0,
+    //     stock: p.stock ?? 0,
+    //     image: p.image ?? '',
+    //     principleAct: p.principleAct ?? '',
+    //     laboratory: p.laboratory ?? '',
+    //     category: p.category ?? '',
+    //     prescription: p.prescription ?? false,
+    // }));
 
     const buildFiltersQuery = (newFilters: Filters): any =>{
         const filtersQuery: any = {};
@@ -159,7 +159,7 @@ export default function ShopPage() {
             handleSortChange('sin-prescripcion', filteredProducts);
     
             clearProducts();
-            setProductsStore(summarize(filteredProducts));
+            setProductsStore(filteredProducts);
 
         } catch (error) {
             console.error("Error al aplicar filtros:", error);

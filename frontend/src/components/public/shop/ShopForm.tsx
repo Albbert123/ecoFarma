@@ -70,11 +70,13 @@ export default function ShopForm({
       prescription: searchParams.getAll("prescription"),
       priceRange: searchParams.getAll("priceRange"),
     };
-
-    setFilters(newFilters);
-    onFilterChange(newFilters); // Opcional: para notificar al padre
-
-  }, [searchParams]);
+  
+    const filtersChanged = JSON.stringify(filters) !== JSON.stringify(newFilters);
+    if (filtersChanged) {
+      setFilters(newFilters);
+      onFilterChange(newFilters);
+    }
+  }, [searchParams]);  
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);

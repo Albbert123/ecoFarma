@@ -1,13 +1,13 @@
 // stores/productStore.ts
 import { create } from "zustand";
-import { ProductStoreState, ProductSummary } from "@/types/productTypes";
+import { Product, ProductStoreState } from "@/types/productTypes";
 
 export const useProductStore = create<ProductStoreState>((set) => ({
   productsStore: typeof window !== "undefined"
     ? JSON.parse(localStorage.getItem("products") || "[]")
     : [],
 
-  setProductsStore: (productsStore: ProductSummary[]) => {
+  setProductsStore: (productsStore: Product[]) => {
     if (typeof window !== "undefined") {
       localStorage.setItem("products", JSON.stringify(productsStore));
     }

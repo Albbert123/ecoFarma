@@ -11,10 +11,7 @@ def remove_fields():
         {},  # Aplica a todos los documentos
         {
             "$unset": {
-                "commercialization": "",
-                "authorization": "",
-                "estupecafiente": "",
-                "psicotropico": ""
+                "composition": "",
             }
         }
     )
