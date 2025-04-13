@@ -39,7 +39,7 @@ class ProductRepository:
                 "$vectorSearch": {
                     "queryVector": embedding,
                     "path": "embedding",
-                    "numCandidates": 200,
+                    "numCandidates": 300,
                     "limit": limit,
                     "index": "vector_index"
                 }
