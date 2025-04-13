@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import ShopForm from '@/components/public/shop/ShopForm';
 import { useBootstrap } from '@/hooks/useBootstrap';
-import { laboratories, categories } from '@/constants/constants';
+import { LABORATORIES, CATEGORIES } from '@/constants/constants';
 import { Filters, Product } from '@/types/productTypes';
 import { getFilteredProducts, getSearchResults } from '@/services/productService';
 import { useProductStore } from "@/stores/productStore";
@@ -15,7 +15,7 @@ export default function ShopPage() {
 
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const { productsStore, searchQueryStore, setProductsStore, setSearchQuery, clearProducts, clearSearchQuery } = useProductStore();
+    const { productsStore, searchQueryStore, setProductsStore, setSearchBaseProducts, setSearchQuery, clearProducts, clearSearchQuery } = useProductStore();
     const { userCorreo } = useAuthStore();
     const searchParams = useSearchParams();
     const searchQuery = searchParams.get('search') || '';
@@ -51,8 +51,7 @@ export default function ShopPage() {
             const filteredProducts = await getFilteredProducts({prescription: false, limit: 30});
             handleSortChange('sin-prescripcion', filteredProducts);
             setProducts(filteredProducts);
-            console.log('Productos filtrados:', filteredProducts);
-            // clearProducts();
+            clearProducts();
         } catch (error) {
             console.error('Error al obtener los productos:', error);
         } finally {
@@ -65,9 +64,11 @@ export default function ShopPage() {
         try {
             const productsData = await getSearchResults(searchTerm);
             setProducts(productsData);
+            handleSortChange("sin-prescripcion", productsData);
 
             clearProducts();
             setProductsStore(productsData);
+            setSearchBaseProducts(productsData);
             setSearchQuery({
                 searchTerm: searchTerm,
                 date: new Date(),
@@ -150,6 +151,7 @@ export default function ShopPage() {
     
     const handleFilterChange = async (newFilters: Filters) => {
         console.log('Filtros actualizados:', newFilters);
+        const { productsStore } = useProductStore.getState();
 
         const noFiltersSelected =
         (!newFilters.laboratory || newFilters.laboratory.length === 0) &&
@@ -159,12 +161,18 @@ export default function ShopPage() {
 
         if (noFiltersSelected) {
             try {
-                const filteredProducts = await getFilteredProducts({ prescription: false, limit: 30 });
-                setProducts(filteredProducts);
-                clearProducts();
-                // setProductsStore(summarize(filteredProducts));
+              const { searchBaseProducts } = useProductStore.getState();
+          
+              if (searchBaseProducts.length > 0) {
+                // Volver a productos originales de la búsqueda
+                setProducts(searchBaseProducts);
+                handleSortChange("sin-prescripcion", searchBaseProducts);
+                setProductsStore(searchBaseProducts); // <- vuelve a sincronizar la store de trabajo
+              } else {
+                await fetchProducts(); // no hay búsqueda activa, cargar por defecto
+              }
             } catch (error) {
-                console.error("Error al resetear productos:", error);
+              console.error("Error al resetear productos:", error);
             }
             return;
         }
@@ -172,10 +180,14 @@ export default function ShopPage() {
         try {
             const filtersQuery = buildFiltersQuery(newFilters);
             console.log("Filtros aplicados:", filtersQuery);
-            if (Object.keys(filtersQuery).length === 0) {
-                return;
-            }
-            const filteredProducts = await getFilteredProducts(filtersQuery);
+            if (Object.keys(filtersQuery).length === 0) return;
+
+            // si hay productos en el store, aplica filtros localmente
+            const filteredProducts = await getFilteredProducts(
+                filtersQuery,
+                productsStore.length > 0 ? productsStore : undefined
+            );
+
             setProducts(filteredProducts);
             handleSortChange('sin-prescripcion', filteredProducts);
     
@@ -228,8 +240,8 @@ export default function ShopPage() {
         <ShopForm 
             products={products}
             recommendations={recommendations}
-            laboratories={laboratories}
-            categories={categories}
+            laboratories={LABORATORIES}
+            categories={CATEGORIES}
             onAddToCart={handleAddToCart}
             onSearch={handleSearch}
             onFilterChange={handleFilterChange}

@@ -24,8 +24,6 @@ LAB_MAPPING = {
     "Kern": "Kern Pharma S.L."
 }
 
-# corregir
-
 CATEGORIES_MAPPING = {
     "Analgésicos": [
         "OTROS ANALGÉSICOS Y ANTIPIRÉTICOS",

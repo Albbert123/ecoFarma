@@ -4,6 +4,7 @@ import { Product, ProductStoreState, SearchFormData } from "@/types/productTypes
 
 export const useProductStore = create<ProductStoreState>((set) => ({
   productsStore: [],
+  searchBaseProducts: [],
   searchQueryStore: {searchTerm: null, date: null, user: null},
 
   setProductsStore: (productsStore: Product[]) => {
@@ -18,6 +19,14 @@ export const useProductStore = create<ProductStoreState>((set) => ({
     set((state) => ({
       productsStore: [...state.productsStore, product],
     }));
+  },
+
+  setSearchBaseProducts: (searchBaseProducts: Product[]) => {
+    set({ searchBaseProducts });
+  },
+
+  clearSearchBaseProducts: () => {
+    set({ searchBaseProducts: [] });
   },
 
   setSearchQuery: (searchQueryStore: SearchFormData) => {

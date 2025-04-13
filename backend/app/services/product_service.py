@@ -34,7 +34,7 @@ class ProductService:
             if mapped_labs:
                 query["laboratory"] = {"$in": mapped_labs}
 
-        # Mapear categorías simplificadas (front) a categorías reales (backend)
+        # Mapear categorías
         if filters.get("category"):
             mapped_categories = []
             for cat in filters["category"]:

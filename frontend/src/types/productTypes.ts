@@ -76,10 +76,13 @@ export interface SearchFormData {
   
 export interface ProductStoreState {
   productsStore: Product[];
+  searchBaseProducts: Product[];
   searchQueryStore: SearchFormData;
   setProductsStore: (products: Product[]) => void;
   clearProducts: () => void;
   addProduct: (product: Product) => void;
+  setSearchBaseProducts: (searchBaseProducts: Product[]) => void;
+  clearSearchBaseProducts: () => void;
   setSearchQuery: (searchQuery: SearchFormData) => void;
   clearSearchQuery: () => void;
 }
