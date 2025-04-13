@@ -5,34 +5,22 @@ import ShopForm from '@/components/public/shop/ShopForm';
 import { useBootstrap } from '@/hooks/useBootstrap';
 import { laboratories, categories } from '@/constants/constants';
 import { Filters, Product } from '@/types/productTypes';
-import { getFilteredProducts, getProducts } from '@/services/productService';
+import { getFilteredProducts, getSearchResults } from '@/services/productService';
 import { useProductStore } from "@/stores/productStore";
+import { useSearchParams } from 'next/navigation';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function ShopPage() {
     useBootstrap();
 
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const setProductsStore = useProductStore((state) => state.setProductsStore);
-    const clearProducts = useProductStore((state) => state.clearProducts);
+    const { productsStore, searchQueryStore, setProductsStore, setSearchQuery, clearProducts, clearSearchQuery } = useProductStore();
+    const { userCorreo } = useAuthStore();
+    const searchParams = useSearchParams();
+    const searchQuery = searchParams.get('search') || '';
+    const storedSearchQuery = useProductStore((state) => state.searchQueryStore.searchTerm) || searchQuery;
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const filteredProducts = await getFilteredProducts({prescription: false, limit: 30});
-                handleSortChange('sin-prescripcion', filteredProducts);
-                setProducts(filteredProducts);
-                console.log('Productos filtrados:', filteredProducts);
-                clearProducts();
-            } catch (error) {
-                console.error('Error al obtener los productos:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, []);
 
     const recommendations = [
         {
@@ -57,21 +45,54 @@ export default function ShopPage() {
         console.log('Producto agregado:', product);
     };
 
-    const handleSearch = (searchTerm: string) => {
-        console.log('Buscando:', searchTerm);
+    // Función para obtener productos predeterminados
+    const fetchProducts = async () => {
+        try {
+            const filteredProducts = await getFilteredProducts({prescription: false, limit: 30});
+            handleSortChange('sin-prescripcion', filteredProducts);
+            setProducts(filteredProducts);
+            console.log('Productos filtrados:', filteredProducts);
+            // clearProducts();
+        } catch (error) {
+            console.error('Error al obtener los productos:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    // const summarize = (products: Product[]) => products.map((p) => ({
-    //     nregistro: p.nregistro,
-    //     name: p.name,
-    //     price: p.price ?? 0,
-    //     stock: p.stock ?? 0,
-    //     image: p.image ?? '',
-    //     principleAct: p.principleAct ?? '',
-    //     laboratory: p.laboratory ?? '',
-    //     category: p.category ?? '',
-    //     prescription: p.prescription ?? false,
-    // }));
+    const handleSearch = async (searchTerm: string) => {
+        console.log('Buscando:', searchTerm);
+        try {
+            const productsData = await getSearchResults(searchTerm);
+            setProducts(productsData);
+
+            clearProducts();
+            setProductsStore(productsData);
+            setSearchQuery({
+                searchTerm: searchTerm,
+                date: new Date(),
+                user: userCorreo ?? ''
+            });
+        } catch (error) {
+            console.error("Error al buscar productos:", error);
+        } finally {
+            setLoading(false);
+        }
+      };
+
+    // Lógica para decidir qué función llamar
+    useEffect(() => {
+        setLoading(true); 
+        if (searchQuery) {
+            handleSearch(searchQuery); // Si hay una búsqueda, llama a handleSearch
+        } else if (productsStore.length > 0 && searchQueryStore.searchTerm !== '') {
+            // Restaurar del store
+            setProducts(productsStore);
+            setLoading(false);
+        } else {
+            fetchProducts(); // Si no hay búsqueda, llama a fetchProducts
+        }
+    }, [searchQuery]);
 
     const buildFiltersQuery = (newFilters: Filters): any =>{
         const filtersQuery: any = {};
@@ -213,6 +234,7 @@ export default function ShopPage() {
             onSearch={handleSearch}
             onFilterChange={handleFilterChange}
             onSortChange={handleSortChange}
+            initialSearchTerm={storedSearchQuery}
         />
     );
 }

@@ -104,3 +104,17 @@ export const deleteProduct = async (nregistro: string) => {
     throw new Error(errorMessage);
   }
 };
+
+export const getSearchResults = async (query: string) => {
+  console.log("Buscando productos con query:", query);
+  try {
+    if (!query) {
+      return [];
+    }
+    const response = await api.get(`/products/semantic-search?query=${encodeURIComponent(query)}`);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al buscar productos";
+    throw new Error(errorMessage);
+  }
+}

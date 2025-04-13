@@ -40,12 +40,6 @@ def extract_text_from_pdf(pdf_path):
     return text.strip()
 
 
-# def extract_section(text, section_name, next_section=None):
-#     pattern = rf"{section_name}:(.*?){next_section if next_section else '$'}"
-#     match = re.search(pattern, text, re.DOTALL | re.IGNORECASE)
-#     return match.group(1).strip() if match else None
-
-
 # Llamar a DeepSeek R1 7B para resumir
 def extract_product_sections(text):
     prompt = f"""Resume la siguiente informacion de manera clara y concisa.
@@ -53,7 +47,7 @@ def extract_product_sections(text):
     El resumen debe contener solo la información más relevante.
     - No incluyas información adicional o irrelevante.
     - No incluyas información redundante.
-    - Maximo 200 palabras. No hay mínimo de palabras, puede ser corto si asi es necesario.
+    - Maximo 200 palabras. No hay mínimo de palabras.
 
     No incluyas encabezados ni títulos, solo el texto resumido.
     No incluyas introducciones ni conclusiones, solo el resumen.

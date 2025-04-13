@@ -1,7 +1,7 @@
 from pymongo import ReturnDocument
 from app.config.database import db
 from app.models.product_model import Product
-from typing import Optional
+from typing import List, Optional
 
 
 class ProductRepository:
@@ -33,13 +33,38 @@ class ProductRepository:
 
         return updated_product
 
-    def search_products_by_name(self, name: str):
-        return list(
-            db["Producto"].find(
-                {"name": {"$regex": name, "$options": "i"}},
-                {"_id": 0}
-            )
-        )
+    def search_by_vector(self, embedding: List[float], limit: int = 30):
+        pipeline = [
+            {
+                "$vectorSearch": {
+                    "queryVector": embedding,
+                    "path": "embedding",
+                    "numCandidates": 200,
+                    "limit": limit,
+                    "index": "vector_index"
+                }
+            },
+            {
+                "$project": {
+                    # "_id": 0,
+                    "nregistro": 1,
+                    "name": 1,
+                    "principleAct": 1,
+                    "description": 1,
+                    "price": 1,
+                    "image": 1,
+                    "laboratory": 1,
+                    "category": 1,
+                    "stock": 1,
+                    "dosis": 1,
+                    "prescription": 1,
+                    "composition": 1,
+                    "AdditionalInfo": 1,
+                    "score": {"$meta": "vectorSearchScore"}
+                }
+            }
+        ]
+        return list(db["Producto"].aggregate(pipeline))
 
     def get_all_nregistros(self):
         return list(db["Producto"].distinct("nregistro"))

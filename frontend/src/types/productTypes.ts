@@ -3,6 +3,7 @@ export interface ShopFormProps {
   recommendations?: any[];
   laboratories: string[];
   categories: string[];
+  initialSearchTerm?: string;
   onAddToCart: (product: Product) => void;
   onSearch: (term: string) => void;
   onFilterChange: (filters: Filters) => void;
@@ -67,30 +68,27 @@ export interface ProductFormData {
     principleAct?: string;
 }
 
-// export interface ProductSummary {
-//     nregistro: string;
-//     name: string;
-//     price: number;
-//     stock: number;
-//     image?: string;
-//     principleAct: string;
-//     laboratory?: string;
-//     category?: string;
-//     prescription?: boolean;
-//   }
+export interface SearchFormData {
+    searchTerm: string | null;
+    date: Date | null
+    user?: string | null;
+}
   
-  export interface ProductStoreState {
-    productsStore: Product[];
-    setProductsStore: (products: Product[]) => void;
-    clearProducts: () => void;
-    addProduct: (product: Product) => void;
-  }
+export interface ProductStoreState {
+  productsStore: Product[];
+  searchQueryStore: SearchFormData;
+  setProductsStore: (products: Product[]) => void;
+  clearProducts: () => void;
+  addProduct: (product: Product) => void;
+  setSearchQuery: (searchQuery: SearchFormData) => void;
+  clearSearchQuery: () => void;
+}
 
-  export type ProductFilters = {
-    prescription?: boolean;
-    category?: string;
-    laboratory?: string;
-    min_price?: number;
-    max_price?: number;
-    limit?: number;
-  };
+export type ProductFilters = {
+  prescription?: boolean;
+  category?: string;
+  laboratory?: string;
+  min_price?: number;
+  max_price?: number;
+  limit?: number;
+};

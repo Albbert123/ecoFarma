@@ -11,12 +11,13 @@ export default function ShopForm({
   recommendations = [],
   laboratories,
   categories,
+  initialSearchTerm,
   onAddToCart,
   onSearch,
   onFilterChange,
   onSortChange
 }: ShopFormProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm || '');
   const [activeTab, setActiveTab] = useState<'products' | 'recommendations'>('products');
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
@@ -80,7 +81,13 @@ export default function ShopForm({
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    onSearch(e.target.value);
+  };
+  
+  // Añade esta función:
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onSearch(searchTerm);
+    }
   };
 
   const toggleMobileFilters = () => {
@@ -116,13 +123,14 @@ export default function ShopForm({
       
       {/* Barra de búsqueda */}
       <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Qué te ocurre, qué productos necesitas..."
-          className="w-full p-2 border rounded"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
+      <input
+        type="text"
+        placeholder="Qué te ocurre, qué productos necesitas..."
+        className="w-full p-2 border rounded"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        onKeyDown={handleSearchKeyDown}
+      />
       </div>
 
       {/* Tabs Navigation - Reorganizado para mobile */}

@@ -3,6 +3,7 @@ from app.repositories.product_repository import ProductRepository
 from app.models.product_model import Product
 from typing import List
 from app.constants.product_constants import LAB_MAPPING, CATEGORIES_MAPPING
+from app.services.AI_service import generate_embedding  # o como se llame
 
 
 class ProductService:
@@ -82,8 +83,9 @@ class ProductService:
         updated = self.product_repo.update_product(nregistro, product_data)
         return updated
 
-    def search_products_by_name(self, name: str):
-        return self.product_repo.search_products_by_name(name)
+    def semantic_search(self, query: str, limit: int = 30) -> List[dict]:
+        embedding = generate_embedding(query)
+        return self.product_repo.search_by_vector(embedding, limit)
 
     def get_all_nregistros(self) -> List[str]:
         return self.product_repo.get_all_nregistros()

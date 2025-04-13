@@ -11,6 +11,20 @@ async def get_all_products(product_service: ProductService = Depends()):
     return product_service.get_products(200)
 
 
+@router.get("/semantic-search", response_model=List[Product])
+async def semantic_search(
+    query: str = Query(..., description="Texto de búsqueda"),
+    limit: int = 30,
+    product_service: ProductService = Depends()
+):
+    products = product_service.semantic_search(query, limit)
+    if not products:
+        raise HTTPException(
+            status_code=404, detail="No se encontraron productos"
+        )
+    return products
+
+
 @router.get("/filter", response_model=List[Product])
 async def filter_products(
     prescription: Optional[bool] = Query(None),
@@ -31,6 +45,14 @@ async def filter_products(
     return product_service.get_products_by_filters(filters, limit)
 
 
+@router.post("/", response_model=Product)
+async def create_product(
+    product: Product, product_service: ProductService = Depends()
+):
+    created_product = product_service.create_product(product)
+    return created_product
+
+
 @router.get("/{nregistro}", response_model=Product)
 async def get_product(
     nregistro: str, product_service: ProductService = Depends()
@@ -39,14 +61,6 @@ async def get_product(
     if not product:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return product
-
-
-@router.post("/", response_model=Product)
-async def create_product(
-    product: Product, product_service: ProductService = Depends()
-):
-    created_product = product_service.create_product(product)
-    return created_product
 
 
 @router.put("/{nregistro}", response_model=Product)
