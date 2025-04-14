@@ -1,3 +1,8 @@
+from app.config.database import db
+
+PRODUCTO_DB = db["Producto"]
+HISTORIAL_DB = db["HistorialDeBusqueda"]
+
 # Lista real desde tu base de datos
 LABORATORIES_DB = [
     'Pfizer Europe Ma Eeig', 'Bristol-Myers Squibb Pharma Eeig',

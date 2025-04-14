@@ -1,31 +1,35 @@
 from pymongo import ReturnDocument
-from app.config.database import db
 from app.models.product_model import Product
 from typing import List, Optional
+
+from app.constants.product_constants import (
+    HISTORIAL_DB,
+    PRODUCTO_DB,
+)
 
 
 class ProductRepository:
     def get_product_by_nregistro(self, nregistro: str) -> Optional[dict]:
-        return db["Producto"].find_one({"nregistro": nregistro})
+        return PRODUCTO_DB.find_one({"nregistro": nregistro})
 
     def get_products(self, limit: int = 30):
-        return list(db["Producto"].find({}, {"_id": 0}).limit(limit))
+        return list(PRODUCTO_DB.find({}, {"_id": 0}).limit(limit))
 
     def get_products_by_advanced_query(self, filters: dict, limit: int = 25):
-        return list(db["Producto"].find(filters, {"_id": 0}).limit(limit))
+        return list(PRODUCTO_DB.find(filters, {"_id": 0}).limit(limit))
 
     def get_search_history_by_user_and_date(
         self, user: str, date: str
     ) -> Optional[dict]:
-        return db["HistoriaDeBusqueda"].find_one({"user": user, "date": date})
+        return HISTORIAL_DB.find_one({"user": user, "date": date})
 
     def save_search_data(self, search_data: dict):
-        db["HistorialDeBusqueda"].insert_one(search_data)
+        HISTORIAL_DB.insert_one(search_data)
 
     # Obtener el historial de búsqueda de un usuario
     def get_search_history_by_user(self, user: str) -> List[dict]:
         return list(
-            db["HistorialDeBusqueda"]
+            HISTORIAL_DB
             .find({"user": user})
             .sort("date", 1)  # Ordenar por fecha ascendente (la más antigua p)
         )
@@ -34,17 +38,17 @@ class ProductRepository:
     def delete_search_history_entry_by_user_and_date(
         self, user: str, date: str
     ):
-        db["HistorialDeBusqueda"].delete_one({"user": user, "date": date})
+        HISTORIAL_DB.delete_one({"user": user, "date": date})
 
     def create_product(self, product_data: Product):
-        db["Producto"].insert_one(product_data.dict())
+        PRODUCTO_DB.insert_one(product_data.dict())
         return product_data.dict()
 
     def delete_product(self, nregistro: str):
-        return db["Producto"].delete_one({"nregistro": nregistro})
+        return PRODUCTO_DB.delete_one({"nregistro": nregistro})
 
     def update_product(self, nregistro: str, product_data: dict):
-        updated_product = db["Producto"].find_one_and_update(
+        updated_product = PRODUCTO_DB.find_one_and_update(
             {"nregistro": nregistro},
             {"$set": product_data},
             return_document=ReturnDocument.AFTER
@@ -86,7 +90,7 @@ class ProductRepository:
                 }
             }
         ]
-        return list(db["Producto"].aggregate(pipeline))
+        return list(PRODUCTO_DB.aggregate(pipeline))
 
     def get_all_nregistros(self):
-        return list(db["Producto"].distinct("nregistro"))
+        return list(PRODUCTO_DB.distinct("nregistro"))
