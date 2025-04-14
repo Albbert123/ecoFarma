@@ -73,6 +73,21 @@ async def create_product(
     return created_product
 
 
+@router.get("/search-history/{userCorreo}", response_model=List[SearchData])
+async def get_search_history(
+    userCorreo: str,
+    product_service: ProductService = Depends()
+):
+    print(userCorreo)
+    search_history = product_service.get_search_history_by_user(userCorreo)
+    if not search_history:
+        raise HTTPException(
+            status_code=404,
+            detail="No se encontró el historial de búsqueda para este usuario"
+        )
+    return search_history
+
+
 @router.get("/{nregistro}", response_model=Product)
 async def get_product(
     nregistro: str, product_service: ProductService = Depends()

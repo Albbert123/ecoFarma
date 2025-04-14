@@ -152,3 +152,13 @@ export const setSearchData = async (searchData: SearchData) => {
     throw new Error(errorMessage);
   }
 };
+
+export const getSearchHistory = async (userCorreo: string) => {
+  try {
+    const response = await api.get(`/products/search-history/${userCorreo}`);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al obtener el historial de búsqueda";
+    throw new Error(errorMessage);
+  }
+};
