@@ -210,7 +210,7 @@ export default function ShopForm({
             <select 
               onChange={(e) => onSortChange(e.target.value)}
               className="p-1 border rounded text-sm"
-              defaultValue="sin-prescripcion"
+              defaultValue={sortOption}
             >
               <option value="sin-prescripcion">Sin prescripción primero</option>
               <option value="con-prescripcion">Con prescripción primero</option>
