@@ -29,6 +29,55 @@ async def login(user: UserLogin, user_service: UserService = Depends()):
     return user_data
 
 
+@router.post("/send-reset-code")
+async def send_reset_code(
+    correo: str = Body(..., embed=True),
+    user_service: UserService = Depends()
+):
+    print(correo)
+    # Obtener el usuario ORIGINAL por su correo actual
+    existing_user = user_service.get_user_by_email(correo)
+
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="Correo no encontrado")
+    return user_service.send_reset_code(correo)
+
+
+@router.post("/reset-password")
+async def update_password(
+    user: UserResetPassword, user_service: UserService = Depends()
+):
+    # Realizar la actualización
+    updated_user = user_service.reset_password(user)
+    return updated_user
+
+
+@router.post("/refresh-token")
+async def refresh_token_endpoint(
+    request: Request, user_service: UserService = Depends()
+):
+    token = request.headers.get("Authorization")
+    if not token or not token.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401, detail="Token no proporcionado o inválido"
+        )
+
+    token = token.split("Bearer ")[1]  # Extraer solo el token
+    new_token = user_service.refresh_user_token(token)
+
+    if not new_token:
+        raise HTTPException(
+            status_code=401, detail="Token inválido o expirado"
+        )
+
+    return {"access_token": new_token}
+
+
+@router.get("/", response_model=List[UserResponse])
+async def get_users(user_service: UserService = Depends()):
+    return user_service.get_users()
+
+
 @router.delete("/{correo}")
 async def delete_user(
     correo: str = Path(..., description="Correo del usuario a eliminar"),
@@ -60,29 +109,6 @@ async def update_user(user: UserUpdate, user_service: UserService = Depends()):
     return updated_user
 
 
-@router.post("/send-reset-code")
-async def send_reset_code(
-    correo: str = Body(..., embed=True),
-    user_service: UserService = Depends()
-):
-    print(correo)
-    # Obtener el usuario ORIGINAL por su correo actual
-    existing_user = user_service.get_user_by_email(correo)
-
-    if not existing_user:
-        raise HTTPException(status_code=404, detail="Correo no encontrado")
-    return user_service.send_reset_code(correo)
-
-
-@router.post("/reset-password")
-async def update_password(
-    user: UserResetPassword, user_service: UserService = Depends()
-):
-    # Realizar la actualización
-    updated_user = user_service.reset_password(user)
-    return updated_user
-
-
 @router.get("/{correo}", response_model=UserResponse)
 async def get_user(
     correo: str = Path(..., description="Correo del usuario a consular"),
@@ -92,29 +118,3 @@ async def get_user(
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return user
-
-
-@router.get("/", response_model=List[UserResponse])
-async def get_users(user_service: UserService = Depends()):
-    return user_service.get_users()
-
-
-@router.post("/refresh-token")
-async def refresh_token_endpoint(
-    request: Request, user_service: UserService = Depends()
-):
-    token = request.headers.get("Authorization")
-    if not token or not token.startswith("Bearer "):
-        raise HTTPException(
-            status_code=401, detail="Token no proporcionado o inválido"
-        )
-
-    token = token.split("Bearer ")[1]  # Extraer solo el token
-    new_token = user_service.refresh_user_token(token)
-
-    if not new_token:
-        raise HTTPException(
-            status_code=401, detail="Token inválido o expirado"
-        )
-
-    return {"access_token": new_token}

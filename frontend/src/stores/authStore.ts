@@ -10,7 +10,15 @@ export const useAuthStore = create<AuthState>((set) => ({
   userImagen: typeof window !== "undefined" ? localStorage.getItem("userImagen") : null,
   userNombre: typeof window !== "undefined" ? localStorage.getItem("userNombre") : null,
   userApellido: typeof window !== "undefined" ? localStorage.getItem("userApellido") : null,
-  userFromGoogle: typeof window !== "undefined" ? !!localStorage.getItem("userFromGoogle") : false,
+  userFromGoogle:
+  typeof window !== "undefined"
+    ? (() => {
+        const raw = localStorage.getItem("userFromGoogle");
+        if (raw === "true") return true;
+        if (raw === "false") return false;
+        return false; // fallback por si hay algo corrupto
+      })()
+    : false,
 
   setUser: (token, role, correo, imagen, nombre, apellido, fromGoogle) => {
     if (typeof window !== "undefined") {
@@ -20,7 +28,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem("userImagen", imagen);
       localStorage.setItem("userNombre", nombre);
       localStorage.setItem("userApellido", apellido);
-      localStorage.setItem("userFromGoogle", JSON.stringify(fromGoogle));
+      localStorage.setItem("userFromGoogle", JSON.stringify(!!fromGoogle));
     }
     set({ token, isAuthenticated: true, userRole: role, userCorreo: correo, userImagen: imagen, userNombre: nombre, userApellido: apellido, userFromGoogle: fromGoogle });
   },

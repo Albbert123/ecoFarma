@@ -95,7 +95,7 @@ interface ProfileFormProps {
                     </p>
                 )}
 
-        <h1 className="text-2xl mt-4">Albert Comas Pacheco</h1>
+        <h1 className="text-2xl mt-4">{formData.nombre}{" "}{formData.apellido}</h1>
         </div>
         <form onSubmit={handleSubmit} className="mt-6 p-6 bg-white shadow-md rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Información personal</h2>
