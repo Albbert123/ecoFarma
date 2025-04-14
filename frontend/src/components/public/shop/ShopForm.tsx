@@ -6,6 +6,7 @@ import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Filters, ShopFormProps } from '@/types/productTypes';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useProductStore } from "@/stores/productStore";
+import ProductCardSkeleton from './SkeletonProductCard';
 
 export default function ShopForm({
   products,
@@ -13,6 +14,7 @@ export default function ShopForm({
   laboratories,
   categories,
   initialSearchTerm,
+  isLoading = false,
   onAddToCart,
   onSearch,
   onFilterChange,
@@ -100,8 +102,13 @@ export default function ShopForm({
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
     onFilterChange(newFilters); // Pasamos los filtros al componente padre si es necesario
+    const { searchQueryStore } = useProductStore.getState();
 
     const query = new URLSearchParams();
+    
+    if (searchQueryStore.searchTerm) {
+      query.set('search', searchQueryStore.searchTerm);
+  }
 
     Object.entries(newFilters).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
@@ -286,20 +293,24 @@ export default function ShopForm({
         {/* Contenido principal */}
         <div className="w-full md:w-3/4">
           {activeTab === 'products' && (
-           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-10"> {/* 3 columnas con menos gap */}
-              {products.length > 0 ? (
-                currentProducts.map((product) => (
-                  <ProductCard 
-                    key={`product-${product.nregistro || product.name}`}
-                    product={product}
-                    onAddToCart={onAddToCart}
-                  />
-                ))
-              ) : (
-                <div className="col-span-3 text-center py-5">
-                  <p className="text-gray-500 text-sm">No se encontraron productos</p>
-                </div>
-              )}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-10">
+                {isLoading ? (
+                  Array.from({ length: 9 }).map((_, i) => (
+                    <ProductCardSkeleton key={`skeleton-${i}`} />
+                  ))
+                ) : products.length > 0 ? (
+                  currentProducts.map((product) => (
+                    <ProductCard 
+                      key={`product-${product.nregistro || product.name}`}
+                      product={product}
+                      onAddToCart={onAddToCart}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-3 text-center py-5">
+                    <p className="text-gray-500 text-sm">No se encontraron productos</p>
+                  </div>
+                )}
             </div>
           )}
 

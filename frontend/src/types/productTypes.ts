@@ -4,6 +4,7 @@ export interface ShopFormProps {
   laboratories: string[];
   categories: string[];
   initialSearchTerm?: string;
+  isLoading?: boolean;
   onAddToCart: (product: Product) => void;
   onSearch: (term: string) => void;
   onFilterChange: (filters: Filters) => void;

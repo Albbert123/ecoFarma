@@ -9,6 +9,7 @@ import { getFilteredProducts, getSearchResults, setSearchData } from '@/services
 import { useProductStore } from "@/stores/productStore";
 import { useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
+import { useRouter } from 'next/navigation';
 
 export default function ShopPage() {
     useBootstrap();
@@ -20,6 +21,7 @@ export default function ShopPage() {
     const searchParams = useSearchParams();
     const searchQuery = searchParams.get('search') || '';
     const storedSearchQuery = useProductStore((state) => state.searchQueryStore.searchTerm) || searchQuery;
+    const router = useRouter();
 
 
     const recommendations = [
@@ -62,6 +64,7 @@ export default function ShopPage() {
 
     const handleSearch = async (searchTerm: string) => {
         try {
+            router.replace(`/shop?search=${encodeURIComponent(searchTerm)}`);
             const { products, embedding } = await getSearchResults(searchTerm);
             setProducts(products);
             handleSortChange("sin-prescripcion", products);
@@ -245,9 +248,9 @@ export default function ShopPage() {
       };
     
 
-    if (loading) {
-        return <p></p>;
-    }
+    // if (loading) {
+    //     return <p></p>;
+    // }
 
     return (
         <ShopForm 
@@ -260,6 +263,7 @@ export default function ShopPage() {
             onFilterChange={handleFilterChange}
             onSortChange={handleSortChange}
             initialSearchTerm={storedSearchQuery}
+            isLoading={loading}
         />
     );
 }
