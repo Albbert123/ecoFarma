@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from app.repositories.product_repository import ProductRepository
-from app.models.product_model import Product
+from app.models.product_model import Product, SearchData
 from typing import List
 from app.constants.product_constants import LAB_MAPPING, CATEGORIES_MAPPING
 from app.services.AI_service import generate_embedding  # o como se llame
@@ -60,6 +60,38 @@ class ProductService:
 
         return self.product_repo.get_products_by_advanced_query(query, limit)
 
+    def get_search_history_by_user_and_date(self, user: str, date: str):
+        return self.product_repo.get_search_history_by_user_and_date(
+            user, date
+        )
+
+    def get_search_history_by_user(self, user: str) -> List[dict]:
+        return self.product_repo.get_search_history_by_user(user)
+
+    def delete_search_history_entry(self, user: str, date: str):
+        self.product_repo.delete_search_history_entry_by_user_and_date(
+            user, date
+        )
+
+    def save_search_data(self, search_data: SearchData):
+        # Convertir el modelo Pydantic a un diccionario
+        search_data_dict = search_data.dict()
+
+        # Obtener el historial de búsqueda del usuario
+        user = search_data_dict["user"]
+        user_search_history = self.get_search_history_by_user(user)
+
+        # Si el historial tiene más de 10 registros, eliminar el más antiguo
+        if len(user_search_history) >= 10:
+            oldest_entry = user_search_history[0]  # El primer mas antiguo
+            self.delete_search_history_entry(
+                oldest_entry["user"], oldest_entry["date"]
+            )
+
+        # Guardar en la colección
+        self.product_repo.save_search_data(search_data_dict)
+        return search_data_dict
+
     def create_product(self, product: Product):
         existing = self.product_repo.get_product_by_nregistro(
             product.nregistro
@@ -83,9 +115,14 @@ class ProductService:
         updated = self.product_repo.update_product(nregistro, product_data)
         return updated
 
-    def semantic_search(self, query: str, limit: int = 30) -> List[dict]:
+    def semantic_search(self, query: str, limit: int = 30) -> dict:
         embedding = generate_embedding(query)
-        return self.product_repo.search_by_vector(embedding, limit)
+        products = self.product_repo.search_by_vector(embedding, limit)
+
+        return {
+            "products": products,
+            "embedding": embedding
+        }
 
     def get_all_nregistros(self) -> List[str]:
         return self.product_repo.get_all_nregistros()

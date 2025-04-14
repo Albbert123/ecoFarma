@@ -68,22 +68,26 @@ export interface ProductFormData {
     principleAct?: string;
 }
 
-export interface SearchFormData {
+export interface SearchData {
     searchTerm: string | null;
     date: Date | null
     user?: string | null;
+    embedding?: number[] | null;
+    rating?: number | null;
 }
   
 export interface ProductStoreState {
   productsStore: Product[];
   searchBaseProducts: Product[];
-  searchQueryStore: SearchFormData;
+  searchQueryStore: SearchData;
+  sortOption: string;
+  setSortOption: (sortOption: string) => void;
   setProductsStore: (products: Product[]) => void;
   clearProducts: () => void;
   addProduct: (product: Product) => void;
   setSearchBaseProducts: (searchBaseProducts: Product[]) => void;
   clearSearchBaseProducts: () => void;
-  setSearchQuery: (searchQuery: SearchFormData) => void;
+  setSearchQuery: (searchQuery: SearchData) => void;
   clearSearchQuery: () => void;
 }
 

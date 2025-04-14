@@ -5,7 +5,7 @@ import ShopForm from '@/components/public/shop/ShopForm';
 import { useBootstrap } from '@/hooks/useBootstrap';
 import { LABORATORIES, CATEGORIES } from '@/constants/constants';
 import { Filters, Product } from '@/types/productTypes';
-import { getFilteredProducts, getSearchResults } from '@/services/productService';
+import { getFilteredProducts, getSearchResults, setSearchData } from '@/services/productService';
 import { useProductStore } from "@/stores/productStore";
 import { useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
@@ -15,8 +15,8 @@ export default function ShopPage() {
 
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const { productsStore, searchQueryStore, setProductsStore, setSearchBaseProducts, setSearchQuery, clearProducts, clearSearchQuery } = useProductStore();
-    const { userCorreo } = useAuthStore();
+    const { productsStore, searchQueryStore, sortOption, setSortOption, setProductsStore, setSearchBaseProducts, setSearchQuery, clearProducts, clearSearchQuery } = useProductStore();
+    const { userCorreo, isAuthenticated } = useAuthStore();
     const searchParams = useSearchParams();
     const searchQuery = searchParams.get('search') || '';
     const storedSearchQuery = useProductStore((state) => state.searchQueryStore.searchTerm) || searchQuery;
@@ -49,9 +49,10 @@ export default function ShopPage() {
     const fetchProducts = async () => {
         try {
             const filteredProducts = await getFilteredProducts({prescription: false, limit: 30});
-            handleSortChange('sin-prescripcion', filteredProducts);
             setProducts(filteredProducts);
+            handleSortChange('sin-prescripcion', filteredProducts);
             clearProducts();
+            clearSearchQuery();
         } catch (error) {
             console.error('Error al obtener los productos:', error);
         } finally {
@@ -60,19 +61,29 @@ export default function ShopPage() {
     };
 
     const handleSearch = async (searchTerm: string) => {
-        console.log('Buscando:', searchTerm);
         try {
-            const productsData = await getSearchResults(searchTerm);
-            setProducts(productsData);
-            handleSortChange("sin-prescripcion", productsData);
+            const { products, embedding } = await getSearchResults(searchTerm);
+            setProducts(products);
+            handleSortChange("sin-prescripcion", products);
+
+            if(userCorreo && isAuthenticated) {
+                setSearchData({
+                    searchTerm: searchTerm,
+                    date: new Date(),
+                    user: userCorreo,
+                    embedding: embedding ?? null
+                });
+            }
 
             clearProducts();
-            setProductsStore(productsData);
-            setSearchBaseProducts(productsData);
+            setProductsStore(products);
+            setSearchBaseProducts(products);
+            handleSortChange(sortOption, products);
             setSearchQuery({
                 searchTerm: searchTerm,
                 date: new Date(),
-                user: userCorreo ?? ''
+                user: userCorreo ?? null,
+                embedding: embedding ?? null
             });
         } catch (error) {
             console.error("Error al buscar productos:", error);
@@ -89,6 +100,7 @@ export default function ShopPage() {
         } else if (productsStore.length > 0 && searchQueryStore.searchTerm !== '') {
             // Restaurar del store
             setProducts(productsStore);
+            handleSortChange(sortOption, productsStore);
             setLoading(false);
         } else {
             fetchProducts(); // Si no hay búsqueda, llama a fetchProducts
@@ -227,6 +239,7 @@ export default function ShopPage() {
         }
       
         setProducts(sortedProducts);
+        setSortOption(sortOption);
         // clearProducts();
         // setProductsStore(summarize(sortedProducts));
       };

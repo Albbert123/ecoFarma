@@ -17,3 +17,11 @@ class Product(BaseModel):
     composition: Optional[str] = None
     AdditionalInfo: Optional[str] = None
     embedding: Optional[List[float]] = None
+
+
+class SearchData(BaseModel):
+    searchTerm: str
+    date: str
+    user: str
+    embedding: Optional[List[float]] = None
+    rating: Optional[int] = None

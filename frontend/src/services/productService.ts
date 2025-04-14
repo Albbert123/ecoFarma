@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { Product, ProductFilters, ProductFormData, UpdateProductData } from "@/types/productTypes";
+import { Product, ProductFilters, ProductFormData, UpdateProductData, SearchData } from '@/types/productTypes';
 import { LAB_MAPPING, CATEGORIES_MAPPING } from '@/constants/constants';
 
 
@@ -131,15 +131,24 @@ export const deleteProduct = async (nregistro: string) => {
 };
 
 export const getSearchResults = async (query: string) => {
-  console.log("Buscando productos con query:", query);
   try {
     if (!query) {
-      return [];
+      return { products: [], embedding: null };
     }
     const response = await api.get(`/products/semantic-search?query=${encodeURIComponent(query)}`);
-    return response.data;
+    return response.data; // Ahora devuelve un objeto con productos y embedding
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al buscar productos";
     throw new Error(errorMessage);
   }
-}
+};
+
+export const setSearchData = async (searchData: SearchData) => {
+  try {
+    const response = await api.post("/products/search-data", searchData);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al guardar los datos de búsqueda";
+    throw new Error(errorMessage);
+  }
+};

@@ -5,6 +5,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Filters, ShopFormProps } from '@/types/productTypes';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useProductStore } from "@/stores/productStore";
 
 export default function ShopForm({
   products,
@@ -32,6 +33,8 @@ export default function ShopForm({
   const filtersRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { sortOption } = useProductStore();
+
 
   // Cálculo de productos visibles en la página actual
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -157,7 +160,7 @@ export default function ShopForm({
             <select 
               onChange={(e) => onSortChange(e.target.value)}
               className="p-1 border rounded text-sm"
-              defaultValue="sin-prescripcion"
+              defaultValue={sortOption}
             >
               <option value="sin-prescripcion">Sin prescripción primero</option>
               <option value="con-prescripcion">Con prescripción primero</option>

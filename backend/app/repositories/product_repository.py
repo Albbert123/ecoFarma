@@ -14,6 +14,28 @@ class ProductRepository:
     def get_products_by_advanced_query(self, filters: dict, limit: int = 25):
         return list(db["Producto"].find(filters, {"_id": 0}).limit(limit))
 
+    def get_search_history_by_user_and_date(
+        self, user: str, date: str
+    ) -> Optional[dict]:
+        return db["HistoriaDeBusqueda"].find_one({"user": user, "date": date})
+
+    def save_search_data(self, search_data: dict):
+        db["HistorialDeBusqueda"].insert_one(search_data)
+
+    # Obtener el historial de búsqueda de un usuario
+    def get_search_history_by_user(self, user: str) -> List[dict]:
+        return list(
+            db["HistorialDeBusqueda"]
+            .find({"user": user})
+            .sort("date", 1)  # Ordenar por fecha ascendente (la más antigua p)
+        )
+
+    # Eliminar una entrada del historial de búsqueda por usuario y fecha
+    def delete_search_history_entry_by_user_and_date(
+        self, user: str, date: str
+    ):
+        db["HistorialDeBusqueda"].delete_one({"user": user, "date": date})
+
     def create_product(self, product_data: Product):
         db["Producto"].insert_one(product_data.dict())
         return product_data.dict()
@@ -46,7 +68,7 @@ class ProductRepository:
             },
             {
                 "$project": {
-                    # "_id": 0,
+                    "_id": 0,
                     "nregistro": 1,
                     "name": 1,
                     "principleAct": 1,
