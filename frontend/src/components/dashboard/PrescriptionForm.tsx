@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { FaTrashAlt, FaUpload, FaFileMedical } from "react-icons/fa";
-import { ChevronUp, ChevronDown, PlusCircle } from "lucide-react";
-import { PrescrptionProps } from "@/types/prescriptionTypes";
+import { PrescriptionType, PrescrptionProps } from "@/types/prescriptionTypes";
 import PrescriptionCard from "./PrescriptionCard";
 
 const PrescriptionForm = ({
@@ -28,7 +26,7 @@ const PrescriptionForm = ({
               </span>
             </div>
             <button
-              onClick={() => onUpload("ss")}
+              onClick={() => onUpload(PrescriptionType.ELECTRONICA)}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition-colors"
             >
               <FaUpload />
@@ -50,7 +48,7 @@ const PrescriptionForm = ({
               </span>
             </div>
             <button
-              onClick={() => onUpload("private")}
+              onClick={() => onUpload(PrescriptionType.PRIVADA)}
               className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow-sm transition-colors"
             >
               <FaUpload />

@@ -5,7 +5,7 @@ import { useBootstrap } from "@/hooks/useBootstrap";
 import withAuth from "@/components/withAuth";
 import PrescriptionForm from "@/components/dashboard/PrescriptionForm";
 import { useState } from "react";
-import { Prescription } from "@/types/prescriptionTypes";
+import { Prescription, PrescriptionStatus, PrescriptionType } from "@/types/prescriptionTypes";
 
 function ProfilePage() {
   useBootstrap();
@@ -13,8 +13,9 @@ function ProfilePage() {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([
     {
       id: "Receta_2024554",
-      type: "Electrónica",
-      status: "Activa",
+        user: "usuario",
+      type: PrescriptionType.ELECTRONICA,
+      status: PrescriptionStatus.ACTIVA,
       validFrom: "07/03/2025",
       validTo: "11/05/2025",
       doctor: "Dr. Ruíz",
@@ -25,8 +26,9 @@ function ProfilePage() {
     },
     {
         id: "Receta_2024555",
-        type: "Privada",
-        status: "Caducada",
+        user: "usuario",
+        type: PrescriptionType.PRIVADA,
+        status: PrescriptionStatus.CADUCADA,
         validFrom: "07/03/2025",
         validTo: "11/05/2025",
         doctor: "Dr. Ruíz",
@@ -37,7 +39,7 @@ function ProfilePage() {
       },
   ]);
 
-  const handleUpload = (type: "ss" | "private") => {
+  const handleUpload = (type: PrescriptionType) => {
     console.log(`Subiendo receta tipo: ${type}`);
     // Aquí subirías el archivo y actualizarías las recetas del estado
   };

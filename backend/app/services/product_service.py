@@ -3,7 +3,7 @@ from app.repositories.product_repository import ProductRepository
 from app.models.product_model import Product, SearchData
 from typing import List
 from app.constants.product_constants import LAB_MAPPING, CATEGORIES_MAPPING
-from app.services.AI_service import generate_embedding  # o como se llame
+from app.services.AI_service import generate_embedding
 
 
 class ProductService:
