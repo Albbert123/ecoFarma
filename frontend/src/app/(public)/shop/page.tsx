@@ -10,6 +10,7 @@ import { useProductStore } from "@/stores/productStore";
 import { useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export default function ShopPage() {
     useBootstrap();
@@ -56,7 +57,7 @@ export default function ShopPage() {
             clearProducts();
             clearSearchQuery();
         } catch (error) {
-            console.error('Error al obtener los productos:', error);
+            toast.error('Error al obtener los productos');
         } finally {
             setLoading(false);
         }
@@ -89,7 +90,7 @@ export default function ShopPage() {
                 embedding: embedding ?? null
             });
         } catch (error) {
-            console.error("Error al buscar productos:", error);
+            toast.error("Error al buscar productos");
         } finally {
             setLoading(false);
         }
@@ -165,7 +166,6 @@ export default function ShopPage() {
     }
     
     const handleFilterChange = async (newFilters: Filters) => {
-        console.log('Filtros actualizados:', newFilters);
         const { productsStore } = useProductStore.getState();
 
         const noFiltersSelected =
@@ -187,14 +187,13 @@ export default function ShopPage() {
                 await fetchProducts(); // no hay búsqueda activa, cargar por defecto
               }
             } catch (error) {
-              console.error("Error al resetear productos:", error);
+              toast.error("Error al resetear productos");
             }
             return;
         }
    
         try {
             const filtersQuery = buildFiltersQuery(newFilters);
-            console.log("Filtros aplicados:", filtersQuery);
             if (Object.keys(filtersQuery).length === 0) return;
 
             // si hay productos en el store, aplica filtros localmente
@@ -210,7 +209,7 @@ export default function ShopPage() {
             setProductsStore(filteredProducts);
 
         } catch (error) {
-            console.error("Error al aplicar filtros:", error);
+            toast.error("Error al aplicar filtros");
         }
     };
 

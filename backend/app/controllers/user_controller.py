@@ -34,7 +34,6 @@ async def send_reset_code(
     correo: str = Body(..., embed=True),
     user_service: UserService = Depends()
 ):
-    print(correo)
     # Obtener el usuario ORIGINAL por su correo actual
     existing_user = user_service.get_user_by_email(correo)
 

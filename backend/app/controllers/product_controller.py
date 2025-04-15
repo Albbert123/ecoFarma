@@ -78,7 +78,6 @@ async def get_search_history(
     userCorreo: str,
     product_service: ProductService = Depends()
 ):
-    print(userCorreo)
     search_history = product_service.get_search_history_by_user(userCorreo)
     if not search_history:
         raise HTTPException(

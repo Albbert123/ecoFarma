@@ -26,7 +26,6 @@ function ProfilePage() {
             toast.success("Actualizado con éxito 🎉");
             setError("");
         } catch (err: any) {
-            // console.error("Error updating user profile:", err);
             setError(err.message); // Establecer el mensaje de error
         }
     };
@@ -48,7 +47,6 @@ function ProfilePage() {
             }, 8);
         } catch (error) {
             toast.error("Error al eliminar la cuenta");
-            // console.error("Delete account error:", error);
         }
     };
 

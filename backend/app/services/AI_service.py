@@ -61,7 +61,6 @@ def extract_product_sections(text):
         messages=[{"role": "user", "content": prompt}]
     )
     # Imprimir la respuesta para depuración
-    print("Respuesta del modelo:", response)
     return response['message']['content'].strip()
 
 

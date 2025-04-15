@@ -27,7 +27,7 @@ const AddPharmForm: React.FC<AddPharmFormProps> = ({ onAddPharmacist, onCancel }
     try {
       await onAddPharmacist(formData); // Llamar a la función pasada como prop
     } catch (error) {
-      // console.error("Add pharmacist error:", error);
+      toast.error("Error al añadir el farmacéutico");
     }
   };
 
