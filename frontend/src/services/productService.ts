@@ -1,5 +1,7 @@
 import { api } from "./api";
-import { Product, ProductFilters, ProductFormData, UpdateProductData } from "@/types/productTypes";
+import { Product, ProductFilters, ProductFormData, UpdateProductData, SearchData } from '@/types/productTypes';
+import { LAB_MAPPING, CATEGORIES_MAPPING } from '@/constants/constants';
+
 
 export const getProducts = async () => {
   try {
@@ -16,31 +18,54 @@ export const getFilteredProducts = async (
   customProducts?: Product[]
 ): Promise<Product[]> => {
   if (customProducts) {
-    return customProducts.filter((product) => {
-      const matchPrescription =
-        filters.prescription === undefined ||
-        product.prescription === filters.prescription;
+    // Mapear laboratorios
+    let labMatches: string[] = [];
+    if (filters.laboratory && Array.isArray(filters.laboratory)) {
+      labMatches = filters.laboratory
+        .map((lab: keyof typeof LAB_MAPPING) => LAB_MAPPING[lab])
+        .filter((mapped) => !!mapped);
+    }
 
-      const matchCategory =
-        !filters.category || product.category?.toLowerCase().includes(filters.category.toLowerCase());
+    // Mapear categorías
+    let categoryMatches: string[] = [];
+    if (filters.category && Array.isArray(filters.category)) {
+      filters.category.forEach((cat) => {
+        const mapped = CATEGORIES_MAPPING[cat as keyof typeof CATEGORIES_MAPPING];
+        if (mapped) categoryMatches.push(...mapped);
+      });
+    }
 
-      const matchLab =
-        !filters.laboratory || product.laboratory?.toLowerCase().includes(filters.laboratory.toLowerCase());
+    return customProducts
+      .filter((product) => {
+        const matchLab =
+          labMatches.length === 0 ||
+          (product.laboratory && labMatches.includes(product.laboratory));
 
-      const matchPriceMin =
-        filters.min_price === undefined || (product.price ?? 0) >= filters.min_price;
+        const matchCategory =
+          categoryMatches.length === 0 ||
+          (product.category && categoryMatches.includes(product.category));
 
-      const matchPriceMax =
-        filters.max_price === undefined || (product.price ?? 0) <= filters.max_price;
+        const matchPrescription =
+          filters.prescription === undefined ||
+          product.prescription === filters.prescription;
 
-      return (
-        matchPrescription &&
-        matchCategory &&
-        matchLab &&
-        matchPriceMin &&
-        matchPriceMax
-      );
-    }).slice(0, filters.limit || 30); // aplica el limit localmente también
+        const matchPriceMin =
+          filters.min_price === undefined ||
+          (product.price ?? 0) >= filters.min_price;
+
+        const matchPriceMax =
+          filters.max_price === undefined ||
+          (product.price ?? 0) <= filters.max_price;
+
+        return (
+          matchLab &&
+          matchCategory &&
+          matchPrescription &&
+          matchPriceMin &&
+          matchPriceMax
+        );
+      })
+      .slice(0, filters.limit || 30); // aplica el limit localmente también
   }
 
   // Si no se pasan productos, hace fetch del backend
@@ -101,6 +126,39 @@ export const deleteProduct = async (nregistro: string) => {
     await api.delete(`/products/${nregistro}`);
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al eliminar el producto";
+    throw new Error(errorMessage);
+  }
+};
+
+export const getSearchResults = async (query: string) => {
+  try {
+    if (!query) {
+      return { products: [], embedding: null };
+    }
+    const response = await api.get(`/products/semantic-search?query=${encodeURIComponent(query)}`);
+    return response.data; // Ahora devuelve un objeto con productos y embedding
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al buscar productos";
+    throw new Error(errorMessage);
+  }
+};
+
+export const setSearchData = async (searchData: SearchData) => {
+  try {
+    const response = await api.post("/products/search-data", searchData);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al guardar los datos de búsqueda";
+    throw new Error(errorMessage);
+  }
+};
+
+export const getSearchHistory = async (userCorreo: string) => {
+  try {
+    const response = await api.get(`/products/search-history/${userCorreo}`);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al obtener el historial de búsqueda";
     throw new Error(errorMessage);
   }
 };

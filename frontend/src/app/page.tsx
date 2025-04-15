@@ -8,12 +8,18 @@ import Service from "@/components/home/Service";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import Schedule from "@/components/home/Schedule";
 import Ubication from "@/components/home/Ubication";
+import { getSearchResults } from "@/services/productService";
+import { useProductStore } from "@/stores/productStore";
+import { Product } from "@/types/productTypes";
 
 export default function Home() {
   useBootstrap();
   // ⛔ Evitar problemas de hidratación con un estado que solo se activa en el cliente
   const [isClient, setIsClient] = useState(false);
   useEffect(() => setIsClient(true), []);
+  const [products, setProducts] = useState<Product[]>([]);
+  const setProductsStore = useProductStore((state) => state.setProductsStore);
+  const clearProducts = useProductStore((state) => state.clearProducts);
 
   const { isAuthenticated, userRole } = useAuthStore(); // Obtener usuario autenticado
 

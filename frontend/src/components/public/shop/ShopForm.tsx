@@ -5,18 +5,22 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Filters, ShopFormProps } from '@/types/productTypes';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useProductStore } from "@/stores/productStore";
+import ProductCardSkeleton from './SkeletonProductCard';
 
 export default function ShopForm({
   products,
   recommendations = [],
   laboratories,
   categories,
+  initialSearchTerm,
+  isLoading = false,
   onAddToCart,
   onSearch,
   onFilterChange,
   onSortChange
 }: ShopFormProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm || '');
   const [activeTab, setActiveTab] = useState<'products' | 'recommendations'>('products');
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
@@ -31,6 +35,8 @@ export default function ShopForm({
   const filtersRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { sortOption } = useProductStore();
+
 
   // Cálculo de productos visibles en la página actual
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -80,7 +86,13 @@ export default function ShopForm({
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    onSearch(e.target.value);
+  };
+  
+  // Añade esta función:
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onSearch(searchTerm);
+    }
   };
 
   const toggleMobileFilters = () => {
@@ -90,8 +102,13 @@ export default function ShopForm({
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
     onFilterChange(newFilters); // Pasamos los filtros al componente padre si es necesario
+    const { searchQueryStore } = useProductStore.getState();
 
     const query = new URLSearchParams();
+    
+    if (searchQueryStore.searchTerm) {
+      query.set('search', searchQueryStore.searchTerm);
+  }
 
     Object.entries(newFilters).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
@@ -116,13 +133,14 @@ export default function ShopForm({
       
       {/* Barra de búsqueda */}
       <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Qué te ocurre, qué productos necesitas..."
-          className="w-full p-2 border rounded"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
+      <input
+        type="text"
+        placeholder="Qué te ocurre, qué productos necesitas..."
+        className="w-full p-2 border rounded"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        onKeyDown={handleSearchKeyDown}
+      />
       </div>
 
       {/* Tabs Navigation - Reorganizado para mobile */}
@@ -149,7 +167,7 @@ export default function ShopForm({
             <select 
               onChange={(e) => onSortChange(e.target.value)}
               className="p-1 border rounded text-sm"
-              defaultValue="sin-prescripcion"
+              defaultValue={sortOption}
             >
               <option value="sin-prescripcion">Sin prescripción primero</option>
               <option value="con-prescripcion">Con prescripción primero</option>
@@ -199,7 +217,7 @@ export default function ShopForm({
             <select 
               onChange={(e) => onSortChange(e.target.value)}
               className="p-1 border rounded text-sm"
-              defaultValue="sin-prescripcion"
+              defaultValue={sortOption}
             >
               <option value="sin-prescripcion">Sin prescripción primero</option>
               <option value="con-prescripcion">Con prescripción primero</option>
@@ -275,20 +293,24 @@ export default function ShopForm({
         {/* Contenido principal */}
         <div className="w-full md:w-3/4">
           {activeTab === 'products' && (
-           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-10"> {/* 3 columnas con menos gap */}
-              {products.length > 0 ? (
-                currentProducts.map((product) => (
-                  <ProductCard 
-                    key={`product-${product.nregistro || product.name}`}
-                    product={product}
-                    onAddToCart={onAddToCart}
-                  />
-                ))
-              ) : (
-                <div className="col-span-3 text-center py-5">
-                  <p className="text-gray-500 text-sm">No se encontraron productos</p>
-                </div>
-              )}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-10">
+                {isLoading ? (
+                  Array.from({ length: 9 }).map((_, i) => (
+                    <ProductCardSkeleton key={`skeleton-${i}`} />
+                  ))
+                ) : products.length > 0 ? (
+                  currentProducts.map((product) => (
+                    <ProductCard 
+                      key={`product-${product.nregistro || product.name}`}
+                      product={product}
+                      onAddToCart={onAddToCart}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-3 text-center py-5">
+                    <p className="text-gray-500 text-sm">No se encontraron productos</p>
+                  </div>
+                )}
             </div>
           )}
 

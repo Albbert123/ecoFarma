@@ -18,7 +18,7 @@ export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
     apellido: "",
     contraseña: "",
     imagen: "",
-    rol: "farmaceutico",
+    rol: "usuario",
     fromAdmin: false,
     fromGoogle: false,
   });

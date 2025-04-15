@@ -1,6 +1,6 @@
-from typing import List, Optional
+from typing import Any, List, Optional
 from fastapi import APIRouter, HTTPException, Depends, Body, Query
-from app.models.product_model import Product
+from app.models.product_model import Product, SearchData
 from app.services.product_service import ProductService
 
 router = APIRouter()
@@ -9,6 +9,20 @@ router = APIRouter()
 @router.get("/", response_model=List[Product])
 async def get_all_products(product_service: ProductService = Depends()):
     return product_service.get_products(200)
+
+
+@router.get("/semantic-search", response_model=Any)
+async def semantic_search(
+    query: str = Query(..., description="Texto de búsqueda"),
+    limit: int = 30,
+    product_service: ProductService = Depends()
+):
+    result = product_service.semantic_search(query, limit)
+    if not result["products"]:
+        raise HTTPException(
+            status_code=404, detail="No se encontraron productos"
+        )
+    return result
 
 
 @router.get("/filter", response_model=List[Product])
@@ -31,14 +45,24 @@ async def filter_products(
     return product_service.get_products_by_filters(filters, limit)
 
 
-@router.get("/{nregistro}", response_model=Product)
-async def get_product(
-    nregistro: str, product_service: ProductService = Depends()
+@router.post("/search-data", response_model=SearchData)
+async def search_data(
+    search_data: SearchData,
+    product_service: ProductService = Depends()
 ):
-    product = product_service.get_product_by_nregistro(nregistro)
-    if not product:
-        raise HTTPException(status_code=404, detail="Producto no encontrado")
-    return product
+    # Verificar si ya existe un registro con el mismo usuario y fecha
+    existing_entry = product_service.get_search_history_by_user_and_date(
+        user=search_data.user,
+        date=search_data.date
+    )
+    if existing_entry:
+        raise HTTPException(
+            status_code=400,
+            detail="Ya existe un registro para este usuario en esta fecha"
+        )
+
+    # Si no existe, llama al servicio para guardar el registro
+    return product_service.save_search_data(search_data)
 
 
 @router.post("/", response_model=Product)
@@ -47,6 +71,30 @@ async def create_product(
 ):
     created_product = product_service.create_product(product)
     return created_product
+
+
+@router.get("/search-history/{userCorreo}", response_model=List[SearchData])
+async def get_search_history(
+    userCorreo: str,
+    product_service: ProductService = Depends()
+):
+    search_history = product_service.get_search_history_by_user(userCorreo)
+    if not search_history:
+        raise HTTPException(
+            status_code=404,
+            detail="No se encontró el historial de búsqueda para este usuario"
+        )
+    return search_history
+
+
+@router.get("/{nregistro}", response_model=Product)
+async def get_product(
+    nregistro: str, product_service: ProductService = Depends()
+):
+    product = product_service.get_product_by_nregistro(nregistro)
+    if not product:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return product
 
 
 @router.put("/{nregistro}", response_model=Product)

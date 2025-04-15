@@ -1,3 +1,8 @@
+from app.config.database import db
+
+PRODUCTO_DB = db["Producto"]
+HISTORIAL_DB = db["HistorialDeBusqueda"]
+
 # Lista real desde tu base de datos
 LABORATORIES_DB = [
     'Pfizer Europe Ma Eeig', 'Bristol-Myers Squibb Pharma Eeig',
@@ -23,8 +28,6 @@ LAB_MAPPING = {
     "Ferrer Internacional": "Ferrer Internacional S.A.",
     "Kern": "Kern Pharma S.L."
 }
-
-# corregir
 
 CATEGORIES_MAPPING = {
     "Analgésicos": [

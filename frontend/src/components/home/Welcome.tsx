@@ -3,15 +3,39 @@ import { useAuthStore } from "@/stores/authStore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { useProductStore } from "@/stores/productStore";
 
 export default function Welcome() {
-    const { userRole, isAuthenticated } = useAuthStore();
+    
+    const { userCorreo, userRole, isAuthenticated } = useAuthStore();
+    const { setSearchQuery } = useProductStore();
+    const router = useRouter();
+    const [searchTerm, setSearchTerm] = useState("");
 
-     // ⛔ Evitar problemas de hidratación con un estado que solo se activa en el cliente
-        const [isClient, setIsClient] = useState(false);
-        useEffect(() => setIsClient(true), []);
-        if (!isClient) return null; // ⛔ Evita que se renderice en SSR
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
 
+    const handleSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // e.preventDefault();
+        if (e.key === 'Enter') {
+            if (searchTerm.trim() !== "") {
+                setSearchQuery({
+                    searchTerm: searchTerm,
+                    date: new Date(),
+                    user: userCorreo ?? ''
+                });
+                router.push(`/shop?search=${encodeURIComponent(searchTerm)}`);
+            }
+        }
+    };
+
+    // ⛔ Evitar problemas de hidratación con un estado que solo se activa en el cliente
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => setIsClient(true), []);
+    if (!isClient) return null; // ⛔ Evita que se renderice en SSR
+    
     if (userRole === "usuario" || !isAuthenticated) {
         return (
             <>
@@ -23,7 +47,11 @@ export default function Welcome() {
                             <input
                                 type="text"
                                 placeholder="Cuéntanos qué te ocurre, qué producto necesitas..."
-                                className="w-full px-4 py-3 border rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600" />
+                                className="w-full px-4 py-3 border rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                onKeyDown={handleSubmit}
+                            />
                             <FaSearch className="absolute top-5 right-4 text-gray-500" />
                         </div>
                     </div>

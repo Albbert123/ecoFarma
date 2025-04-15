@@ -5,6 +5,8 @@ import ProfileForm from "@/components/dashboard/ProfileForm";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import withAuth from "@/components/withAuth";
 
+// CAMBIAR
+
 function ProfilePage() {
     useBootstrap();
 

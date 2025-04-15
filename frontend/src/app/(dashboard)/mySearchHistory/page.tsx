@@ -1,21 +1,34 @@
-// /app/profile/page.tsx
 "use client";
+
 import DashboardNav from "@/components/dashboard/DashboardNav";
-import ProfileForm from "@/components/dashboard/ProfileForm";
+import SearchHistoryForm from "@/components/dashboard/SearchHistoryForm";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import withAuth from "@/components/withAuth";
+import { getSearchHistory } from "@/services/productService";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect, useState } from "react";
+import { SearchData } from "@/types/productTypes";
 
 function ProfilePage() {
-    useBootstrap();
+  useBootstrap();
+  const { userCorreo } = useAuthStore();
+  const [history, setHistory] = useState<SearchData[]>([]);
+  const [error, setError] = useState("");
 
-    return (
-        <div className="max-w-4xl mx-auto p-6">
-            {/* Sub-navbar de perfil */}
-            <DashboardNav />
+  useEffect(() => {
+    if (userCorreo) {
+      getSearchHistory(userCorreo)
+        .then(setHistory)
+        .catch((err) => setError(err.message));
+    }
+  }, [userCorreo]);
 
-            <ProfileForm />
-        </div>
-    );
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <DashboardNav />
+      <SearchHistoryForm history={history} error={error} />
+    </div>
+  );
 }
 
 export default withAuth(ProfilePage, ["usuario"]);
