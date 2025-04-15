@@ -1,23 +1,67 @@
-// /app/profile/page.tsx
 "use client";
+
 import DashboardNav from "@/components/dashboard/DashboardNav";
-import ProfileForm from "@/components/dashboard/ProfileForm";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import withAuth from "@/components/withAuth";
-
-// CAMBIAR
+import PrescriptionForm from "@/components/dashboard/PrescriptionForm";
+import { useState } from "react";
+import { Prescription } from "@/types/prescriptionTypes";
 
 function ProfilePage() {
-    useBootstrap();
+  useBootstrap();
 
-    return (
-        <div className="max-w-4xl mx-auto p-6">
-            {/* Sub-navbar de perfil */}
-            <DashboardNav />
+  const [prescriptions, setPrescriptions] = useState<Prescription[]>([
+    {
+      id: "Receta_2024554",
+      type: "Electrónica",
+      status: "Activa",
+      validFrom: "07/03/2025",
+      validTo: "11/05/2025",
+      doctor: "Dr. Ruíz",
+      products: [
+        { name: "Ibuprofeno 600mg", price: 4.67 },
+        { name: "Lexema 60g crema", price: 6.76 },
+      ],
+    },
+    {
+        id: "Receta_2024555",
+        type: "Privada",
+        status: "Caducada",
+        validFrom: "07/03/2025",
+        validTo: "11/05/2025",
+        doctor: "Dr. Ruíz",
+        products: [
+          { name: "Ibuprofeno 600mg", price: 4.67 },
+          { name: "Lexema 60g crema", price: 6.76 },
+        ],
+      },
+  ]);
 
-            <ProfileForm />
-        </div>
-    );
+  const handleUpload = (type: "ss" | "private") => {
+    console.log(`Subiendo receta tipo: ${type}`);
+    // Aquí subirías el archivo y actualizarías las recetas del estado
+  };
+
+  const handleDelete = (id: string) => {
+    setPrescriptions((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const handleAddToCart = (product: string) => {
+    console.log(`Agregado al carrito: ${product}`);
+    // Lógica real para añadir al carrito
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <DashboardNav />
+      <PrescriptionForm
+        prescriptions={prescriptions}
+        onUpload={handleUpload}
+        onDelete={handleDelete}
+        onAddToCart={handleAddToCart}
+      />
+    </div>
+  );
 }
 
 export default withAuth(ProfilePage, ["usuario"]);

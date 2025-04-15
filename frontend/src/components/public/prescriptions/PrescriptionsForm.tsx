@@ -1,7 +1,15 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FaUpload, FaSearch, FaTrash, FaShoppingCart, FaClock, FaShieldAlt, FaTabletAlt } from "react-icons/fa";
 
 const PrescriptionsForm = () => {
+    const router = useRouter();
+
+    const handleRedirect = () => {
+        router.push("/myPrescriptions");
+    };
   return (
     <section className="px-6 py-16 max-w-6xl mx-auto text-gray-800">
       {/* Encabezado con degradado */}
@@ -25,7 +33,10 @@ const PrescriptionsForm = () => {
           <p className="text-gray-600 mb-4">
             Digitaliza tus recetas médicas en formato PDF o imagen y guárdalas en tu perfil de manera segura.
           </p>
-          <button className="mt-auto bg-gradient-to-r from-[#3498db] to-[#2ecc71] text-white px-6 py-2 rounded-full hover:opacity-90 transition">
+          <button 
+            className="mt-auto bg-gradient-to-r from-[#3498db] to-[#2ecc71] text-white px-6 py-2 rounded-full hover:opacity-90 transition"
+            onClick={handleRedirect}
+           >
             Subir ahora
           </button>
         </div>
@@ -39,7 +50,10 @@ const PrescriptionsForm = () => {
           <p className="text-gray-600 mb-4">
             Accede a todas tus recetas almacenadas en cualquier momento y desde cualquier dispositivo.
           </p>
-          <button className="mt-auto bg-gradient-to-r from-[#2ecc71] to-[#3498db] text-white px-6 py-2 rounded-full hover:opacity-90 transition">
+          <button 
+            className="mt-auto bg-gradient-to-r from-[#2ecc71] to-[#3498db] text-white px-6 py-2 rounded-full hover:opacity-90 transition"
+            onClick={handleRedirect}
+          >
             Ver recetas
           </button>
         </div>
@@ -53,7 +67,10 @@ const PrescriptionsForm = () => {
           <p className="text-gray-600 mb-4">
             Elimina recetas antiguas o añade productos de tus recetas directamente al carrito de compras.
           </p>
-          <button className="mt-auto bg-gradient-to-r from-[#9b59b6] to-[#3498db] text-white px-6 py-2 rounded-full hover:opacity-90 transition">
+          <button 
+            className="mt-auto bg-gradient-to-r from-[#9b59b6] to-[#3498db] text-white px-6 py-2 rounded-full hover:opacity-90 transition"
+            onClick={handleRedirect}
+          >
             Gestionar
           </button>
         </div>
@@ -121,7 +138,10 @@ const PrescriptionsForm = () => {
         <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
           Empieza a gestionar tus recetas médicas de forma digital hoy mismo.
         </p>
-        <button className="bg-gradient-to-r from-[#3498db] to-[#2ecc71] text-white px-8 py-3 rounded-full text-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+        <button 
+            className="bg-gradient-to-r from-[#3498db] to-[#2ecc71] text-white px-8 py-3 rounded-full text-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+            onClick={handleRedirect}
+        >
           Comenzar ahora
         </button>
       </div>
