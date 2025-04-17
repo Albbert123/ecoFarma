@@ -17,7 +17,7 @@ export interface Prescription {
     validTo: string;
     doctor: string;
     discount?: GLfloat;
-    products: { name: string; price: number }[];
+    products?: { name: string; price: number }[];
   };
   
   export interface PrescrptionProps {

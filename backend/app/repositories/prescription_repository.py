@@ -1,0 +1,37 @@
+from app.constants.prescription_constants import (
+    BASE_PRESCRIPTION_DB,
+    PRESCRIPTION_DB,
+)
+
+
+class PrescriptionRepository:
+    def get_base_embedding_by_type(self, type):
+        return BASE_PRESCRIPTION_DB.find_one(
+            {"tipo": type}, {"embedding": 1, "_id": 0}
+        )
+
+    def get_prescriptions_by_user(self, user):
+        # Recuperar les receptes de la base de dades
+        prescriptions = PRESCRIPTION_DB.find({"user": user})
+
+        # Convertir ObjectId a string
+        prescriptions_list = []
+        for prescription in prescriptions:
+            if "_id" in prescription:
+                prescription["id"] = str(prescription.pop("_id"))
+            prescriptions_list.append(prescription)
+
+        return prescriptions_list
+
+    def save(self, prescription):
+        # Insertar el documento en la base de datos
+        result = PRESCRIPTION_DB.insert_one(prescription)
+
+        # Recuperar el documento completo usando el ID generado
+        document = PRESCRIPTION_DB.find_one({"_id": result.inserted_id})
+
+        # Convertir ObjectId a string
+        if document and "_id" in document:
+            document["id"] = str(document.pop("_id"))
+
+        return document

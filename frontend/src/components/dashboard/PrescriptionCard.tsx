@@ -18,7 +18,7 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
     <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 flex justify-between items-start">
         <div>
-          <p className="font-bold text-gray-800">{prescription.id}</p>
+          <p className="font-bold text-gray-800">{"Receta_"}{prescription.id}</p>
           <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-sm">
             <span className={`bg-blue-100 text-blue-800 px-2 py-0.5 rounded ${
                 prescription.type === "Electrónica"
@@ -74,7 +74,7 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
             Medicamentos prescritos:
           </h3>
           <ul className="space-y-3">
-            {prescription.products.map((prod, i) => (
+            {prescription.products?.map((prod, i) => (
               <li key={i} className="flex items-center justify-between">
                 <div>
                   <span className="font-medium">• {prod.name}</span>
