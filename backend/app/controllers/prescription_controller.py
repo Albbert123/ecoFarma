@@ -21,20 +21,14 @@ async def upload_prescription(
     type: str = Form(...),
     prescription_service: PrescriptionService = Depends()
 ):
-    print("Receta subida por el usuario:", user)
-    print("Tipo de receta:", type)
-    print("Archivo recibido:", file.filename)
     valid, texto = prescription_service.process_prescription_upload(file, type)
 
     if not valid:
         raise HTTPException(status_code=400, detail="Receta no válida")
 
-    print("Receta valida", valid)
-    print("Texto extraído:")
     # Guardar en la base de datos
     prescription = prescription_service.save_prescription(
-        user, type, texto
+        user, type, texto, file.filename
     )
-    print("Receta guardada:", prescription)
 
     return prescription

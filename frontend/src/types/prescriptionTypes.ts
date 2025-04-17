@@ -10,6 +10,7 @@ export enum PrescriptionStatus {
 
 export interface Prescription {
     id: string;
+    filename?: string;
     user: string;
     type: PrescriptionType;
     status: PrescriptionStatus;

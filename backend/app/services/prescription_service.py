@@ -75,11 +75,14 @@ class PrescriptionService:
 
         return base_embedding
 
-    def save_prescription(self, user: str, type: str, text: str):
+    def save_prescription(
+        self, user: str, type: str, text: str, filename: str
+    ):
         # Extract the prescription information from the text
 
         prescriptionData = {
             "user": user,
+            "filename": filename,
             "type": type,
             "status": None,
             "validFrom": None,
