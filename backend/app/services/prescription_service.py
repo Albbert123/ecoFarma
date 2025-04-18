@@ -1,3 +1,6 @@
+from datetime import datetime
+import re
+from typing import Dict, Any, List
 from fastapi import HTTPException
 from app.repositories.prescription_repository import PrescriptionRepository
 from app.services.AI_service import (
@@ -44,7 +47,6 @@ class PrescriptionService:
             raise ValueError("Embedding o base_embedding no son vectores 1-D")
 
         valid = validate_prescription(embedding, base_embedding)
-        print("Validación de receta:", valid)
 
         return valid, texto
 
@@ -79,22 +81,172 @@ class PrescriptionService:
         self, user: str, type: str, text: str, filename: str
     ):
         # Extract the prescription information from the text
+        if type == "Electrónica":
+            form_data = self.extract_electronic_prescription_data(text)
+        else:
+            form_data = self.extract_electronic_prescription_data(text)
 
+        print("Form data:", form_data)
+        discount = 0.6 if type == "Electrónica" else 1
         prescriptionData = {
             "user": user,
             "filename": filename,
             "type": type,
-            "status": None,
-            "validFrom": None,
-            "validTo": None,
-            "doctor": None,
-            "discount": None,
-            "products": None,
+            "status": form_data["status"],
+            "validFrom": form_data["validFrom"],
+            "validTo": form_data["validTo"],
+            "doctor": form_data["doctor"],
+            "discount": discount,
+            "products": form_data["products"],
         }
         # Save the prescription to the database
         prescription = self.prescription_repository.save(prescriptionData)
 
         return prescription
+
+    def extract_electronic_prescription_data(
+        self, text: str
+    ) -> Dict[str, Any]:
+        data = {
+            "status": "Activa",
+            "validFrom": None,
+            "validTo": None,
+            "doctor": None,
+            "products": [],
+        }
+
+        # Buscar fechas
+        valid_from_match = re.search(r"del (\d{2}/\d{2}/\d{4})", text)
+        valid_to_match = re.search(r"al (\d{2}/\d{2}/\d{4})", text)
+
+        if valid_from_match:
+            data["validFrom"] = valid_from_match.group(1)
+        if valid_to_match:
+            data["validTo"] = valid_to_match.group(1)
+
+        # Determinar estado según fecha actual
+        try:
+            hoy = datetime.now()
+            valid_from = data.get("validFrom")
+            valid_to = data.get("validTo")
+
+            # Validar y convertir las fechas
+            desde = (
+                datetime.strptime(valid_from, "%d/%m/%Y")
+                if valid_from
+                else None
+            )
+            hasta = (
+                datetime.strptime(valid_to, "%d/%m/%Y") if valid_to else None
+            )
+
+            # Determinar el estado
+            if desde and hasta:
+                data["status"] = (
+                    "Activa" if desde <= hoy <= hasta else "Caducada"
+                )
+            else:
+                data["status"] = "Activa"
+        except Exception:
+            data["status"] = "Activa"
+
+        # Buscar doctor: después de "aplicació" o "comprimit", capturar siguiente palabra en mayúsculas (con posibles puntos)
+        doctor = None
+        match = re.search(r"(aplicació|comprimit)(.*)", text, re.DOTALL)
+        if match:
+            after_keyword = match.group(2)
+            # Buscar la primera palabra completamente en mayúsculas (puede tener puntos y letras con tilde)
+            uppercase_match = re.search(r"\b([A-ZÁÉÍÓÚÑ]{1,}\.?[A-ZÁÉÍÓÚÑ]{2,})\b", after_keyword)
+            if uppercase_match:
+                doctor = uppercase_match.group(1).strip()
+
+        data["doctor"] = doctor
+
+        # Buscar productos y principio activo
+        products_data = self.extract_products_and_actives(text)
+
+        for prod in products_data:
+            name = prod["name"]
+            active_principle = prod["principle_act"]
+
+            # product_data= self.get_product_by_prescription(
+            #     product_name=name,
+            #     principle_act=active_principle
+            # )
+            # if not product_data:
+            #     raise HTTPException(
+            #         status_code=404,
+            #         detail=f"Product not found: {name}"
+            #     )
+            # Append product data to the list
+            data["products"].append({
+                "name": name,
+                "principle_act": active_principle,
+                "price": 8.99
+            })
+
+        return data
+
+    def extract_products_and_actives(self, text: str) -> List[Dict[str, str]]:
+        lines = text.splitlines()
+        products = []
+        try:
+            # Encontrar la línea donde está "Comentaris"
+            comentaris_index = next(
+                i for i, line in enumerate(lines) if "Comentaris" in line
+            )
+        except StopIteration:
+            return products
+
+        i = comentaris_index + 1
+        while i < len(lines):
+            # Buscar nombre del producto (línea mayúsculas hasta 'aplicació' o 'comprimit')
+            product_line = lines[i]
+            if not re.search(r"[A-Z0-9]", product_line):
+                i += 1
+                continue
+            if "aplicació" not in product_line and "comprimit" not in product_line:
+                i += 1
+                continue
+
+            product_name_part = re.split(r"(aplicació|comprimit)", product_line)[0].strip()
+
+            # Buscar la siguiente línea (hasta 'cada')
+            if i + 1 < len(lines):
+                second_line = re.split(r"cada", lines[i + 1])[0].strip()
+            else:
+                second_line = ""
+
+            full_product_name = f"{product_name_part} {second_line}".strip()
+
+            # Buscar principio activo (dos estrategias)
+            principle_act = ""
+            for j in range(i, min(i + 8, len(lines))):
+                if "TOPICA" in lines[j] or "ORAL" in lines[j]:
+                    try:
+                        before_keyword = re.split(r"(TOPICA|ORAL)", lines[j])[0].strip()
+                        last_word = before_keyword.split()[-1]
+                        principle_act = last_word
+                    except IndexError:
+                        # Estrategia alternativa: usar toda la línea siguiente
+                        if j + 1 < len(lines):
+                            principle_act = lines[j + 1].strip()
+                    break
+
+            products.append({
+                "name": full_product_name,
+                "principle_act": principle_act
+            })
+
+            i += 8  # Ir al siguiente producto
+
+        return products
+
+    # def get_product_by_prescription(
+    #     self, product_name: str, principle_act: str
+    # ):
+        # llamar al sematic search de product service
+        # coger el prdocuto y poner name y price
 
     # def delete_prescription(self, prescription_id):
     #     # Delete the prescription from the database

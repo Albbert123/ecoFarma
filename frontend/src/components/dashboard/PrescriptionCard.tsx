@@ -79,7 +79,7 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
                 <div>
                   <span className="font-medium">• {prod.name}</span>
                   <span className="text-sm text-gray-600 ml-2">
-                    (Precio: €{prod.price.toFixed(2)})
+                    (€{prod.price.toFixed(2)})
                   </span>
                 </div>
                 <button

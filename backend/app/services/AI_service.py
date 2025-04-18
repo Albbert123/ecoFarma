@@ -53,7 +53,7 @@ def genearate_embedding_model(text: str):
 def validate_prescription(embedding, base):
     similarity = 1 - cosine(embedding, base)
     print(f"Similitud: {similarity}")
-    return similarity > 0.3  # ajusta el umbral
+    return similarity > 0.1  # ajusta el umbral
 
 
 # Descargar HTML desde URL
