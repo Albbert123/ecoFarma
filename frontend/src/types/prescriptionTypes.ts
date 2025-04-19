@@ -8,18 +8,33 @@ export enum PrescriptionStatus {
     CADUCADA = "Caducada",
 }
 
+export interface PrescriptionProduct {
+  name: string;
+  price: number;
+  nregistro: string;
+}
+
+export interface PrescriptionProductWithAlternatives {
+  alternatives: PrescriptionProduct[];
+  original_name: string;
+}
+
+export type PrescriptionProductEntry =
+  | PrescriptionProduct
+  | PrescriptionProductWithAlternatives;
+
 export interface Prescription {
-    id: string;
-    filename?: string;
-    user: string;
-    type: PrescriptionType;
-    status: PrescriptionStatus;
-    validFrom: string;
-    validTo: string;
-    doctor: string;
-    discount?: GLfloat;
-    products?: { name: string; price: number }[];
-  };
+  id: string;
+  filename?: string;
+  user: string;
+  type: PrescriptionType;
+  status: PrescriptionStatus;
+  validFrom: string;
+  validTo: string;
+  doctor: string;
+  discount?: number;
+  products?: PrescriptionProductEntry[];
+}
   
   export interface PrescrptionProps {
     prescriptions: Prescription[];

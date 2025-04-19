@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronUp, ChevronDown, PlusCircle } from "lucide-react";
+import { ChevronUp, ChevronDown, PlusCircle, Lock } from "lucide-react";
 import { FaTrashAlt } from "react-icons/fa";
 import { Prescription } from "@/types/prescriptionTypes";
 
@@ -13,14 +13,21 @@ interface Props {
 
 const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
   const [expanded, setExpanded] = useState(false);
+  const [selectedAltIndex, setSelectedAltIndex] = useState(0);
+  const isExpired = prescription.status === "Caducada";
+
 
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 flex justify-between items-start">
-        <div>
-          <p className="font-bold text-gray-800">{prescription.filename}</p>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-sm">
-            <span className={`bg-blue-100 text-blue-800 px-2 py-0.5 rounded ${
+    <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white">
+      {/* Header con efecto de gradiente */}
+      <div 
+        className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 flex justify-between items-start"
+        onClick={() => setExpanded(!expanded)}
+      >
+        <div className="space-y-1">
+          <p className="font-bold text-black text-lg">{prescription.filename}</p>
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                 prescription.type === "Electrónica"
                   ? "bg-blue-100 text-blue-800"
                   : "bg-purple-100 text-purple-800"
@@ -28,8 +35,7 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
             >
               {prescription.type}
             </span>
-            <span
-              className={`px-2 py-0.5 rounded ${
+            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                 prescription.status === "Activa"
                   ? "bg-green-100 text-green-800"
                   : "bg-yellow-100 text-yellow-800"
@@ -37,63 +43,169 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
             >
               {prescription.status}
             </span>
-            <span className="text-gray-600">
-              <span className="font-medium">Válida:</span>{" "}
+            <span className="text-white font-bold text-xs bg-black bg-opacity-20 px-3 py-1 rounded-full">
+              <span className="font-bold">Válida:</span>{" "}
               {prescription.validFrom} - {prescription.validTo}
             </span>
-            <span className="text-gray-600">
-              <span className="font-medium">Médico:</span> {prescription.doctor}
+            <span className="text-white font-bold text-xs bg-black bg-opacity-20 px-3 py-1 rounded-full">
+              <span className="font-bold">Médico:</span> {prescription.doctor}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setExpanded(!expanded)}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded(!expanded);
+            }}
+            className="text-black hover:text-gray-200 transition-colors p-1"
             title={expanded ? "Ocultar detalles" : "Mostrar detalles"}
           >
             {expanded ? (
-              <ChevronUp className="w-5 h-5" />
+              <ChevronUp className="w-6 h-6" />
             ) : (
-              <ChevronDown className="w-5 h-5" />
+              <ChevronDown className="w-6 h-6" />
             )}
           </button>
           <button
-            onClick={() => onDelete(prescription.id)}
-            className="text-red-500 hover:text-red-700 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(prescription.id);
+            }}
+            className="text-red-600 hover:text-red-200 transition-colors p-1"
             title="Eliminar receta"
           >
-            <FaTrashAlt />
+            <FaTrashAlt size={16} />
           </button>
         </div>
       </div>
 
+      {/* Contenido expandible */}
       {expanded && (
-        <div className="p-4 border-t">
-          <h3 className="font-medium text-gray-700 mb-3">
-            Medicamentos prescritos:
+        <div className="p-4 border-t border-gray-100 bg-gray-50">
+          <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
+            <span className="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+            Medicamentos prescritos
           </h3>
-          <ul className="space-y-3">
-            {prescription.products?.map((prod, i) => (
-              <li key={i} className="flex items-center justify-between">
-                <div>
-                  <span className="font-medium">• {prod.name}</span>
-                  <span className="text-sm text-gray-600 ml-2">
-                    (€{prod.price.toFixed(2)})
-                  </span>
-                </div>
-                <button
-                  onClick={() => onAddToCart(prod.name)}
-                  className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 text-sm rounded-lg transition-colors"
-                >
-                  <PlusCircle size={16} />
-                  Añadir al carrito
-                </button>
-              </li>
-            ))}
+
+          {isExpired && (
+            <div className="mb-4 py-2 px-3 bg-red-50 border border-red-200 rounded-lg flex items-start">
+              <span className="text-red-500 mr-2">⚠️</span>
+              <p className="text-red-700 text-sm">
+                Esta receta está caducada y no se pueden añadir medicamentos al carrito.
+              </p>
+            </div>
+          )}
+          
+          {prescription.products?.some((prod) => "alternatives" in prod) && (
+            <div className="mb-4 py-2 px-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start">
+              <span className="text-yellow-500 mr-2">⚠️</span>
+              <p className="text-yellow-700 text-sm">
+                No se encontró un producto exacto para uno o más medicamentos. Se muestran alternativas disponibles.
+              </p>
+            </div>
+          )}
+          
+          <ul className="space-y-4">
+            {prescription.products?.map((prod, i) => {
+              // Caso 1: Producto con alternativas
+              if ("alternatives" in prod) {
+                const selectedAlt = prod.alternatives[selectedAltIndex];
+                return (
+                  <li key={i} className="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
+                    <div className="text-gray-700 font-medium mb-2">
+                      Alternativa para{" "}
+                      <span className="text-blue-600 font-semibold">{prod.original_name}</span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <select
+                        value={selectedAltIndex}
+                        onChange={(e) => setSelectedAltIndex(Number(e.target.value))}
+                        className="flex-1 px-3 py-2 border rounded-lg text-sm font-medium bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        {prod.alternatives.map((alt, j) => (
+                          <option key={j} value={j}>
+                            {alt.name} (€{alt.price.toFixed(2)})
+                          </option>
+                        ))}
+                      </select>
+                      {isExpired ? (
+                        <div className="flex-shrink-0 flex items-center justify-center gap-2 bg-gray-400 text-white px-4 py-2 text-sm rounded-lg cursor-not-allowed">
+                          <Lock size={16} />
+                          Añadir
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => onAddToCart(selectedAlt.name)}
+                          className="flex-shrink-0 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 text-sm rounded-lg transition-all shadow-sm hover:shadow-md"
+                        >
+                          <PlusCircle size={16} />
+                          Añadir
+                        </button>
+                      )}
+                    </div>
+                    <a
+                      href={`/shop/${selectedAlt.nregistro}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-2 text-xs text-blue-600 hover:text-blue-800 hover:underline flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      Ver detalles del producto
+                    </a>
+                  </li>
+                );
+              }
+              // Caso 2: Producto normal
+              return (
+                <li key={i} className="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
+                  <div className="text-gray-700 font-medium mb-2">
+                    Medicamento prescrito
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="flex-1 bg-gray-50 px-3 py-2 rounded-lg">
+                      <span className="font-semibold text-gray-800">{prod.name}</span>
+                      <span className="ml-2 text-md font-medium">
+                        (€{prod.price.toFixed(2)})
+                      </span>
+                    </div>
+                    {isExpired ? (
+                      <div className="flex-shrink-0 flex items-center justify-center gap-2 bg-gray-400 text-white px-4 py-2 text-sm rounded-lg cursor-not-allowed">
+                        <Lock size={16} />
+                        Añadir
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => onAddToCart(prod.name)}
+                        className="flex-shrink-0 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 text-sm rounded-lg transition-all shadow-sm hover:shadow-md"
+                      >
+                        <PlusCircle size={16} />
+                        Añadir
+                      </button>
+                    )}
+                  </div>
+                  {"nregistro" in prod && (
+                    <a
+                      href={`/shop/${prod.nregistro}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-2 text-xs text-blue-600 hover:text-blue-800 hover:underline flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      Ver detalles del producto
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
-          <p className="text-xs text-gray-500 mt-3">
-            * Descuento de la Seguridad Social aplicado al precio.
+          
+          <p className="text-xs text-gray-500 mt-4 italic">
+            * Descuento de la Seguridad Social aplicado al precio, si procede.
           </p>
         </div>
       )}

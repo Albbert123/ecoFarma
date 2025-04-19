@@ -5,14 +5,16 @@ from fastapi import HTTPException
 from app.repositories.prescription_repository import PrescriptionRepository
 from app.services.AI_service import (
     extract_text_from_file,
-    genearate_embedding_model,
+    genearate_embedding_modelReceipt,
     validate_prescription,
 )
+from app.services.product_service import ProductService
 
 
 class PrescriptionService:
     def __init__(self):
         self.prescription_repository = PrescriptionRepository()
+        self.product_service = ProductService()
 
     def get_prescriptions_by_user(self, user):
         # Retrieve the prescriptions from the database
@@ -24,7 +26,7 @@ class PrescriptionService:
 
     def process_prescription_upload(self, file, type):
         texto = extract_text_from_file(file)
-        embedding = genearate_embedding_model(texto)
+        embedding = genearate_embedding_modelReceipt(texto)
 
         # Recuperar el embedding base
         base_embedding_data = self.get_base_embedding_by_type(type)
@@ -86,7 +88,9 @@ class PrescriptionService:
         else:
             form_data = self.extract_electronic_prescription_data(text)
 
-        print("Form data:", form_data)
+        if not form_data["products"]:
+            raise HTTPException(status_code=400, detail="No se encontraron productos en la receta.")
+
         discount = 0.6 if type == "Electrónica" else 1
         prescriptionData = {
             "user": user,
@@ -168,22 +172,34 @@ class PrescriptionService:
         for prod in products_data:
             name = prod["name"]
             active_principle = prod["principle_act"]
+            cleaned_name = self.clean_prescription_product_name(name)
+            print(f"Nombre limpio: {cleaned_name}")
 
-            # product_data= self.get_product_by_prescription(
-            #     product_name=name,
-            #     principle_act=active_principle
-            # )
-            # if not product_data:
-            #     raise HTTPException(
-            #         status_code=404,
-            #         detail=f"Product not found: {name}"
-            #     )
-            # Append product data to the list
-            data["products"].append({
-                "name": name,
-                "principle_act": active_principle,
-                "price": 8.99
-            })
+            product_db = self.get_products_by_prescription(
+                product_name=cleaned_name,
+                principle_act=active_principle
+            )
+            # Si es una lista (sin coincidencia exacta), guardar como alternativas
+            if isinstance(product_db, list):
+                data["products"].append({
+                    "principle_act": active_principle,
+                    "alternatives": [
+                        {
+                            "name": p["name"],
+                            "price": p["price"],
+                            "nregistro": p["nregistro"]
+                        }
+                        for p in product_db
+                    ],
+                    "original_name": cleaned_name
+                })
+            else:
+                data["products"].append({
+                    "name": product_db["name"],
+                    "principle_act": active_principle,
+                    "price": product_db["price"],
+                    "nregistro": product_db["nregistro"]
+                })
 
         return data
 
@@ -208,7 +224,6 @@ class PrescriptionService:
             if "aplicació" not in product_line and "comprimit" not in product_line:
                 i += 1
                 continue
-
             product_name_part = re.split(r"(aplicació|comprimit)", product_line)[0].strip()
 
             # Buscar la siguiente línea (hasta 'cada')
@@ -237,17 +252,61 @@ class PrescriptionService:
                 "name": full_product_name,
                 "principle_act": principle_act
             })
-
-            i += 8  # Ir al siguiente producto
+            i += 7  # Ir al siguiente producto
 
         return products
 
-    # def get_product_by_prescription(
-    #     self, product_name: str, principle_act: str
-    # ):
-        # llamar al sematic search de product service
-        # coger el prdocuto y poner name y price
+    def get_products_by_prescription(self, product_name: str, principle_act: str):
+        # cleaned_name = self.clean_prescription_product_name(product_name)
+        # Crear la query combinando el nombre del producto y el principio activo
+        query = f"{principle_act}{". name:"}{product_name}"
 
+        # Llamar al método semantic_search desde ProductService
+        try:
+            search_results = self.product_service.semantic_search(query, limit=3)
+            products = search_results.get("products", [])
+
+            # Buscar coincidencia exacta de nombre
+            for product in products:
+                # Eliminar espacios de ambos nombres y convertir a minúsculas para comparar
+                product_name_cleaned = product.get("name", "").replace(" ", "").lower()
+                input_name_cleaned = product_name.replace(" ", "").lower()
+
+                print(f"Comparando: {product_name_cleaned} con {input_name_cleaned}")
+                if product_name_cleaned == input_name_cleaned:
+                    return {
+                        "name": product.get("name"),
+                        "price": product.get("price"),
+                        "nregistro": product.get("nregistro"),
+                    }
+
+            # Si no hay coincidencia exacta, devolver los 3 productos con campos clave
+            if products:
+                return [
+                    {
+                        "name": p.get("name"),
+                        "price": p.get("price"),
+                        "nregistro": p.get("nregistro"),
+                    }
+                    for p in products
+                ]
+            else:
+                return None
+
+        except Exception as e:
+            print(f"Error en la búsqueda semántica: {e}")
+            return None
+
+    def clean_prescription_product_name(self, product_name: str) -> str:
+        # Eliminar números que están exactamente rodeados de espacios
+        cleaned = re.sub(r'(?<=\s)\d+(?=\s)', '', product_name)
+        
+        # # Asegurar un espacio antes de "mg" o "MG" y después si está seguido por un número
+        # cleaned = re.sub(r'(?i)(\d)(mg)(\d)', r'\1 mg \3', cleaned)
+
+        # Eliminar espacios múltiples y strip final
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned
     # def delete_prescription(self, prescription_id):
     #     # Delete the prescription from the database
     #     result = self.prescription_repository.delete(

@@ -1,6 +1,6 @@
 # embedding_products.py
 from app.config.database import db
-from app.services.AI_service import generate_embedding
+from app.services.AI_service import genearate_embedding_modelProduct
 
 # Configuración de MongoDB
 collection = db["Producto"]
@@ -16,17 +16,17 @@ def generar_texto_para_embedding(producto):
     return ". ".join(p for p in partes if p).strip()
 
 
-# Recorremos todos los productos sin embedding
-for producto in collection.find({"embedding": None}):
+# Recorremos todos los productos y actualizamos su embedding
+for producto in collection.find():
     texto = generar_texto_para_embedding(producto)
     try:
-        embedding = generate_embedding(texto)
+        embedding = genearate_embedding_modelProduct(texto)
 
-        # Guardamos en MongoDB
+        # Actualizamos en MongoDB
         collection.update_one(
             {"_id": producto["_id"]},
             {"$set": {"embedding": embedding}}
         )
-        print(f"✔ Embedding guardado para producto {producto['nregistro']}")
+        print(f"✔ Embedding actualizado para producto {producto['nregistro']}")
     except Exception as e:
-        print(f"❌ Error con producto {producto['nregistro']}: {e}")
+        print(f"❌ Error con producto {producto.get('nregistro', 'N/A')}: {e}")

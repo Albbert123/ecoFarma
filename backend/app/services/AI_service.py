@@ -12,14 +12,27 @@ import os
 from sentence_transformers import SentenceTransformer
 from scipy.spatial.distance import cosine
 
-MODEL_PATH = "modelo_recetas"
-model = SentenceTransformer(MODEL_PATH)
+from app.constants.prescription_constants import (
+    MODEL_RECEIPT_PATH,
+    MODEL_PRODUCT_PATH,
+)
+
+model_receipt = SentenceTransformer(MODEL_RECEIPT_PATH)
+model_product = SentenceTransformer(MODEL_PRODUCT_PATH)
 
 
 # Función para generar embedding con Ollama
 def generate_embedding(text):
     response = ollama.embeddings(model='nomic-embed-text', prompt=text)
     return response['embedding']  # Devuelve la lista de valores del embedding
+
+
+def genearate_embedding_modelReceipt(text: str):
+    return model_receipt.encode(text).tolist()
+
+
+def genearate_embedding_modelProduct(text: str):
+    return model_product.encode(text).tolist()
 
 
 def extract_text_from_file(file: UploadFile) -> str:
@@ -44,10 +57,6 @@ def extract_text_from_file(file: UploadFile) -> str:
         os.remove(tmp_path)
 
     return text.strip()
-
-
-def genearate_embedding_model(text: str):
-    return model.encode(text).tolist()
 
 
 def validate_prescription(embedding, base):

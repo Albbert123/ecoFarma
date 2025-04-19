@@ -9,3 +9,6 @@ ALLOWED_TYPES = [
 
 BASE_PRESCRIPTION_DB = db["BasePrescriptions"]
 PRESCRIPTION_DB = db["Receta"]
+
+MODEL_RECEIPT_PATH = "modelo_recetas"
+MODEL_PRODUCT_PATH = "modelo_productos_triplet_finetuned"
