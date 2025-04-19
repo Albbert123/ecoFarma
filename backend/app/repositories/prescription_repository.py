@@ -5,10 +5,11 @@ from app.constants.prescription_constants import (
 
 
 class PrescriptionRepository:
-    def get_base_embedding_by_type(self, type):
-        return BASE_PRESCRIPTION_DB.find_one(
-            {"tipo": type}, {"embedding": 1, "_id": 0}
+    def get_base_embeddings_by_type(self, type):
+        cursor = BASE_PRESCRIPTION_DB.find(
+            {"tipo": type}, {"embeddings": 1, "_id": 0}
         )
+        return list(cursor)
 
     def get_prescriptions_by_user(self, user):
         # Recuperar les receptes de la base de dades

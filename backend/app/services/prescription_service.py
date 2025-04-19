@@ -28,27 +28,22 @@ class PrescriptionService:
         texto = extract_text_from_file(file)
         embedding = genearate_embedding_modelReceipt(texto)
 
-        # Recuperar el embedding base
-        base_embedding_data = self.get_base_embedding_by_type(type)
-        if base_embedding_data is None or \
-                "embedding" not in base_embedding_data:
-            raise ValueError("No se pudo recuperar el base_embedding")
+        # Recuperar todos los embeddings base del tipo
+        base_embeddings = self.get_base_embeddings_by_type(type)
 
-        base_embedding = base_embedding_data["embedding"]
+        if not base_embeddings or not isinstance(base_embeddings, list):
+            raise ValueError("No se pudieron recuperar los embeddings base")
 
-        # Validar que los embeddings sean 1-D
-        if not isinstance(embedding, list) or \
-                not isinstance(base_embedding, list):
-            raise ValueError("Embedding o base_embedding no son listas")
+        # Validar que todos los embeddings sean listas no vacías de números
+        if not isinstance(embedding, list) or len(embedding) == 0 or not all(isinstance(x, (float, int)) for x in embedding):
+            raise ValueError("Embedding del usuario no es un vector 1-D válido")
 
-        if len(embedding) == 0 or len(base_embedding) == 0:
-            raise ValueError("Embedding o base_embedding están vacíos")
+        for base_embedding in base_embeddings:
+            if not isinstance(base_embedding, list) or len(base_embedding) == 0 or not all(isinstance(x, (float, int)) for x in base_embedding):
+                raise ValueError("Uno de los embeddings base no es válido")
 
-        if not all(isinstance(x, (float, int)) for x in embedding) or \
-           not all(isinstance(x, (float, int)) for x in base_embedding):
-            raise ValueError("Embedding o base_embedding no son vectores 1-D")
-
-        valid = validate_prescription(embedding, base_embedding)
+        # Validar contra todos los embeddings base
+        valid = any(validate_prescription(embedding, base_embedding) for base_embedding in base_embeddings)
 
         return valid, texto
 
@@ -66,18 +61,22 @@ class PrescriptionService:
 
     #     return prescription
 
-    def get_base_embedding_by_type(self, type):
-        # Retrieve the base embedding from the database
-        base_embedding = self.prescription_repository.\
-            get_base_embedding_by_type(type=type)
+    def get_base_embeddings_by_type(self, type: str):
+        # Obtener todos los documentos de ese tipo
+        documentos = self.prescription_repository.get_base_embeddings_by_type(type)
 
-        if not base_embedding:
+        if not documentos:
             raise HTTPException(
                 status_code=404,
-                detail="Base embedding not found"
+                detail="Base embeddings not found"
             )
 
-        return base_embedding
+        # Aplanar todos los embeddings (de todos los documentos de ese tipo)
+        embeddings = []
+        for doc in documentos:
+            embeddings.extend(doc["embeddings"])
+
+        return embeddings
 
     def save_prescription(
         self, user: str, type: str, text: str, filename: str
@@ -173,7 +172,6 @@ class PrescriptionService:
             name = prod["name"]
             active_principle = prod["principle_act"]
             cleaned_name = self.clean_prescription_product_name(name)
-            print(f"Nombre limpio: {cleaned_name}")
 
             product_db = self.get_products_by_prescription(
                 product_name=cleaned_name,
@@ -272,7 +270,6 @@ class PrescriptionService:
                 product_name_cleaned = product.get("name", "").replace(" ", "").lower()
                 input_name_cleaned = product_name.replace(" ", "").lower()
 
-                print(f"Comparando: {product_name_cleaned} con {input_name_cleaned}")
                 if product_name_cleaned == input_name_cleaned:
                     return {
                         "name": product.get("name"),

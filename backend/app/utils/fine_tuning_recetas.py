@@ -4,7 +4,7 @@ import json
 
 # Cargar datos desde el .jsonl
 train_examples = []
-with open("dataset_siamese.jsonl", "r") as f:
+with open("dataset_siamese2.jsonl", "r") as f:
     for line in f:
         data = json.loads(line)
         example = InputExample(
@@ -25,10 +25,10 @@ train_loss = losses.CosineSimilarityLoss(model=model)
 # Entrenamiento
 model.fit(
     train_objectives=[(train_dataloader, train_loss)],
-    epochs=4,
+    epochs=5,
     warmup_steps=10,
     show_progress_bar=True
 )
 
 # Guardar el modelo fine-tuned
-model.save("modelo_recetas")
+model.save("modelo_recetas2")
