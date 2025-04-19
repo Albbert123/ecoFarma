@@ -277,7 +277,7 @@ class PrescriptionService:
                         "nregistro": product.get("nregistro"),
                     }
 
-            # Si no hay coincidencia exacta, devolver los 3 productos con campos clave
+            # Si no hay coincidencia exacta, devolver los 3 productos
             if products:
                 return [
                     {
@@ -297,25 +297,23 @@ class PrescriptionService:
     def clean_prescription_product_name(self, product_name: str) -> str:
         # Eliminar números que están exactamente rodeados de espacios
         cleaned = re.sub(r'(?<=\s)\d+(?=\s)', '', product_name)
-        
-        # # Asegurar un espacio antes de "mg" o "MG" y después si está seguido por un número
-        # cleaned = re.sub(r'(?i)(\d)(mg)(\d)', r'\1 mg \3', cleaned)
 
         # Eliminar espacios múltiples y strip final
         cleaned = re.sub(r'\s+', ' ', cleaned).strip()
         return cleaned
-    # def delete_prescription(self, prescription_id):
-    #     # Delete the prescription from the database
-    #     result = self.prescription_repository.delete(
-    #         prescription_id=prescription_id
-    #     )
 
-    #     if not result:
-    #         raise HTTPException(
-    #             status_code=404,
-    #             detail="Prescription not found"
-    #         )
+    def delete_prescription(self, prescriptionId):
+        # Delete the prescription from the database
+        result = self.prescription_repository.delete(
+            prescriptionId=prescriptionId
+        )
 
-    #     return {
-    #         "message": "Prescription deleted successfully"
-    #     }
+        if not result:
+            raise HTTPException(
+                status_code=404,
+                detail="Prescription not found"
+            )
+
+        return {
+            "message": "Prescription deleted successfully"
+        }

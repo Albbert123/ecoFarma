@@ -7,7 +7,7 @@ import PrescriptionForm from "@/components/dashboard/PrescriptionForm";
 import { useEffect, useRef, useState } from "react";
 import { Prescription, PrescriptionStatus, PrescriptionType } from "@/types/prescriptionTypes";
 import toast from "react-hot-toast";
-import { getPrescriptions, uploadPrescription } from "@/services/prescriptionService";
+import { deletePrescription, getPrescriptions, uploadPrescription } from "@/services/prescriptionService";
 import { useAuthStore } from "@/stores/authStore";
 
 function PrescriptionPage() {
@@ -97,7 +97,13 @@ function PrescriptionPage() {
   };
 
   const handleDelete = (id: string) => {
-    setPrescriptions((prev) => prev.filter((p) => p.id !== id));
+    try {
+        deletePrescription(id);
+        setPrescriptions((prev) => prev.filter((prescription) => prescription.id !== id));
+        toast.success("Receta eliminada correctamente.");
+    } catch (error) {
+        toast.error("Hubo un problema eliminando la receta.");
+    }
   };
 
   const handleAddToCart = (product: string) => {

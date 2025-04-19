@@ -32,3 +32,16 @@ async def upload_prescription(
     )
 
     return prescription
+
+
+@router.delete("/{prescriptionId}")
+async def delete_prescription(
+    prescriptionId: str,
+    prescription_service: PrescriptionService = Depends()
+):
+    # Eliminar la receta de la base de datos
+    delete = prescription_service.delete_prescription(prescriptionId)
+    if not delete:
+        raise HTTPException(status_code=404, detail="Receta no encontrada")
+    # Devolver la respuesta
+    return {"message": "Receta eliminada correctamente"}

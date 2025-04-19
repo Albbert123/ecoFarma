@@ -15,6 +15,19 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
   const [expanded, setExpanded] = useState(false);
   const [selectedAltIndex, setSelectedAltIndex] = useState(0);
   const isExpired = prescription.status === "Caducada";
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [prescriptionToDelete, setPrescriptionToDelete] = useState("");
+
+  const handleDeleteClick = (id: string, e: any) => {
+    e.stopPropagation();
+    setPrescriptionToDelete(id);
+    setShowConfirm(true);
+  };
+  
+  const confirmDelete = () => {
+    onDelete(prescriptionToDelete);
+    setShowConfirm(false);
+  };
 
 
   return (
@@ -68,15 +81,35 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
             )}
           </button>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(prescription.id);
-            }}
+            onClick={(e) => handleDeleteClick(prescription.id, e)}
             className="text-red-600 hover:text-red-200 transition-colors p-1"
             title="Eliminar receta"
           >
             <FaTrashAlt size={16} />
           </button>
+
+          {showConfirm && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg">
+                <h3 className="text-lg font-medium mb-4">Confirmar eliminación</h3>
+                <p>¿Estás seguro de que deseas eliminar esta receta?</p>
+                <div className="flex justify-end gap-2 mt-4">
+                  <button
+                    onClick={() => setShowConfirm(false)}
+                    className="px-4 py-2 border rounded"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={confirmDelete}
+                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,3 +1,4 @@
+from bson import ObjectId
 from app.constants.prescription_constants import (
     BASE_PRESCRIPTION_DB,
     PRESCRIPTION_DB,
@@ -36,3 +37,12 @@ class PrescriptionRepository:
             document["id"] = str(document.pop("_id"))
 
         return document
+
+    def delete(self, prescriptionId):
+        # Eliminar el documento de la base de datos
+        result = PRESCRIPTION_DB.delete_one({"_id": ObjectId(prescriptionId)})
+
+        # Comprobar si se eliminó algún documento
+        if result.deleted_count == 0:
+            raise Exception("No se encontró la receta para eliminar")
+        return result.deleted_count
