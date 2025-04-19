@@ -75,9 +75,9 @@ function PrescriptionPage() {
         return;
     }
 
-    const validTypes = ["application/pdf", "image/jpeg", "image/png", "image/jpg"];
+    const validTypes = ["application/pdf"];
     if (!validTypes.includes(file.type)) {
-        toast.error("Formato no válido. Usa .pdf, .jpg, .jpeg o .png");
+        toast.error("Formato no válido. Usa .pdf");
         return;
     }
 

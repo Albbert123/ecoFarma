@@ -151,17 +151,19 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
                       <span className="text-blue-600 font-semibold">{prod.original_name}</span>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <select
-                        value={selectedAltIndex}
-                        onChange={(e) => setSelectedAltIndex(Number(e.target.value))}
-                        className="flex-1 px-3 py-2 border rounded-lg text-sm font-medium bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        {prod.alternatives.map((alt, j) => (
-                          <option key={j} value={j}>
-                            {alt.name} (€{alt.price.toFixed(2)})
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex-1 min-w-0"> {/* Contenedor para el select con overflow controlado */}
+                        <select
+                          value={selectedAltIndex}
+                          onChange={(e) => setSelectedAltIndex(Number(e.target.value))}
+                          className="w-full px-3 py-2 border rounded-lg text-sm font-medium bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 truncate"
+                        >
+                          {prod.alternatives.map((alt, j) => (
+                            <option key={j} value={j} className="truncate">
+                              {alt.name} (€{alt.price.toFixed(2)})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                       {isExpired ? (
                         <div className="flex-shrink-0 flex items-center justify-center gap-2 bg-gray-400 text-white px-4 py-2 text-sm rounded-lg cursor-not-allowed">
                           <Lock size={16} />

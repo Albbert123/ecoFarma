@@ -34,7 +34,7 @@ const PrescriptionForm = ({
             </button>
           </div>
           <p className="text-sm text-gray-500 mt-2 ml-9">
-            Formatos aceptados: .pdf, .jpeg, .jpg, .png
+            Formatos aceptados: .pdf
           </p>
         </div>
 
@@ -56,7 +56,7 @@ const PrescriptionForm = ({
             </button>
           </div>
           <p className="text-sm text-gray-500 mt-2 ml-9">
-            Formatos aceptados: .pdf, .jpeg, .jpg, .png
+            Formatos aceptados: .pdf
           </p>
         </div>
       </div>
