@@ -89,9 +89,19 @@ ID Hoja Información: {str(uuid.uuid4().int)[:10]}
 Paciente: {paciente}  
 Edad: {edad}  
 ID.Acc: {id_pac}
-Prescripciones  
-ID.Rep: {str(uuid.uuid4().hex[:24])}\t{med[0]}\t1\t{med[1].replace("càpsula", "cada").replace("comprimit", "cada")}\t05-03-2024\t10-03-2024  
-ID.Rec: {str(uuid.uuid4().int)[:13]}  
+Posología
+Prescripción Fecha Inicio Fecha Fin
+Dosis Pauta 
+ID.Rep: d88ad8fe1d9e5c0026512594516a
+ID.Rec: 1589874868789
+1 8 horas 19/05/2020 20/05/2020
+Paracetamol 1.000 mg 20 comprimidos
+Nº Colegiado: {choice(colegiados)}
+ID.Rep: d88ad8fe1d9e5c0026512594516a
+ID.Rec: 1589875194386
+1 12 horas 19/05/2020 20/05/2020
+STOPCOLD 5 MG/120 MG COMPRIMIDOS DE LIBERACION
+PROLONGADA, 20 COMPRIMIDOS
 Nº Colegiado: {choice(colegiados)}"""
 
 def generar_par_positivo():
@@ -134,6 +144,6 @@ for _ in range(100):
 shuffle(dataset)
 
 # Guardar
-with open("dataset_siamese2.jsonl", "w", encoding='utf-8') as f:
+with open("dataset_siamese3.jsonl", "w", encoding='utf-8') as f:
     for item in dataset:
         f.write(json.dumps(item, ensure_ascii=False) + "\n")

@@ -59,7 +59,7 @@ def extract_text_from_file(file: UploadFile) -> str:
     return text.strip()
 
 
-def validate_prescription(embedding1, embedding2, threshold=0.8):
+def validate_prescription(embedding1, embedding2, threshold=0.85):
     similarity = 1 - cosine(embedding1, embedding2)
     print(f"Similarity: {similarity}")  # Imprimir la similitud para depuración
     return similarity > threshold

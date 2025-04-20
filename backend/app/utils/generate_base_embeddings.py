@@ -3,7 +3,7 @@ import numpy as np
 from app.config.database import db
 
 # Config
-MODEL_PATH = "modelo_recetas2"
+MODEL_PATH = "modelo_recetas3"
 collection = db["BasePrescriptions"]
 
 # Recetas base
@@ -16,7 +16,7 @@ recetas_electronicas_2 = [
 ]
 
 recetas_privadas = [
-    "HOJA DE MEDICACIÓN ACTIVA E INFORMACIÓN AL PACIENTE\nID Hoja Información: 8044238836\nPaciente: Anna Sánchez Ruiz  \nEdad: 45 años  \nID.Acc: JOPM0010503005\nPrescripciones  \nID.Rep: 87734181f2764c4f8faf8332\tIbuprofeno 600 mg\t1\t1 cada cada 6 hores\t05-03-2024\t10-03-2024  \nID.Rec: 1583607871624  \nNº Colegiado: 283019822"
+    "HOJA DE MEDICACIÓN ACTIVA E INFORMACIÓN AL PACIENTE\nID Hoja Información: 5898752269\nPaciente: Albert Comas Pacheco \nEdad: 17 años  \nID.Acc: 00000000000000000017\nPosología\nPrescripción Fecha Inicio Fecha Fin\nDosis Pauta \nID.Rep: d88ad8fe1d9e5c0026512594516a\nID.Rec: 1589874868789\n1 8 horas 19/05/2020 20/05/2020\nParacetamol 1.000 mg 20 comprimidos\nNº Colegiado: 283849102\nID.Rep: d88ad8fe1d9e5c0026512594516a\nID.Rec: 1589875194386\n1 12 horas 19/05/2020 20/05/2020\nSTOPCOLD 5 MG/120 MG COMPRIMIDOS DE LIBERACION\nPROLONGADA, 20 COMPRIMIDOS\nNº Colegiado: 289301842"
 ]
 
 # Load model

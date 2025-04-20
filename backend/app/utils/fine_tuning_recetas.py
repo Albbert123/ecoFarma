@@ -4,7 +4,7 @@ import json
 
 # Cargar datos desde el .jsonl
 train_examples = []
-with open("dataset_siamese2.jsonl", "r") as f:
+with open("dataset_siamese3.jsonl", "r") as f:
     for line in f:
         data = json.loads(line)
         example = InputExample(
@@ -31,4 +31,4 @@ model.fit(
 )
 
 # Guardar el modelo fine-tuned
-model.save("modelo_recetas2")
+model.save("modelo_recetas3")

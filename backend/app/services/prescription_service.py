@@ -26,6 +26,7 @@ class PrescriptionService:
 
     def process_prescription_upload(self, file, type):
         texto = extract_text_from_file(file)
+        print("Texto extraído:", texto)
         embedding = genearate_embedding_modelReceipt(texto)
 
         # Recuperar todos los embeddings base del tipo
@@ -46,20 +47,6 @@ class PrescriptionService:
         valid = any(validate_prescription(embedding, base_embedding) for base_embedding in base_embeddings)
 
         return valid, texto
-
-    # def get_prescription_by_id(self, prescription_id):
-    #     # Retrieve the prescription from the database
-    #     prescription = self.prescription_repository.get_by_id(
-    #         prescription_id=prescription_id
-    #     )
-
-    #     if not prescription:
-    #         raise HTTPException(
-    #             status_code=404,
-    #             detail="Prescription not found"
-    #         )
-
-    #     return prescription
 
     def get_base_embeddings_by_type(self, type: str):
         # Obtener todos los documentos de ese tipo
@@ -85,7 +72,7 @@ class PrescriptionService:
         if type == "Electrónica":
             form_data = self.extract_electronic_prescription_data(text)
         else:
-            form_data = self.extract_electronic_prescription_data(text)
+            form_data = self.extract_private_prescription_data(text)
 
         if not form_data["products"]:
             raise HTTPException(status_code=400, detail="No se encontraron productos en la receta.")
@@ -198,6 +185,86 @@ class PrescriptionService:
                     "price": product_db["price"],
                     "nregistro": product_db["nregistro"]
                 })
+
+        return data
+
+    def extract_private_prescription_data(
+        self, text: str
+    ) -> Dict[str, Any]:
+        data = {
+            "status": "Activa",
+            "validFrom": None,
+            "validTo": None,
+            "doctor": None,
+            "products": [],
+        }
+        # Patrón para encontrar bloques de productos
+        rec_pattern = r"ID\.Rec:.*?\n(.*?)\n(.*?)(?=Nº Colegiado: \d+|$)"
+        matches = re.finditer(rec_pattern, text, re.DOTALL)
+
+        # Patrón para extraer colegiado (usamos el último encontrado)
+        colegiado_match = re.findall(r"Nº Colegiado: (\d+)", text)
+        if colegiado_match:
+            data["doctor"] = colegiado_match[-1]
+
+        # Procesar todos los productos encontrados
+        products = []
+        valid_from_list = []
+        valid_to_list = []
+
+        for match in matches:
+            fecha_line = match.group(1).strip()
+            producto_raw = match.group(2).strip()
+
+            # Extraer fechas
+            fechas = re.findall(r"\d{2}/\d{2}/\d{4}", fecha_line)
+            if len(fechas) >= 2:
+                valid_from_str, valid_to_str = fechas[0], fechas[1]
+                valid_from = datetime.strptime(valid_from_str, "%d/%m/%Y")
+                valid_to = datetime.strptime(valid_to_str, "%d/%m/%Y")
+                valid_from_list.append(valid_from)
+                valid_to_list.append(valid_to)
+
+            # Limpiar el texto del producto
+            producto = " ".join(producto_raw.splitlines()).strip()
+            products.append(producto)
+
+        if valid_from_list and valid_to_list:
+            data["validFrom"] = min(valid_from_list).strftime("%Y-%m-%d")
+            data["validTo"] = max(valid_to_list).strftime("%Y-%m-%d")
+
+            # Estado
+            now = datetime.now()
+            if now > max(valid_to_list):
+                data["status"] = "Caducada"
+
+        for product in products:
+            product_db = self.get_products_by_prescription(
+                product_name=product,
+                principle_act=""
+            )
+            # Si es una lista (sin coincidencia exacta), guardar como alternativas
+            if isinstance(product_db, list):
+                data["products"].append({
+                    "alternatives": [
+                        {
+                            "name": p["name"],
+                            "price": p["price"],
+                            "nregistro": p["nregistro"]
+                        }
+                        for p in product_db
+                    ],
+                    "original_name": product
+                })
+            else:
+                data["products"].append({
+                    "name": product_db["name"],
+                    "price": product_db["price"],
+                    "nregistro": product_db["nregistro"]
+                })
+        # Si no se encontraron productos, devolver un mensaje
+        if not data["products"]:
+            raise HTTPException(status_code=400, detail="No se encontraron productos en la receta.")
 
         return data
 
