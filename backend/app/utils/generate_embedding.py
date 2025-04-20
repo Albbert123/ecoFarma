@@ -1,6 +1,6 @@
 # embedding_products.py
 from app.config.database import db
-from app.services.AI_service import genearate_embedding_modelProduct
+from app.services.AI_service import generate_embedding_modelProduct
 
 # Configuración de MongoDB
 collection = db["Producto"]
@@ -20,7 +20,7 @@ def generar_texto_para_embedding(producto):
 for producto in collection.find():
     texto = generar_texto_para_embedding(producto)
     try:
-        embedding = genearate_embedding_modelProduct(texto)
+        embedding = generate_embedding_modelProduct(texto)
 
         # Actualizamos en MongoDB
         collection.update_one(

@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from app.repositories.prescription_repository import PrescriptionRepository
 from app.services.AI_service import (
     extract_text_from_file,
-    genearate_embedding_modelReceipt,
+    generate_embedding_modelReceipt,
     validate_prescription,
 )
 from app.services.product_service import ProductService
@@ -27,7 +27,7 @@ class PrescriptionService:
     def process_prescription_upload(self, file, type):
         texto = extract_text_from_file(file)
         print("Texto extraído:", texto)
-        embedding = genearate_embedding_modelReceipt(texto)
+        embedding = generate_embedding_modelReceipt(texto)
 
         # Recuperar todos los embeddings base del tipo
         base_embeddings = self.get_base_embeddings_by_type(type)

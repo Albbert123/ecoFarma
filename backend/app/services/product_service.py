@@ -3,7 +3,7 @@ from app.repositories.product_repository import ProductRepository
 from app.models.product_model import Product, SearchData
 from typing import List
 from app.constants.product_constants import LAB_MAPPING, CATEGORIES_MAPPING
-from app.services.AI_service import genearate_embedding_modelProduct
+from app.services.AI_service import generate_embedding_modelProduct
 
 
 class ProductService:
@@ -116,7 +116,7 @@ class ProductService:
         return updated
 
     def semantic_search(self, query: str, limit: int = 30) -> dict:
-        embedding = genearate_embedding_modelProduct(query)
+        embedding = generate_embedding_modelProduct(query)
         products = self.product_repo.search_by_vector(embedding, limit)
         # Suponiendo que tienes los resultados ordenados
         productos_filtrados = [

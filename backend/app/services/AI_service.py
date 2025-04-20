@@ -27,11 +27,11 @@ def generate_embedding(text):
     return response['embedding']  # Devuelve la lista de valores del embedding
 
 
-def genearate_embedding_modelReceipt(text: str):
+def generate_embedding_modelReceipt(text: str):
     return model_receipt.encode(text).tolist()
 
 
-def genearate_embedding_modelProduct(text: str):
+def generate_embedding_modelProduct(text: str):
     return model_product.encode(text).tolist()
 
 
