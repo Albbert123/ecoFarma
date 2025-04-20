@@ -43,7 +43,7 @@ export default function Service() {
                         un solo clic.
                         </p>
                         <Link
-                            href="/recetas"
+                            href="/prescriptions"
                             className="inline-block mt-4 px-6 py-2 border rounded-full hover:bg-blue-100 hover:text-white transition"
                             style={{ textDecoration: 'none', color: 'inherit'}}
                         >
@@ -74,7 +74,7 @@ export default function Service() {
                         recibe respuestas rápidas y confiables.
                         </p>
                         <Link
-                            href="/contacto"
+                            href="/contact"
                             className="inline-block mt-4 px-6 py-2 border rounded-full hover:bg-blue-100 hover:text-white transition"
                             style={{ textDecoration: 'none', color: 'inherit'}}
                         >

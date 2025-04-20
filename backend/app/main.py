@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from app.routes.user_routes import api_router as user_router
 from app.routes.images_routes import api_router as image_router
 from app.routes.google_routes import api_router as google_router
-from app.routes.product_routes import api_router as product_router  # ✅ Nuevo
+from app.routes.product_routes import api_router as product_router
+from app.routes.prescription_routes import api_router as prescription_router
 
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
@@ -32,7 +33,8 @@ app.add_middleware(
 app.include_router(user_router)
 app.include_router(image_router)
 app.include_router(google_router)
-app.include_router(product_router)  # ✅ Nuevo
+app.include_router(product_router)
+app.include_router(prescription_router)
 
 
 @app.get("/")

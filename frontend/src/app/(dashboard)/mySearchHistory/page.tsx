@@ -9,7 +9,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useEffect, useState } from "react";
 import { SearchData } from "@/types/productTypes";
 
-function ProfilePage() {
+function HistoryPage() {
   useBootstrap();
   const { userCorreo } = useAuthStore();
   const [history, setHistory] = useState<SearchData[]>([]);
@@ -31,4 +31,4 @@ function ProfilePage() {
   );
 }
 
-export default withAuth(ProfilePage, ["usuario"]);
+export default withAuth(HistoryPage, ["usuario"]);
