@@ -159,7 +159,7 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
                         >
                           {prod.alternatives.map((alt, j) => (
                             <option key={j} value={j} className="truncate">
-                              {alt.name} (€{alt.price.toFixed(2)})
+                              {alt.name} (€{(alt.price * (1 - (prescription.discount ?? 0))).toFixed(2)})
                             </option>
                           ))}
                         </select>
@@ -203,7 +203,7 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
                     <div className="flex-1 bg-gray-50 px-3 py-2 rounded-lg">
                       <span className="font-semibold text-gray-800">{prod.name}</span>
                       <span className="ml-2 text-md font-medium">
-                        (€{prod.price.toFixed(2)})
+                        (€{(prod.price * (1 - (prescription.discount ?? 0))).toFixed(2)})
                       </span>
                     </div>
                     {isExpired ? (

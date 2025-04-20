@@ -77,7 +77,7 @@ class PrescriptionService:
         if not form_data["products"]:
             raise HTTPException(status_code=400, detail="No se encontraron productos en la receta.")
 
-        discount = 0.6 if type == "Electrónica" else 1
+        discount = 0.6 if type == "Electrónica" else 0
         prescriptionData = {
             "user": user,
             "filename": filename,
