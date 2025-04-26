@@ -8,7 +8,6 @@ import { Product } from "@/types/productTypes";
 import ProductDetail from "@/components/public/shop/ProductDetail";
 import { use } from "react";
 import { useBootstrap } from "@/hooks/useBootstrap";
-import ProductCard from "@/components/public/shop/ProductCard";
 
 
 export default function ProductPage({ params }: { params: Promise<{ nregistro: string }> }) {
