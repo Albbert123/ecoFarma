@@ -82,6 +82,7 @@ export interface ProductStoreState {
   searchBaseProducts: Product[];
   searchQueryStore: SearchData;
   sortOption: string;
+  recommendationsStore: Product[];
   setSortOption: (sortOption: string) => void;
   setProductsStore: (products: Product[]) => void;
   clearProducts: () => void;
@@ -90,6 +91,8 @@ export interface ProductStoreState {
   clearSearchBaseProducts: () => void;
   setSearchQuery: (searchQuery: SearchData) => void;
   clearSearchQuery: () => void;
+  setRecommendationsStore: (recommendations: Product[]) => void;
+  clearRecommendationsStore: () => void;
 }
 
 export type ProductFilters = {

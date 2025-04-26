@@ -5,7 +5,7 @@ import ShopForm from '@/components/public/shop/ShopForm';
 import { useBootstrap } from '@/hooks/useBootstrap';
 import { LABORATORIES, CATEGORIES } from '@/constants/constants';
 import { Filters, Product } from '@/types/productTypes';
-import { getFilteredProducts, getSearchResults, setSearchData } from '@/services/productService';
+import { getFilteredProducts, getRecommendations, getSearchResults, setSearchData } from '@/services/productService';
 import { useProductStore } from "@/stores/productStore";
 import { useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
@@ -16,33 +16,14 @@ export default function ShopPage() {
     useBootstrap();
 
     const [products, setProducts] = useState<Product[]>([]);
+    const [recommendations, setRecommendations] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const { productsStore, searchQueryStore, sortOption, setSortOption, setProductsStore, setSearchBaseProducts, setSearchQuery, clearProducts, clearSearchQuery } = useProductStore();
+    const { productsStore, searchQueryStore, sortOption, recommendationsStore, setSortOption, setProductsStore, setSearchBaseProducts, setSearchQuery, clearProducts, clearSearchQuery, setRecommendationsStore, clearRecommendationsStore } = useProductStore();
     const { userCorreo, isAuthenticated } = useAuthStore();
     const searchParams = useSearchParams();
     const searchQuery = searchParams.get('search') || '';
     const storedSearchQuery = useProductStore((state) => state.searchQueryStore.searchTerm) || searchQuery;
     const router = useRouter();
-
-
-    const recommendations = [
-        {
-            nregistro: '12345',
-            name: 'Ibuprofeno 400mg',
-            price: 5.99,
-            image: '/images/encargo.jpg',
-            laboratory: 'Normon',
-            category: 'Analgésicos y Antiinflamatorios'
-        },
-        {
-            nregistro: '1234',
-            name: 'Vitamina C',
-            price: 12.50,
-            image: '/images/encargo.jpg',
-            laboratory: 'Cinfa',
-            category: 'Suplementos'
-        }
-    ];
 
     const handleAddToCart = (product: Product) => {
         console.log('Producto agregado:', product);
@@ -63,6 +44,18 @@ export default function ShopPage() {
         }
     };
 
+    const handleRecommendations = async () => {
+        try {
+            if (!userCorreo) return;
+            const recommendationsData = await getRecommendations(userCorreo);
+            setRecommendations(recommendationsData);
+            clearRecommendationsStore();
+            setRecommendationsStore(recommendationsData);
+        } catch (error) {
+            toast.error('Error al obtener recomendaciones');
+        }
+    };
+
     const handleSearch = async (searchTerm: string) => {
         try {
             router.replace(`/shop?search=${encodeURIComponent(searchTerm)}`);
@@ -70,7 +63,7 @@ export default function ShopPage() {
             setProducts(products);
             handleSortChange("sin-prescripcion", products);
 
-            if(userCorreo && isAuthenticated) {
+            if(userCorreo && isAuthenticated && searchTerm !== '') {
                 setSearchData({
                     searchTerm: searchTerm,
                     date: new Date(),
@@ -89,6 +82,7 @@ export default function ShopPage() {
                 user: userCorreo ?? null,
                 embedding: embedding ?? null
             });
+            clearSearchQuery();
         } catch (error) {
             toast.error("Error al buscar productos");
         } finally {
@@ -106,10 +100,26 @@ export default function ShopPage() {
             setProducts(productsStore);
             handleSortChange(sortOption, productsStore);
             setLoading(false);
+            clearSearchQuery();
         } else {
             fetchProducts(); // Si no hay búsqueda, llama a fetchProducts
         }
     }, [searchQuery]);
+
+    useEffect(() => {
+        if (!isAuthenticated) return;
+    
+        if (searchQueryStore.searchTerm !== null) {
+            // Ha habido una búsqueda → actualizamos recomendaciones
+            handleRecommendations();
+        } else if (recommendationsStore.length > 0) {
+            // No ha habido búsqueda pero sí hay recomendaciones guardadas → usamos el store
+            setRecommendations(recommendationsStore);
+        } else {
+            // No hay nada → pedimos recomendaciones
+            handleRecommendations();
+        }
+    }, [isAuthenticated, searchQueryStore.searchTerm]);
 
     const buildFiltersQuery = (newFilters: Filters): any =>{
         const filtersQuery: any = {};
@@ -242,14 +252,8 @@ export default function ShopPage() {
       
         setProducts(sortedProducts);
         setSortOption(sortOption);
-        // clearProducts();
-        // setProductsStore(summarize(sortedProducts));
       };
     
-
-    // if (loading) {
-    //     return <p></p>;
-    // }
 
     return (
         <ShopForm 

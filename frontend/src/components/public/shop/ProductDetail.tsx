@@ -3,13 +3,15 @@
 import { Product } from "@/types/productTypes";
 import { useEffect, useState } from "react";
 import { FiChevronDown, FiChevronUp, FiExternalLink, FiLock } from "react-icons/fi";
+import ProductCard from "./ProductCard";
 
 interface Props {
   product: Product;
   onAddToCart: (product: Product) => void;
+  similarProducts?: Product[];
 }
 
-export default function ProductDetail({ product, onAddToCart }: Props) {
+export default function ProductDetail({ product, onAddToCart, similarProducts }: Props) {
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
         descripcion: true,
         composicion: false,
@@ -148,6 +150,20 @@ export default function ProductDetail({ product, onAddToCart }: Props) {
             )}
           </div>
         )}
+
+        {/* Productos similares */}
+        {similarProducts && similarProducts.length > 0 && (
+                <div className="mt-12 mb-12">
+                    <h3 className="text-2xl font-semibold text-center mb-12">También podría interesarte</h3>
+                    <div className="flex flex-wrap justify-center gap-6 mt-6">
+                        {similarProducts.map((similarProduct) => (
+                            <div key={similarProduct.nregistro} className="w-[300px]">
+                                <ProductCard product={similarProduct} onAddToCart={handleAddToCart} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
       </div>
     </div>
   );
