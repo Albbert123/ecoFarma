@@ -162,3 +162,23 @@ export const getSearchHistory = async (userCorreo: string) => {
     throw new Error(errorMessage);
   }
 };
+
+export const getRecommendations = async (userCorreo: string) => {
+  try {
+    const response = await api.get(`/products/recommendations/${userCorreo}`);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al obtener las recomendaciones";
+    throw new Error(errorMessage);
+  }
+}
+
+export const getSimilarProducts = async (nregistro: string) => {
+  try {
+    const response = await api.get(`/products/similar/${nregistro}`);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al obtener productos similares";
+    throw new Error(errorMessage);
+  }
+}

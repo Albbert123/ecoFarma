@@ -7,6 +7,7 @@ import { Filters, ShopFormProps } from '@/types/productTypes';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useProductStore } from "@/stores/productStore";
 import ProductCardSkeleton from './SkeletonProductCard';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function ShopForm({
   products,
@@ -36,6 +37,7 @@ export default function ShopForm({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { sortOption } = useProductStore();
+  const { isAuthenticated } = useAuthStore();
 
 
   // Cálculo de productos visibles en la página actual
@@ -316,7 +318,13 @@ export default function ShopForm({
 
           {activeTab === 'recommendations' && (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-10">
-              {recommendations.length > 0 ? (
+              {!isAuthenticated ? (
+                <div className="col-span-3 text-center py-5">
+                  <p className="text-gray-500 text-sm">
+                    Para ver recomendaciones, <a href="/login" className="text-blue-500 underline">inicia sesión</a>.
+                  </p>
+                </div>
+              ) : recommendations.length > 0 ? (
                 recommendations.map((product) => (
                   <ProductCard 
                     key={`recommendation-${product.nregistro || product.name}`}

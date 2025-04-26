@@ -7,6 +7,7 @@ export const useProductStore = create<ProductStoreState>((set) => ({
   searchBaseProducts: [],
   searchQueryStore: {searchTerm: null, date: null, user: null, embedding: null, rating: null},
   sortOption: 'sin-prescripcion',
+  recommendationsStore: [],
 
   setSortOption: (sortOption: string) => {
     set({ sortOption });
@@ -38,5 +39,13 @@ export const useProductStore = create<ProductStoreState>((set) => ({
     set({ searchQueryStore });
   },
 
-  clearSearchQuery: () => set({ searchQueryStore: { searchTerm: null, date: null, user: null, embedding: null, rating: null }})
+  clearSearchQuery: () => set({ searchQueryStore: { searchTerm: null, date: null, user: null, embedding: null, rating: null }}),
+
+  setRecommendationsStore: (recommendationsStore: Product[]) => {
+    set({ recommendationsStore });
+  },
+
+  clearRecommendationsStore: () => {
+    set({ recommendationsStore: [] });
+  },
 }));

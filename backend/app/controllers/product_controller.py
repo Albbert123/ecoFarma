@@ -87,6 +87,25 @@ async def get_search_history(
     return search_history
 
 
+@router.get("/recommendations/{userCorreo}", response_model=List[Product])
+async def get_recommendations(
+    userCorreo: str,
+    product_service: ProductService = Depends()
+):
+    recommendations = product_service.get_recommendations(userCorreo)
+    return recommendations
+
+
+@router.get("/similar/{nregistro}", response_model=List[Product])
+async def get_similar_products(
+    nregistro: str,
+    limit: int = Query(4),
+    product_service: ProductService = Depends()
+):
+    similar_products = product_service.get_similar_products(nregistro, limit)
+    return similar_products
+
+
 @router.get("/{nregistro}", response_model=Product)
 async def get_product(
     nregistro: str, product_service: ProductService = Depends()
