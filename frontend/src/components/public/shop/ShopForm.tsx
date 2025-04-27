@@ -107,28 +107,31 @@ export default function ShopForm({
     onFilterChange(newFilters);
     const { searchQueryStore } = useProductStore.getState();
 
-    const query = new URLSearchParams();
-    
-    if (searchQueryStore.searchTerm) {
-      query.set('search', searchQueryStore.searchTerm);
-  }
+    // Obtener los parámetros actuales de la URL
+    const currentQuery = new URLSearchParams(window.location.search);
 
+    // Mantener el término de búsqueda actual si existe
+    if (searchQueryStore.searchTerm) {
+        currentQuery.set('search', searchQueryStore.searchTerm);
+    }
+
+    // Añadir los nuevos filtros a los parámetros existentes
     Object.entries(newFilters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        if (Array.isArray(value)) {
-          value.forEach((val) => query.append(key, val));
-        } else {
-          query.append(key, value.toString());
+        if (value !== undefined && value !== null && value !== "") {
+            if (Array.isArray(value)) {
+                value.forEach((val) => currentQuery.append(key, val));
+            } else {
+                currentQuery.set(key, value.toString());
+            }
         }
-      }
     });
 
-    // // Puedes añadir otros params si los necesitas, como paginación o límite
-    // query.set('limit', '30');
+    // Puedes añadir otros params si los necesitas, como paginación o límite
+    // currentQuery.set('limit', '30');
 
-    router.replace(`/shop?${query.toString()}`, { scroll: false });
-
-  };
+    // Actualizar la URL con los nuevos parámetros
+    router.replace(`/shop?${currentQuery.toString()}`, { scroll: false });
+};
 
   const handleRating = async (direction: 'up' | 'down') => {
     const newRating: Rating = {

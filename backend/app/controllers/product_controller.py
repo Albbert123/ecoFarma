@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta, timezone
 from typing import Any, List, Optional
 from fastapi import APIRouter, HTTPException, Depends, Body, Query
 from app.models.product_model import Product, Rating, SearchData
@@ -60,6 +61,24 @@ async def search_data(
             status_code=400,
             detail="Ya existe un registro para este usuario en esta fecha"
         )
+
+    # Fecha hace 5 minutos
+    five_minutes_ago = datetime.now(timezone.utc) - timedelta(minutes=5)
+
+    # Convertir a cadena ISO 8601
+    five_minutes_ago_str = five_minutes_ago.isoformat()
+    recent_entries = product_service.get_recent_searches_by_user(
+        user=search_data.user,
+        since=five_minutes_ago_str
+    )
+
+    print(f"Entradas recientes: {recent_entries}")
+
+    if any(
+        entry["searchTerm"] == search_data.searchTerm
+        for entry in recent_entries
+    ):
+        return search_data
 
     # Si no existe, llama al servicio para guardar el registro
     return product_service.save_search_data(search_data)

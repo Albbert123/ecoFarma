@@ -1,3 +1,4 @@
+from datetime import datetime
 from pymongo import ReturnDocument
 from app.models.product_model import Product
 from typing import List, Optional
@@ -23,6 +24,15 @@ class ProductRepository:
         self, user: str, date: str
     ) -> Optional[dict]:
         return HISTORIAL_DB.find_one({"user": user, "date": date})
+
+    def get_recent_searches_by_user(
+        self, user: str, since: datetime
+    ) -> List[dict]:
+        cursor = HISTORIAL_DB.find({
+            "user": user,
+            "date": {"$gte": since}
+        })
+        return list(cursor)
 
     def save_search_data(self, search_data: dict):
         HISTORIAL_DB.insert_one(search_data)

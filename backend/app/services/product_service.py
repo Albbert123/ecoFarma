@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import HTTPException
 from app.repositories.product_repository import ProductRepository
 from app.models.product_model import Product, Rating, SearchData
@@ -65,6 +66,9 @@ class ProductService:
         return self.product_repo.get_search_history_by_user_and_date(
             user, date
         )
+
+    def get_recent_searches_by_user(self, user: str, since: datetime):
+        return self.product_repo.get_recent_searches_by_user(user, since)
 
     def get_search_history_by_user(self, user: str) -> List[dict]:
         return self.product_repo.get_search_history_by_user(user)

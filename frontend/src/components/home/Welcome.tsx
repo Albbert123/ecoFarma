@@ -12,15 +12,17 @@ export default function Welcome() {
     const { setSearchQuery } = useProductStore();
     const router = useRouter();
     const [searchTerm, setSearchTerm] = useState("");
+    const [hasSubmitted, setHasSubmitted] = useState(false);
+
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
     const handleSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // e.preventDefault();
         if (e.key === 'Enter') {
-            if (searchTerm.trim() !== "") {
+            if (searchTerm.trim() !== "" && !hasSubmitted) {
+                setHasSubmitted(true); // Marca que el submit ya se realizó
                 setSearchQuery({
                     searchTerm: searchTerm,
                     date: new Date(),
