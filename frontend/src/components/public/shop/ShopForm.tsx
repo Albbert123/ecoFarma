@@ -29,6 +29,7 @@ export default function ShopForm({
   const productsPerPage = 9;
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [rating, setRating] = useState<'up' | 'down' | null>(null);
+  const [animateRating, setAnimateRating] = useState<'up' | 'down' | null>(null);
   const [filters, setFilters] = useState<Filters>({
     laboratory: [],
     category: [],
@@ -133,7 +134,8 @@ export default function ShopForm({
     router.replace(`/shop?${currentQuery.toString()}`, { scroll: false });
 };
 
-  const handleRating = async (direction: 'up' | 'down') => {
+  const handleRating = async (direction: 'up' | 'down' | null) => {
+    
     const newRating: Rating = {
       type: activeTab === 'products' ? 'search' : 'recommendation',
       value: direction === 'up' ? 1 : -1,
@@ -143,6 +145,10 @@ export default function ShopForm({
     try {
       await saveRating(newRating);
       setRating(direction);
+
+      // Activar la animación
+      setAnimateRating(direction);
+      setTimeout(() => setAnimateRating(null), 500);
     } catch (error) {
       toast.error('Error al guardar la valoración');
     }
@@ -213,13 +219,18 @@ export default function ShopForm({
             </span>
             <button 
               onClick={() => handleRating('up')}
-              className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
+              className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'} 
+                ${animateRating === 'up' ? 'animate-bounce' : ''}`}
+              disabled={rating !== null}
             >
               <ThumbsUp className="h-5 w-5" />
             </button>
+
             <button 
               onClick={() => handleRating('down')}
-              className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+              className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}
+                ${animateRating === 'down' ? 'animate-bounce' : ''}`}
+              disabled={rating !== null}
             >
               <ThumbsDown className="h-5 w-5" />
             </button>
@@ -265,13 +276,16 @@ export default function ShopForm({
         </span>
         <button 
           onClick={() => handleRating('up')}
-          className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
+          className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'} 
+            ${animateRating === 'up' ? 'animate-bounce' : ''}`}
         >
           <ThumbsUp className="h-5 w-5" />
         </button>
+
         <button 
           onClick={() => handleRating('down')}
-          className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+          className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}
+            ${animateRating === 'down' ? 'animate-bounce' : ''}`}
         >
           <ThumbsDown className="h-5 w-5" />
         </button>

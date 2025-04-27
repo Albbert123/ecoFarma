@@ -72,8 +72,6 @@ async def search_data(
         since=five_minutes_ago_str
     )
 
-    print(f"Entradas recientes: {recent_entries}")
-
     if any(
         entry["searchTerm"] == search_data.searchTerm
         for entry in recent_entries
