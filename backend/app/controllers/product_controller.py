@@ -1,6 +1,6 @@
 from typing import Any, List, Optional
 from fastapi import APIRouter, HTTPException, Depends, Body, Query
-from app.models.product_model import Product, SearchData
+from app.models.product_model import Product, Rating, SearchData
 from app.services.product_service import ProductService
 
 router = APIRouter()
@@ -71,6 +71,15 @@ async def create_product(
 ):
     created_product = product_service.create_product(product)
     return created_product
+
+
+@router.post("/rating", response_model=Rating)
+async def create_rating(
+    rating: Rating = Body(...),
+    product_service: ProductService = Depends()
+):
+    # Guardar la calificación
+    return product_service.save_rating(rating)
 
 
 @router.get("/search-history/{userCorreo}", response_model=List[SearchData])

@@ -5,6 +5,7 @@ from typing import List, Optional
 from app.constants.product_constants import (
     HISTORIAL_DB,
     PRODUCTO_DB,
+    RATING_DB
 )
 
 
@@ -33,6 +34,10 @@ class ProductRepository:
             .find({"user": user})
             .sort("date", 1)  # Ordenar por fecha ascendente (la más antigua p)
         )
+
+    def save_rating(self, rating: dict):
+        # Guardar la calificación en la base de datos
+        RATING_DB.insert_one(rating)
 
     # Eliminar una entrada del historial de búsqueda por usuario y fecha
     def delete_search_history_entry_by_user_and_date(

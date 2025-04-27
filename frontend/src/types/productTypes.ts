@@ -74,7 +74,12 @@ export interface SearchData {
     date: Date | null
     user?: string | null;
     embedding?: number[] | null;
-    rating?: number | null;
+}
+
+export interface Rating {
+    type: string;
+    value: number;
+    date: string;
 }
   
 export interface ProductStoreState {

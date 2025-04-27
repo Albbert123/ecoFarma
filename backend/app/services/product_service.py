@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from app.repositories.product_repository import ProductRepository
-from app.models.product_model import Product, SearchData
+from app.models.product_model import Product, Rating, SearchData
 from typing import List
 import numpy as np
 from app.constants.product_constants import LAB_MAPPING, CATEGORIES_MAPPING
@@ -92,6 +92,11 @@ class ProductService:
         # Guardar en la colección
         self.product_repo.save_search_data(search_data_dict)
         return search_data_dict
+
+    def save_rating(self, rating: Rating):
+        rating_dict = rating.dict()
+        self.product_repo.save_rating(rating_dict)
+        return rating
 
     def create_product(self, product: Product):
         existing = self.product_repo.get_product_by_nregistro(

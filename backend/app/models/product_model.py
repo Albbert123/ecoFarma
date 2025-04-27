@@ -24,4 +24,9 @@ class SearchData(BaseModel):
     date: str
     user: str
     embedding: Optional[List[float]] = None
-    rating: Optional[int] = None
+
+
+class Rating(BaseModel):
+    value: int
+    type: str
+    date: str

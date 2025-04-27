@@ -2,6 +2,7 @@ from app.config.database import db
 
 PRODUCTO_DB = db["Producto"]
 HISTORIAL_DB = db["HistorialDeBusqueda"]
+RATING_DB = db["Valoracion"]
 
 # Lista real desde tu base de datos
 LABORATORIES_DB = [

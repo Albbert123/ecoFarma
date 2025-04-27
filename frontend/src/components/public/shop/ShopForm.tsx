@@ -3,11 +3,13 @@ import FiltersForm from './FiltersForm';
 import ProductCard from './ProductCard';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
-import { Filters, ShopFormProps } from '@/types/productTypes';
+import { Filters, ShopFormProps, Rating } from '@/types/productTypes';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useProductStore } from "@/stores/productStore";
 import ProductCardSkeleton from './SkeletonProductCard';
 import { useAuthStore } from '@/stores/authStore';
+import { saveRating } from '@/services/productService';
+import toast from 'react-hot-toast';
 
 export default function ShopForm({
   products,
@@ -90,7 +92,6 @@ export default function ShopForm({
     setSearchTerm(e.target.value);
   };
   
-  // Añade esta función:
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onSearch(searchTerm);
@@ -103,7 +104,7 @@ export default function ShopForm({
 
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
-    onFilterChange(newFilters); // Pasamos los filtros al componente padre si es necesario
+    onFilterChange(newFilters);
     const { searchQueryStore } = useProductStore.getState();
 
     const query = new URLSearchParams();
@@ -128,6 +129,26 @@ export default function ShopForm({
     router.replace(`/shop?${query.toString()}`, { scroll: false });
 
   };
+
+  const handleRating = async (direction: 'up' | 'down') => {
+    const newRating: Rating = {
+      type: activeTab === 'products' ? 'search' : 'recommendation',
+      value: direction === 'up' ? 1 : -1,
+      date: new Date().toISOString(),
+    };
+
+    try {
+      await saveRating(newRating);
+      setRating(direction);
+    } catch (error) {
+      toast.error('Error al guardar la valoración');
+    }
+  };
+
+  // // Reiniciar valoración cuando cambia la búsqueda o la recomendación
+  useEffect(() => {
+    setRating(null);
+  }, [searchTerm, activeTab]);
 
   return (
     <div className="container mx-auto p-4 relative">
@@ -188,13 +209,13 @@ export default function ShopForm({
                 : '¡Valora el resultado de la recomendación!'}
             </span>
             <button 
-              onClick={() => setRating('up')}
+              onClick={() => handleRating('up')}
               className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
             >
               <ThumbsUp className="h-5 w-5" />
             </button>
             <button 
-              onClick={() => setRating('down')}
+              onClick={() => handleRating('down')}
               className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
             >
               <ThumbsDown className="h-5 w-5" />
@@ -240,13 +261,13 @@ export default function ShopForm({
             : '¡Valora el resultado de la recomendación!'}
         </span>
         <button 
-          onClick={() => setRating('up')}
+          onClick={() => handleRating('up')}
           className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
         >
           <ThumbsUp className="h-5 w-5" />
         </button>
         <button 
-          onClick={() => setRating('down')}
+          onClick={() => handleRating('down')}
           className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
         >
           <ThumbsDown className="h-5 w-5" />
