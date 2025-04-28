@@ -1,6 +1,7 @@
+from datetime import datetime, timedelta, timezone
 from typing import Any, List, Optional
 from fastapi import APIRouter, HTTPException, Depends, Body, Query
-from app.models.product_model import Product, SearchData
+from app.models.product_model import Product, Rating, SearchData
 from app.services.product_service import ProductService
 
 router = APIRouter()
@@ -61,6 +62,22 @@ async def search_data(
             detail="Ya existe un registro para este usuario en esta fecha"
         )
 
+    # Fecha hace 5 minutos
+    five_minutes_ago = datetime.now(timezone.utc) - timedelta(minutes=5)
+
+    # Convertir a cadena ISO 8601
+    five_minutes_ago_str = five_minutes_ago.isoformat()
+    recent_entries = product_service.get_recent_searches_by_user(
+        user=search_data.user,
+        since=five_minutes_ago_str
+    )
+
+    if any(
+        entry["searchTerm"] == search_data.searchTerm
+        for entry in recent_entries
+    ):
+        return search_data
+
     # Si no existe, llama al servicio para guardar el registro
     return product_service.save_search_data(search_data)
 
@@ -71,6 +88,28 @@ async def create_product(
 ):
     created_product = product_service.create_product(product)
     return created_product
+
+
+@router.post("/rating", response_model=Rating)
+async def create_rating(
+    rating: Rating = Body(...),
+    product_service: ProductService = Depends()
+):
+    # Guardar la calificación
+    return product_service.save_rating(rating)
+
+
+@router.get("/rating", response_model=List[Rating])
+async def get_ratings(
+    product_service: ProductService = Depends()
+):
+    ratings = product_service.get_ratings()
+    if not ratings:
+        raise HTTPException(
+            status_code=404,
+            detail="No se encontraron calificaciones"
+        )
+    return ratings
 
 
 @router.get("/search-history/{userCorreo}", response_model=List[SearchData])

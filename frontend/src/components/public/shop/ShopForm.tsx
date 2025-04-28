@@ -3,11 +3,13 @@ import FiltersForm from './FiltersForm';
 import ProductCard from './ProductCard';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
-import { Filters, ShopFormProps } from '@/types/productTypes';
+import { Filters, ShopFormProps, Rating } from '@/types/productTypes';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useProductStore } from "@/stores/productStore";
 import ProductCardSkeleton from './SkeletonProductCard';
 import { useAuthStore } from '@/stores/authStore';
+import { saveRating } from '@/services/productService';
+import toast from 'react-hot-toast';
 
 export default function ShopForm({
   products,
@@ -27,6 +29,7 @@ export default function ShopForm({
   const productsPerPage = 9;
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [rating, setRating] = useState<'up' | 'down' | null>(null);
+  const [animateRating, setAnimateRating] = useState<'up' | 'down' | null>(null);
   const [filters, setFilters] = useState<Filters>({
     laboratory: [],
     category: [],
@@ -90,7 +93,6 @@ export default function ShopForm({
     setSearchTerm(e.target.value);
   };
   
-  // Añade esta función:
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onSearch(searchTerm);
@@ -103,31 +105,59 @@ export default function ShopForm({
 
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
-    onFilterChange(newFilters); // Pasamos los filtros al componente padre si es necesario
+    onFilterChange(newFilters);
     const { searchQueryStore } = useProductStore.getState();
 
-    const query = new URLSearchParams();
-    
-    if (searchQueryStore.searchTerm) {
-      query.set('search', searchQueryStore.searchTerm);
-  }
+    // Obtener los parámetros actuales de la URL
+    const currentQuery = new URLSearchParams(window.location.search);
 
+    // Mantener el término de búsqueda actual si existe
+    if (searchQueryStore.searchTerm) {
+        currentQuery.set('search', searchQueryStore.searchTerm);
+    }
+
+    // Añadir los nuevos filtros a los parámetros existentes
     Object.entries(newFilters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        if (Array.isArray(value)) {
-          value.forEach((val) => query.append(key, val));
-        } else {
-          query.append(key, value.toString());
+        if (value !== undefined && value !== null && value !== "") {
+            if (Array.isArray(value)) {
+                value.forEach((val) => currentQuery.append(key, val));
+            } else {
+                currentQuery.set(key, value.toString());
+            }
         }
-      }
     });
 
-    // // Puedes añadir otros params si los necesitas, como paginación o límite
-    // query.set('limit', '30');
+    // Puedes añadir otros params si los necesitas, como paginación o límite
+    // currentQuery.set('limit', '30');
 
-    router.replace(`/shop?${query.toString()}`, { scroll: false });
+    // Actualizar la URL con los nuevos parámetros
+    router.replace(`/shop?${currentQuery.toString()}`, { scroll: false });
+};
 
+  const handleRating = async (direction: 'up' | 'down' | null) => {
+    
+    const newRating: Rating = {
+      type: activeTab === 'products' ? 'search' : 'recommendation',
+      value: direction === 'up' ? 1 : -1,
+      date: new Date().toISOString(),
+    };
+
+    try {
+      await saveRating(newRating);
+      setRating(direction);
+
+      // Activar la animación
+      setAnimateRating(direction);
+      setTimeout(() => setAnimateRating(null), 500);
+    } catch (error) {
+      toast.error('Error al guardar la valoración');
+    }
   };
+
+  // // Reiniciar valoración cuando cambia la búsqueda o la recomendación
+  useEffect(() => {
+    setRating(null);
+  }, [searchTerm, activeTab]);
 
   return (
     <div className="container mx-auto p-4 relative">
@@ -188,14 +218,19 @@ export default function ShopForm({
                 : '¡Valora el resultado de la recomendación!'}
             </span>
             <button 
-              onClick={() => setRating('up')}
-              className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
+              onClick={() => handleRating('up')}
+              className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'} 
+                ${animateRating === 'up' ? 'animate-bounce' : ''}`}
+              disabled={rating !== null}
             >
               <ThumbsUp className="h-5 w-5" />
             </button>
+
             <button 
-              onClick={() => setRating('down')}
-              className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+              onClick={() => handleRating('down')}
+              className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}
+                ${animateRating === 'down' ? 'animate-bounce' : ''}`}
+              disabled={rating !== null}
             >
               <ThumbsDown className="h-5 w-5" />
             </button>
@@ -240,14 +275,17 @@ export default function ShopForm({
             : '¡Valora el resultado de la recomendación!'}
         </span>
         <button 
-          onClick={() => setRating('up')}
-          className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'}`}
+          onClick={() => handleRating('up')}
+          className={`p-1 transition-colors ${rating === 'up' ? 'text-green-600' : 'text-gray-500 hover:text-green-600'} 
+            ${animateRating === 'up' ? 'animate-bounce' : ''}`}
         >
           <ThumbsUp className="h-5 w-5" />
         </button>
+
         <button 
-          onClick={() => setRating('down')}
-          className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+          onClick={() => handleRating('down')}
+          className={`p-1 transition-colors ${rating === 'down' ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}
+            ${animateRating === 'down' ? 'animate-bounce' : ''}`}
         >
           <ThumbsDown className="h-5 w-5" />
         </button>

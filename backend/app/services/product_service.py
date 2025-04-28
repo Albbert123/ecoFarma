@@ -1,6 +1,7 @@
+from datetime import datetime
 from fastapi import HTTPException
 from app.repositories.product_repository import ProductRepository
-from app.models.product_model import Product, SearchData
+from app.models.product_model import Product, Rating, SearchData
 from typing import List
 import numpy as np
 from app.constants.product_constants import LAB_MAPPING, CATEGORIES_MAPPING
@@ -66,6 +67,9 @@ class ProductService:
             user, date
         )
 
+    def get_recent_searches_by_user(self, user: str, since: datetime):
+        return self.product_repo.get_recent_searches_by_user(user, since)
+
     def get_search_history_by_user(self, user: str) -> List[dict]:
         return self.product_repo.get_search_history_by_user(user)
 
@@ -92,6 +96,16 @@ class ProductService:
         # Guardar en la colección
         self.product_repo.save_search_data(search_data_dict)
         return search_data_dict
+
+    def save_rating(self, rating: Rating):
+        rating_dict = rating.dict()
+        self.product_repo.save_rating(rating_dict)
+        return rating
+
+    def get_ratings(self):
+        # Obtener todas las calificaciones
+        ratings = self.product_repo.get_ratings()
+        return ratings
 
     def create_product(self, product: Product):
         existing = self.product_repo.get_product_by_nregistro(

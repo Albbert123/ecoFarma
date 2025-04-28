@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { Product, ProductFilters, ProductFormData, UpdateProductData, SearchData } from '@/types/productTypes';
+import { Product, ProductFilters, ProductFormData, UpdateProductData, SearchData, Rating } from '@/types/productTypes';
 import { LAB_MAPPING, CATEGORIES_MAPPING } from '@/constants/constants';
 
 
@@ -179,6 +179,26 @@ export const getSimilarProducts = async (nregistro: string) => {
     return response.data;
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al obtener productos similares";
+    throw new Error(errorMessage);
+  }
+}
+
+export const saveRating = async (rating: Rating) => {
+  try {
+    const response = await api.post(`/products/rating/`, rating);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al guardar la calificación";
+    throw new Error(errorMessage);
+  }
+}
+
+export const getRatings = async () => {
+  try {
+    const response = await api.get(`/products/rating/`);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al obtener las calificaciones";
     throw new Error(errorMessage);
   }
 }

@@ -72,3 +72,8 @@ export const CATEGORIES_MAPPING = {
         "ANTIVIRALES DE ACCIÓN DIRECTA"
     ]
 }
+
+export const months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];

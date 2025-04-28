@@ -18,6 +18,7 @@ export default function ShopPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [recommendations, setRecommendations] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [hasSearched, setHasSearched] = useState(false);
     const { productsStore, searchQueryStore, sortOption, recommendationsStore, setSortOption, setProductsStore, setSearchBaseProducts, setSearchQuery, clearProducts, clearSearchQuery, setRecommendationsStore, clearRecommendationsStore } = useProductStore();
     const { userCorreo, isAuthenticated } = useAuthStore();
     const searchParams = useSearchParams();
@@ -58,41 +59,45 @@ export default function ShopPage() {
 
     const handleSearch = async (searchTerm: string) => {
         try {
-            router.replace(`/shop?search=${encodeURIComponent(searchTerm)}`);
-            const { products, embedding } = await getSearchResults(searchTerm);
-            setProducts(products);
-            handleSortChange("sin-prescripcion", products);
-
-            if(userCorreo && isAuthenticated && searchTerm !== '') {
-                setSearchData({
+            if (!hasSearched) {
+                setHasSearched(true); // Marca que la búsqueda ya se realizó
+                router.replace(`/shop?search=${encodeURIComponent(searchTerm)}`);
+                const { products, embedding } = await getSearchResults(searchTerm);
+                setProducts(products);
+                handleSortChange("sin-prescripcion", products);
+    
+                if (userCorreo && isAuthenticated && searchTerm !== '') {
+                    setSearchData({
+                        searchTerm: searchTerm,
+                        date: new Date(),
+                        user: userCorreo,
+                        embedding: embedding ?? null
+                    });
+                }
+    
+                clearProducts();
+                setProductsStore(products);
+                setSearchBaseProducts(products);
+                handleSortChange(sortOption, products);
+                setSearchQuery({
                     searchTerm: searchTerm,
                     date: new Date(),
-                    user: userCorreo,
+                    user: userCorreo ?? null,
                     embedding: embedding ?? null
                 });
+                clearSearchQuery();
             }
-
-            clearProducts();
-            setProductsStore(products);
-            setSearchBaseProducts(products);
-            handleSortChange(sortOption, products);
-            setSearchQuery({
-                searchTerm: searchTerm,
-                date: new Date(),
-                user: userCorreo ?? null,
-                embedding: embedding ?? null
-            });
-            clearSearchQuery();
         } catch (error) {
             toast.error("Error al buscar productos");
         } finally {
             setLoading(false);
+            setHasSearched(false); // Restablece el estado para permitir futuras búsquedas
         }
-      };
+    };
 
     // Lógica para decidir qué función llamar
     useEffect(() => {
-        setLoading(true); 
+        setLoading(true);
         if (searchQuery) {
             handleSearch(searchQuery); // Si hay una búsqueda, llama a handleSearch
         } else if (productsStore.length > 0 && searchQueryStore.searchTerm !== '') {

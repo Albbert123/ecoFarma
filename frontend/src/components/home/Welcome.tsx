@@ -12,15 +12,17 @@ export default function Welcome() {
     const { setSearchQuery } = useProductStore();
     const router = useRouter();
     const [searchTerm, setSearchTerm] = useState("");
+    const [hasSubmitted, setHasSubmitted] = useState(false);
+
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
     const handleSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // e.preventDefault();
         if (e.key === 'Enter') {
-            if (searchTerm.trim() !== "") {
+            if (searchTerm.trim() !== "" && !hasSubmitted) {
+                setHasSubmitted(true); // Marca que el submit ya se realizó
                 setSearchQuery({
                     searchTerm: searchTerm,
                     date: new Date(),
@@ -133,7 +135,7 @@ export default function Welcome() {
                             Gestionar usuarios
                         </button>
                     </Link>
-                    <Link href="/admin/statistics">
+                    <Link href="/admin/reports">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Estadísticas
                         </button>

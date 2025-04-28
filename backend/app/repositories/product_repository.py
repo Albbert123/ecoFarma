@@ -1,3 +1,4 @@
+from datetime import datetime
 from pymongo import ReturnDocument
 from app.models.product_model import Product
 from typing import List, Optional
@@ -5,6 +6,7 @@ from typing import List, Optional
 from app.constants.product_constants import (
     HISTORIAL_DB,
     PRODUCTO_DB,
+    RATING_DB
 )
 
 
@@ -23,6 +25,15 @@ class ProductRepository:
     ) -> Optional[dict]:
         return HISTORIAL_DB.find_one({"user": user, "date": date})
 
+    def get_recent_searches_by_user(
+        self, user: str, since: datetime
+    ) -> List[dict]:
+        cursor = HISTORIAL_DB.find({
+            "user": user,
+            "date": {"$gte": since}
+        })
+        return list(cursor)
+
     def save_search_data(self, search_data: dict):
         HISTORIAL_DB.insert_one(search_data)
 
@@ -33,6 +44,14 @@ class ProductRepository:
             .find({"user": user})
             .sort("date", 1)  # Ordenar por fecha ascendente (la más antigua p)
         )
+
+    def save_rating(self, rating: dict):
+        # Guardar la calificación en la base de datos
+        RATING_DB.insert_one(rating)
+
+    def get_ratings(self) -> List[dict]:
+        # Obtener todas las calificaciones
+        return list(RATING_DB.find({}, {"_id": 0}))
 
     # Eliminar una entrada del historial de búsqueda por usuario y fecha
     def delete_search_history_entry_by_user_and_date(
