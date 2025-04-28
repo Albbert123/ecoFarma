@@ -102,6 +102,11 @@ class ProductService:
         self.product_repo.save_rating(rating_dict)
         return rating
 
+    def get_ratings(self):
+        # Obtener todas las calificaciones
+        ratings = self.product_repo.get_ratings()
+        return ratings
+
     def create_product(self, product: Product):
         existing = self.product_repo.get_product_by_nregistro(
             product.nregistro

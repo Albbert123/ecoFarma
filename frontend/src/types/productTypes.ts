@@ -81,6 +81,32 @@ export interface Rating {
     value: number;
     date: string;
 }
+
+export interface MonthlyData {
+  [month: string]: {
+    positive: number;
+    negative: number;
+  };
+}
+
+export interface ReportData {
+  search: MonthlyData;
+  recommendation: MonthlyData;
+}
+
+export interface MonthlyStats {
+  positive: number;
+  negative: number;
+}
+
+export interface ReportDataForm {
+  search: { [month: string]: MonthlyStats };
+  recommendation: { [month: string]: MonthlyStats };
+}
+
+export interface ReportFormProps {
+  data: ReportDataForm;
+}
   
 export interface ProductStoreState {
   productsStore: Product[];

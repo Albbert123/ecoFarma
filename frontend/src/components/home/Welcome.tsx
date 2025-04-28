@@ -135,7 +135,7 @@ export default function Welcome() {
                             Gestionar usuarios
                         </button>
                     </Link>
-                    <Link href="/admin/statistics">
+                    <Link href="/admin/reports">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Estadísticas
                         </button>

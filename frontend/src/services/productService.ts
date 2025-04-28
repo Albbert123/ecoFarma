@@ -192,3 +192,13 @@ export const saveRating = async (rating: Rating) => {
     throw new Error(errorMessage);
   }
 }
+
+export const getRatings = async () => {
+  try {
+    const response = await api.get(`/products/rating/`);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al obtener las calificaciones";
+    throw new Error(errorMessage);
+  }
+}

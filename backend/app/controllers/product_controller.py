@@ -99,6 +99,19 @@ async def create_rating(
     return product_service.save_rating(rating)
 
 
+@router.get("/rating", response_model=List[Rating])
+async def get_ratings(
+    product_service: ProductService = Depends()
+):
+    ratings = product_service.get_ratings()
+    if not ratings:
+        raise HTTPException(
+            status_code=404,
+            detail="No se encontraron calificaciones"
+        )
+    return ratings
+
+
 @router.get("/search-history/{userCorreo}", response_model=List[SearchData])
 async def get_search_history(
     userCorreo: str,

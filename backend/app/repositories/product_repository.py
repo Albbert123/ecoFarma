@@ -49,6 +49,10 @@ class ProductRepository:
         # Guardar la calificación en la base de datos
         RATING_DB.insert_one(rating)
 
+    def get_ratings(self) -> List[dict]:
+        # Obtener todas las calificaciones
+        return list(RATING_DB.find({}, {"_id": 0}))
+
     # Eliminar una entrada del historial de búsqueda por usuario y fecha
     def delete_search_history_entry_by_user_and_date(
         self, user: str, date: str
