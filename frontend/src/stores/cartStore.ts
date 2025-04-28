@@ -6,21 +6,25 @@ import { CartState } from "@/types/orderTypes";
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
-      cart: [],
-      addToCart: (product: Product) => {
-        const existingCart = get().cart;
-        const productIndex = existingCart.findIndex((item) => item.nregistro === product.nregistro);
+        cart: [],
+        addToCart: (product: Product) => {
+            set((state) => {
+                const existingCart = state.cart;
+                const productIndex = existingCart.findIndex((item) => item.nregistro === product.nregistro);
 
-        if (productIndex !== -1) {
-          // Ya existe en carrito -> aumentar cantidad
-          const updatedCart = [...existingCart];
-          updatedCart[productIndex].quantity += 1;
-          set({ cart: updatedCart });
-        } else {
-          // No existe -> agregarlo con cantidad 1
-          set({ cart: [...existingCart, { ...product, quantity: 1 }] });
-        }
-      },
+                if (productIndex !== -1) {
+                // Ya existe: sumar cantidades
+                const updatedCart = [...existingCart];
+                updatedCart[productIndex].quantity = 
+                    (updatedCart[productIndex]?.quantity || 1) + (product?.quantity || 1);
+
+                return { cart: updatedCart };
+                } else {
+                // No existe: añadir nuevo
+                return { cart: [...existingCart, { ...product, quantity: product?.quantity || 1 }] };
+                }
+            });
+        },
       removeFromCart: (nregistro: string) => {
         set((state) => ({
           cart: state.cart.filter((item) => item.nregistro !== nregistro),

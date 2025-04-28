@@ -4,11 +4,12 @@ import { useState } from "react";
 import { ChevronUp, ChevronDown, PlusCircle, Lock } from "lucide-react";
 import { FaTrashAlt } from "react-icons/fa";
 import { Prescription } from "@/types/prescriptionTypes";
+import { Product } from "@/types/productTypes";
 
 interface Props {
   prescription: Prescription;
   onDelete: (id: string) => void;
-  onAddToCart: (productName: string) => void;
+  onAddToCart: (product: Product) => void;
 }
 
 const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
@@ -171,7 +172,7 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
                         </div>
                       ) : (
                         <button
-                          onClick={() => onAddToCart(selectedAlt.name)}
+                          onClick={() => onAddToCart({ ...selectedAlt, quantity: 1, price: parseFloat((selectedAlt.price * (1 - (prescription.discount ?? 0))).toFixed(2))})}
                           className="flex-shrink-0 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 text-sm rounded-lg transition-all shadow-sm hover:shadow-md"
                         >
                           <PlusCircle size={16} />
@@ -213,7 +214,7 @@ const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {
                       </div>
                     ) : (
                       <button
-                        onClick={() => onAddToCart(prod.name)}
+                        onClick={() => onAddToCart({ ...prod, quantity: 1, price: parseFloat((prod.price * (1 - (prescription.discount ?? 0))).toFixed(2)) })}
                         className="flex-shrink-0 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-2 text-sm rounded-lg transition-all shadow-sm hover:shadow-md"
                       >
                         <PlusCircle size={16} />
