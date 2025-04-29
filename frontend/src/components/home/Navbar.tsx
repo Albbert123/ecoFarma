@@ -5,6 +5,8 @@ import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import ProfileMenu from "./ProfileMenu";
 import { useAuthStore } from "@/stores/authStore";
 import { usePathname } from "next/navigation";
+import { useCartStore } from "@/stores/cartStore";
+import CartBadge from "./CartBadge";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -89,9 +91,14 @@ export default function Navbar() {
 
                 {/* Icons - Aumentamos tamaño en desktop */}
                 <div className="flex space-x-6 items-center">
-                    <Link href="/cart">
-                        <FaShoppingCart className="text-gray-900 text-xl md:text-2xl hover:text-blue-600 transition-colors" />
-                    </Link>
+                    <div className="relative">
+                        <Link href="/cart">
+                            <FaShoppingCart className="text-gray-900 text-xl md:text-2xl hover:text-blue-600 transition-colors" />
+                            {/* Badge de cantidad */}
+                            <CartBadge />
+                        </Link>
+                    </div>
+                    
                     <div className="md:scale-110 z-50"> {/* Escalamos el ProfileMenu en desktop */}
                         <ProfileMenu />
                     </div>

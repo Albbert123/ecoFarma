@@ -1,3 +1,5 @@
+import { Product } from "./productTypes";
+
 export enum PrescriptionType {
     ELECTRONICA = "Electrónica",
     PRIVADA = "Privada",
@@ -40,5 +42,5 @@ export interface Prescription {
     prescriptions: Prescription[];
     onUpload: (type: PrescriptionType) => void;
     onDelete: (id: string) => void;
-    onAddToCart: (product: string) => void;
+    onAddToCart: (product: Product) => void;
   };

@@ -9,38 +9,13 @@ import { Prescription, PrescriptionStatus, PrescriptionType } from "@/types/pres
 import toast from "react-hot-toast";
 import { deletePrescription, getPrescriptions, uploadPrescription } from "@/services/prescriptionService";
 import { useAuthStore } from "@/stores/authStore";
+import { useCartStore } from "@/stores/cartStore";
+import { Product } from "@/types/productTypes";
+import { getProduct } from "@/services/productService";
 
 function PrescriptionPage() {
   useBootstrap();
-
-//   const [prescriptions, setPrescriptions] = useState<Prescription[]>([
-//     {
-//       id: "Receta_2024554",
-//       user: "usuario",
-//       type: PrescriptionType.ELECTRONICA,
-//       status: PrescriptionStatus.ACTIVA,
-//       validFrom: "07/03/2025",
-//       validTo: "11/05/2025",
-//       doctor: "Dr. Ruíz",
-//       products: [
-//         { name: "Ibuprofeno 600mg", price: 4.67 },
-//         { name: "Lexema 60g crema", price: 6.76 },
-//       ],
-//     },
-//     {
-//         id: "Receta_2024555",
-//         user: "usuario",
-//         type: PrescriptionType.PRIVADA,
-//         status: PrescriptionStatus.CADUCADA,
-//         validFrom: "07/03/2025",
-//         validTo: "11/05/2025",
-//         doctor: "Dr. Ruíz",
-//         products: [
-//           { name: "Ibuprofeno 600mg", price: 4.67 },
-//           { name: "Lexema 60g crema", price: 6.76 },
-//         ],
-//       },
-//   ]);
+  
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -106,9 +81,25 @@ function PrescriptionPage() {
     }
   };
 
-  const handleAddToCart = (product: string) => {
-    console.log(`Agregado al carrito: ${product}`);
-    // Lógica real para añadir al carrito
+  const handleAddToCart = async (product: Product) => {
+    try {
+      // 1. Llamamos a la base de datos para obtener el producto completo
+      const productFromDb = await getProduct(product.nregistro);
+  
+      // 2. Construimos el nuevo producto con la imagen que hemos recuperado
+      const productWithImage = {
+        ...product,
+        quantity: product.quantity ?? 1,
+        image: productFromDb?.image || product.image || "", // Prioridad: imagen de la base de datos, luego la que tenga
+      };
+  
+      // 3. Añadimos al carrito
+      useCartStore.getState().addToCart(productWithImage);
+      toast.success("Producto añadido al carrito");
+    } catch (error) {
+      console.error("Error añadiendo al carrito:", error);
+      toast.error("No se pudo añadir el producto");
+    }
   };
 
   return (

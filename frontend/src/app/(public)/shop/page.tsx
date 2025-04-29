@@ -9,6 +9,7 @@ import { getFilteredProducts, getRecommendations, getSearchResults, setSearchDat
 import { useProductStore } from "@/stores/productStore";
 import { useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
+import { useCartStore } from "@/stores/cartStore";
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
@@ -21,13 +22,16 @@ export default function ShopPage() {
     const [hasSearched, setHasSearched] = useState(false);
     const { productsStore, searchQueryStore, sortOption, recommendationsStore, setSortOption, setProductsStore, setSearchBaseProducts, setSearchQuery, clearProducts, clearSearchQuery, setRecommendationsStore, clearRecommendationsStore } = useProductStore();
     const { userCorreo, isAuthenticated } = useAuthStore();
+    // const { addToCart } = useCartStore();
     const searchParams = useSearchParams();
     const searchQuery = searchParams.get('search') || '';
     const storedSearchQuery = useProductStore((state) => state.searchQueryStore.searchTerm) || searchQuery;
     const router = useRouter();
 
     const handleAddToCart = (product: Product) => {
-        console.log('Producto agregado:', product);
+        // addToCart(product);
+        useCartStore.getState().addToCart(product)
+        toast.success('Producto añadido al carrito');
     };
 
     // Función para obtener productos predeterminados

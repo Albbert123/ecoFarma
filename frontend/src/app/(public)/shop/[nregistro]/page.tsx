@@ -8,6 +8,8 @@ import { Product } from "@/types/productTypes";
 import ProductDetail from "@/components/public/shop/ProductDetail";
 import { use } from "react";
 import { useBootstrap } from "@/hooks/useBootstrap";
+import { useCartStore } from "@/stores/cartStore";
+import toast from "react-hot-toast";
 
 
 export default function ProductPage({ params }: { params: Promise<{ nregistro: string }> }) {
@@ -49,7 +51,8 @@ export default function ProductPage({ params }: { params: Promise<{ nregistro: s
   }
 
   const handleAddToCart = (product: Product) => {
-    console.log('Producto agregado:', product);
+    useCartStore.getState().addToCart(product)
+    toast.success('Producto añadido al carrito');
   };
 
   return (

@@ -41,6 +41,7 @@ export interface Product {
     stock?: number;
     principleAct?: string;
     dosis?: string;
+    quantity?: number;
     prescription?: boolean;
     composition?: string;
     AdditionalInfo?: string;
