@@ -1,11 +1,11 @@
 from app.constants.order_constants import ORDER_DB
+from app.models.order_model import Order
 
 
 class OrderRepository:
-    def create_order(self, order_data):
-        # Logic to create an order in the database
-        ORDER_DB.insert_one(order_data)
-        pass
+    def create_order(self, order_data: Order):
+        ORDER_DB.insert_one(order_data.dict())
+        return order_data.dict()
 
     def get_order(self, order_id):
         # Logic to retrieve an order from the database

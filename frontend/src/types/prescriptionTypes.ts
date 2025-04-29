@@ -1,3 +1,4 @@
+import { CartItem } from "./orderTypes";
 import { Product } from "./productTypes";
 
 export enum PrescriptionType {
@@ -42,5 +43,5 @@ export interface Prescription {
     prescriptions: Prescription[];
     onUpload: (type: PrescriptionType) => void;
     onDelete: (id: string) => void;
-    onAddToCart: (product: Product) => void;
+    onAddToCart: (product: CartItem) => void;
   };

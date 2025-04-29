@@ -5,15 +5,20 @@ import { useState } from "react";
 import { Trash2, Plus, Minus, Info, Tag, Edit3, Lock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { CartFormProps, OrderStatus } from "@/types/orderTypes";
+import toast from "react-hot-toast";
+import { useAuthStore } from "@/stores/authStore";
+import { PHARM_ADDRESS } from "@/constants/constants";
 
-export default function CartForm() {
-  const { cart, removeFromCart, updateQuantity } = useCartStore();
+export default function CartForm({onOrder, isOrdering}: CartFormProps) {
+  const { cart, removeFromCart, updateQuantity, clearCart } = useCartStore();
   const [pickupDate, setPickupDate] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<"store" | "online">("store");
   const [showPromoCode, setShowPromoCode] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [showNote, setShowNote] = useState(false);
   const [note, setNote] = useState("");
+  const { userCorreo, isAuthenticated } = useAuthStore();
   
   const total = cart.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
 
@@ -37,6 +42,39 @@ export default function CartForm() {
       </motion.div>
     );
   }
+
+  const handleSubmit = () => {
+    if (!pickupDate) {
+      toast.error("Por favor, completa la fecha de recogida.");
+      return;
+    }
+
+    if(!userCorreo && !isAuthenticated) {
+      toast.error("Por favor, inicia sesión para realizar el encargo.");
+      return;
+    }
+
+    if (cart.length === 0) {
+      toast.error("No hay productos en el carrito.");
+      return;
+    }
+
+    onOrder({
+        user: userCorreo ?? "",
+        products: cart,
+        pickupDate,
+        date: new Date().toISOString(),
+        paymentMethod,
+        total,
+        status: OrderStatus.Pending,
+        address: PHARM_ADDRESS,
+        pharmacist: "",
+        note,
+        promoCode,
+    });
+
+    clearCart();
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -270,13 +308,13 @@ export default function CartForm() {
         </div>
 
         {/* Botón de finalizar */}
-        <motion.button
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
-          className="w-full mt-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition-all"
-        >
-          Finalizar Encargo
-        </motion.button>
+        <button
+            onClick={handleSubmit}
+            disabled={isOrdering}
+            className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+            {isOrdering ? "Procesando..." : "Confirmar encargo"}
+        </button>
 
         {/* Pago seguro */}
         <div className="flex items-center justify-center mt-4 text-xs text-gray-500">

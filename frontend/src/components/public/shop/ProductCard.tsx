@@ -36,7 +36,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           </div>
         ) : (
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={() => onAddToCart({ ...product, quantity: 1 })}
             className="w-full bg-blue-500 hover:bg-blue-600 text-white py-1.5 px-2 rounded text-sm transition-colors"
           >
             Añadir al carrito

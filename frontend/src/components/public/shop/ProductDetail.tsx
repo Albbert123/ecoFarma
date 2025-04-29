@@ -4,10 +4,11 @@ import { Product } from "@/types/productTypes";
 import { useEffect, useState } from "react";
 import { FiChevronDown, FiChevronUp, FiExternalLink, FiLock } from "react-icons/fi";
 import ProductCard from "./ProductCard";
+import { CartItem } from "@/types/orderTypes";
 
 interface Props {
   product: Product;
-  onAddToCart: (product: Product) => void;
+  onAddToCart: (product: CartItem) => void;
   similarProducts?: Product[];
 }
 

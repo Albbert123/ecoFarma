@@ -5,11 +5,12 @@ import { ChevronUp, ChevronDown, PlusCircle, Lock } from "lucide-react";
 import { FaTrashAlt } from "react-icons/fa";
 import { Prescription } from "@/types/prescriptionTypes";
 import { Product } from "@/types/productTypes";
+import { CartItem } from "@/types/orderTypes";
 
 interface Props {
   prescription: Prescription;
   onDelete: (id: string) => void;
-  onAddToCart: (product: Product) => void;
+  onAddToCart: (product: CartItem) => void;
 }
 
 const PrescriptionCard = ({ prescription, onDelete, onAddToCart }: Props) => {

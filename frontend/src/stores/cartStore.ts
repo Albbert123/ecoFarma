@@ -1,30 +1,30 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Product } from "@/types/productTypes";
-import { CartState } from "@/types/orderTypes";
+import { CartItem, CartState } from "@/types/orderTypes";
 
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
         cart: [],
-        addToCart: (product: Product) => {
+        addToCart: (product) => {
             set((state) => {
-                const existingCart = state.cart;
-                const productIndex = existingCart.findIndex((item) => item.nregistro === product.nregistro);
-
-                if (productIndex !== -1) {
-                // Ya existe: sumar cantidades
+              const existingCart = state.cart;
+              const productIndex = existingCart.findIndex((item) => item.nregistro === product.nregistro);
+          
+              if (productIndex !== -1) {
                 const updatedCart = [...existingCart];
-                updatedCart[productIndex].quantity = 
-                    (updatedCart[productIndex]?.quantity || 1) + (product?.quantity || 1);
-
+                updatedCart[productIndex].quantity =
+                  (updatedCart[productIndex]?.quantity || 1) + ("quantity" in product ? product.quantity ?? 1 : 1);
+          
                 return { cart: updatedCart };
-                } else {
-                // No existe: añadir nuevo
-                return { cart: [...existingCart, { ...product, quantity: product?.quantity || 1 }] };
-                }
+              } else {
+                // Convertimos a CartItem explícitamente
+                const cartItem: CartItem = { ...product, quantity: "quantity" in product ? product.quantity ?? 1 : 1 };
+                return { cart: [...existingCart, cartItem] };
+              }
             });
-        },
+          },
       removeFromCart: (nregistro: string) => {
         set((state) => ({
           cart: state.cart.filter((item) => item.nregistro !== nregistro),
