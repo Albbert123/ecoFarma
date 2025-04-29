@@ -11,3 +11,23 @@ export const createOrder = async (orderData: Order) => {
     throw error;
   }
 }
+
+export const getUserOrders = async (user: string) => {
+    try {
+        const response = await api.get(`/orders/${user}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+        throw error;
+    }
+}
+
+export const sendConfirmationEmail = async (orderData: Order) => {
+    try {
+        const response = await api.post('/orders/confirmation', orderData);
+        return response.data;
+    } catch (error) {
+        console.error("Error sending confirmation email:", error);
+        throw error;
+    }
+}

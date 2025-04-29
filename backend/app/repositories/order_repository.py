@@ -7,9 +7,9 @@ class OrderRepository:
         ORDER_DB.insert_one(order_data.dict())
         return order_data.dict()
 
-    def get_order(self, order_id):
-        # Logic to retrieve an order from the database
-        pass
+    def get_orders_by_user(self, user: str):
+        orders = ORDER_DB.find({"user": user})
+        return [Order(**order) for order in orders]
 
     def update_order(self, order_id, order_data):
         # Logic to update an order in the database
