@@ -212,42 +212,42 @@ export default function CartForm() {
           </div>
         </div>
 
-        {/* Método de pago */}
+       {/* Método de pago */}
         <div className="space-y-3 mt-6">
-          <label className="text-sm font-medium text-gray-700">Método de pago</label>
-          <div className="grid grid-cols-2 gap-2">
-            <motion.label 
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex items-center justify-center p-3 border rounded-md cursor-pointer transition-colors ${
-                paymentMethod === "store" ? "border-blue-500 bg-blue-50" : "border-gray-300"
-              }`}
-            >
-              <input
-                type="radio"
-                className="text-blue-500 focus:ring-blue-500 mr-2"
-                checked={paymentMethod === "store"}
-                onChange={() => setPaymentMethod("store")}
-              />
-              <span> En tienda</span>
-            </motion.label>
-            
-            <motion.label 
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex items-center justify-center p-3 border rounded-md cursor-pointer transition-colors ${
-                paymentMethod === "online" ? "border-blue-500 bg-blue-50" : "border-gray-300"
-              }`}
-            >
-              <input
-                type="radio"
-                className="text-blue-500 focus:ring-blue-500 mr-2"
-                checked={paymentMethod === "online"}
-                onChange={() => setPaymentMethod("online")}
-              />
-              <span> Online</span>
-            </motion.label>
-          </div>
+            <label className="text-sm font-medium text-gray-700">Método de pago</label>
+            <div className="grid grid-cols-2 gap-2">
+                <motion.label 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex items-center justify-center p-3 border rounded-md cursor-pointer transition-colors ${
+                    paymentMethod === "store" ? "border-blue-500 bg-blue-50" : "border-gray-300"
+                }`}
+                >
+                <input
+                    type="radio"
+                    className="text-blue-500 focus:ring-blue-500 mr-2"
+                    checked={paymentMethod === "store"}
+                    onChange={() => setPaymentMethod("store")}
+                />
+                <span> En tienda</span>
+                </motion.label>
+                
+                <motion.label 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex items-center justify-center p-3 border rounded-md cursor-not-allowed transition-colors bg-gray-100`}
+                >
+                <input
+                    type="radio"
+                    className="text-gray-400 focus:ring-gray-400 mr-2"
+                    disabled
+                />
+                <span className="text-gray-400"> Online</span>
+                </motion.label>
+            </div>
+            <p className="text-sm text-gray-500 mt-2">
+                El pago online estará disponible próximamente.
+            </p>
         </div>
 
         {/* Resumen de precios */}
@@ -261,7 +261,7 @@ export default function CartForm() {
             <span>0,00 €</span>
           </div>
           
-          <div className="border-t border-gray-200 pt-3 mt-3">
+          <div className="border-t border-gray-200 pt-3 mt-3 mb-3">
             <div className="flex justify-between font-bold text-gray-900">
               <span>Total</span>
               <span>{total.toFixed(2)} €</span>
