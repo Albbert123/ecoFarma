@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getAllOrders, updateOrderStatus } from "@/services/orderService";
 import { Order } from "@/types/orderTypes";
 import ManageOrdersForm from "@/components/dashboard/pharm/ManageOrdersForm";
+import toast from "react-hot-toast";
 
 function ManageOrdersPage() {
   useBootstrap();
@@ -33,6 +34,7 @@ function ManageOrdersPage() {
   const handleStatusChange = async (id: string, newStatus: string) => {
     try {
       await updateOrderStatus(id, newStatus);
+      toast.success("Usuario notificado correctamente");
       setOrders((prev) =>
         prev.map((order) =>
           order.id === id ? { ...order, status: newStatus } : order

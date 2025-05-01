@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from app.repositories.order_repository import OrderRepository
 from app.models.order_model import Order
+from datetime import datetime
 from app.services.email_service import send_email
 
 
@@ -122,6 +123,37 @@ class OrderService:
 
         return status_code
 
+    def send_email_change_status(self, order: Order):
+        subject = "Cambio de estado de tu encargo en ecoFarma"
+        html_content = f"""
+        <html>
+            <body>
+                <h2>¡Hola!</h2>
+                <p>Te informamos que el estado de tu encargo ha cambiado.</p>
+
+                <h3>Detalles del encargo</h3>
+                <ul>
+                    <li><strong>Número de encargo:</strong> {order.id}</li>
+                    <li><strong>Correo del usuario:</strong> {order.user}</li>
+                    <li><strong>Estado actual:</strong> {order.status}</li>
+                </ul>
+
+                <p>Gracias por confiar en ecoFarma.</p>
+            </body>
+        </html>
+        """
+        status_code = send_email(
+            to_email=order.user,
+            subject=subject,
+            content=html_content
+        )
+        if status_code != 200:
+            raise HTTPException(
+                status_code=500,
+                detail="El correo no pudo ser enviado"
+            )
+        return status_code
+
     def update_order_status(self, order_id: str, status: str):
         order = self.order_repo.update_order_status(order_id, status)
         if not order:
@@ -129,6 +161,14 @@ class OrderService:
                 status_code=404,
                 detail="El encargo no existe"
             )
+        order.date = datetime.fromisoformat(
+            order.date.replace("Z", "")
+        ).strftime("%d/%m/%Y")
+        order.pickupDate = datetime.fromisoformat(
+            order.pickupDate.replace("Z", "")
+        ).strftime("%d/%m/%Y")
+
+        self.send_email_change_status(order)
         return order
 
     def delete_order(self, order_id: str):

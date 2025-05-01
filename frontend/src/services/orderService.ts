@@ -65,7 +65,6 @@ export const sendConfirmationEmail = async (orderData: Order) => {
 
 export const updateOrderStatus = async (orderId: string, status: string) => {
     try {
-        console.log("Updating order status:", orderId, status);
         const response = await api.put(`/orders/${orderId}`, { status });
         return response.data;
     } catch (error) {
