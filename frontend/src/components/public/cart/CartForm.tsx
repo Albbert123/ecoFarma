@@ -5,15 +5,20 @@ import { useState } from "react";
 import { Trash2, Plus, Minus, Info, Tag, Edit3, Lock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { CartFormProps, OrderStatus } from "@/types/orderTypes";
+import toast from "react-hot-toast";
+import { useAuthStore } from "@/stores/authStore";
+import { PHARM_ADDRESS } from "@/constants/constants";
 
-export default function CartForm() {
-  const { cart, removeFromCart, updateQuantity } = useCartStore();
+export default function CartForm({onOrder, isOrdering}: CartFormProps) {
+  const { cart, removeFromCart, updateQuantity, clearCart } = useCartStore();
   const [pickupDate, setPickupDate] = useState<string>("");
-  const [paymentMethod, setPaymentMethod] = useState<"store" | "online">("store");
+  const [paymentMethod, setPaymentMethod] = useState<"Tienda" | "Online">("Tienda");
   const [showPromoCode, setShowPromoCode] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [showNote, setShowNote] = useState(false);
   const [note, setNote] = useState("");
+  const { userCorreo, isAuthenticated } = useAuthStore();
   
   const total = cart.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
 
@@ -37,6 +42,40 @@ export default function CartForm() {
       </motion.div>
     );
   }
+
+  const handleSubmit = () => {
+    if (!pickupDate) {
+      toast.error("Por favor, completa la fecha de recogida.");
+      return;
+    }
+
+    if(!userCorreo && !isAuthenticated) {
+      toast.error("Por favor, inicia sesión para realizar el encargo.");
+      return;
+    }
+
+    if (cart.length === 0) {
+      toast.error("No hay productos en el carrito.");
+      return;
+    }
+
+    onOrder({
+        id: "",
+        user: userCorreo ?? "",
+        products: cart,
+        pickupDate,
+        date: new Date().toISOString(),
+        paymentMethod,
+        total,
+        status: OrderStatus.Pending,
+        address: PHARM_ADDRESS,
+        pharmacist: "",
+        note,
+        promoCode,
+    });
+
+    clearCart();
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -212,42 +251,42 @@ export default function CartForm() {
           </div>
         </div>
 
-        {/* Método de pago */}
+       {/* Método de pago */}
         <div className="space-y-3 mt-6">
-          <label className="text-sm font-medium text-gray-700">Método de pago</label>
-          <div className="grid grid-cols-2 gap-2">
-            <motion.label 
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex items-center justify-center p-3 border rounded-md cursor-pointer transition-colors ${
-                paymentMethod === "store" ? "border-blue-500 bg-blue-50" : "border-gray-300"
-              }`}
-            >
-              <input
-                type="radio"
-                className="text-blue-500 focus:ring-blue-500 mr-2"
-                checked={paymentMethod === "store"}
-                onChange={() => setPaymentMethod("store")}
-              />
-              <span> En tienda</span>
-            </motion.label>
-            
-            <motion.label 
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex items-center justify-center p-3 border rounded-md cursor-pointer transition-colors ${
-                paymentMethod === "online" ? "border-blue-500 bg-blue-50" : "border-gray-300"
-              }`}
-            >
-              <input
-                type="radio"
-                className="text-blue-500 focus:ring-blue-500 mr-2"
-                checked={paymentMethod === "online"}
-                onChange={() => setPaymentMethod("online")}
-              />
-              <span> Online</span>
-            </motion.label>
-          </div>
+            <label className="text-sm font-medium text-gray-700">Método de pago</label>
+            <div className="grid grid-cols-2 gap-2">
+                <motion.label 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex items-center justify-center p-3 border rounded-md cursor-pointer transition-colors ${
+                    paymentMethod === "Tienda" ? "border-blue-500 bg-blue-50" : "border-gray-300"
+                }`}
+                >
+                <input
+                    type="radio"
+                    className="text-blue-500 focus:ring-blue-500 mr-2"
+                    checked={paymentMethod === "Tienda"}
+                    onChange={() => setPaymentMethod("Tienda")}
+                />
+                <span> En tienda</span>
+                </motion.label>
+                
+                <motion.label 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex items-center justify-center p-3 border rounded-md cursor-not-allowed transition-colors bg-gray-100`}
+                >
+                <input
+                    type="radio"
+                    className="text-gray-400 focus:ring-gray-400 mr-2"
+                    disabled
+                />
+                <span className="text-gray-400"> Online</span>
+                </motion.label>
+            </div>
+            <p className="text-sm text-gray-500 mt-2">
+                El pago online estará disponible próximamente.
+            </p>
         </div>
 
         {/* Resumen de precios */}
@@ -261,7 +300,7 @@ export default function CartForm() {
             <span>0,00 €</span>
           </div>
           
-          <div className="border-t border-gray-200 pt-3 mt-3">
+          <div className="border-t border-gray-200 pt-3 mt-3 mb-3">
             <div className="flex justify-between font-bold text-gray-900">
               <span>Total</span>
               <span>{total.toFixed(2)} €</span>
@@ -270,13 +309,13 @@ export default function CartForm() {
         </div>
 
         {/* Botón de finalizar */}
-        <motion.button
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
-          className="w-full mt-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition-all"
-        >
-          Finalizar Encargo
-        </motion.button>
+        <button
+            onClick={handleSubmit}
+            disabled={isOrdering}
+            className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+            {isOrdering ? "Procesando..." : "Confirmar encargo"}
+        </button>
 
         {/* Pago seguro */}
         <div className="flex items-center justify-center mt-4 text-xs text-gray-500">

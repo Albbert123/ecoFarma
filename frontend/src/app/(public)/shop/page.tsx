@@ -12,6 +12,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useCartStore } from "@/stores/cartStore";
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { CartItem } from '@/types/orderTypes';
 
 export default function ShopPage() {
     useBootstrap();
@@ -28,7 +29,7 @@ export default function ShopPage() {
     const storedSearchQuery = useProductStore((state) => state.searchQueryStore.searchTerm) || searchQuery;
     const router = useRouter();
 
-    const handleAddToCart = (product: Product) => {
+    const handleAddToCart = (product: CartItem) => {
         // addToCart(product);
         useCartStore.getState().addToCart(product)
         toast.success('Producto añadido al carrito');

@@ -10,6 +10,7 @@ import { use } from "react";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import { useCartStore } from "@/stores/cartStore";
 import toast from "react-hot-toast";
+import { CartItem } from "@/types/orderTypes";
 
 
 export default function ProductPage({ params }: { params: Promise<{ nregistro: string }> }) {
@@ -50,7 +51,7 @@ export default function ProductPage({ params }: { params: Promise<{ nregistro: s
     return <p className="text-center mt-10"></p>;
   }
 
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = (product: CartItem) => {
     useCartStore.getState().addToCart(product)
     toast.success('Producto añadido al carrito');
   };

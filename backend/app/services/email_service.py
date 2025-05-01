@@ -32,10 +32,8 @@ def send_email(to_email: str, subject: str, content: str):
         })
 
         if response.get("id"):
-            print(f"Correo enviado a {to_email} con ID {response['id']}")
             return 200  # Éxito
         else:
-            print(f"Fallo en el envío del correo: {response}")
             return 500
 
     except Exception as e:

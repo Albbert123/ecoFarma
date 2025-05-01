@@ -18,6 +18,9 @@ class Product(BaseModel):
     AdditionalInfo: Optional[str] = None
     embedding: Optional[List[float]] = None
 
+    class Config:
+        extra = "ignore"  # Ignorar campos adicionales
+
 
 class SearchData(BaseModel):
     searchTerm: str

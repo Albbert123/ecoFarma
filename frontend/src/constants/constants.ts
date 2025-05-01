@@ -77,3 +77,5 @@ export const months = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ];
+
+export const PHARM_ADDRESS = "Calle Dolores 10, Mataró, Barcelona 08350";

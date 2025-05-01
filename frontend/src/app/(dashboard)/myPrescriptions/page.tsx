@@ -12,6 +12,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useCartStore } from "@/stores/cartStore";
 import { Product } from "@/types/productTypes";
 import { getProduct } from "@/services/productService";
+import { CartItem } from "@/types/orderTypes";
 
 function PrescriptionPage() {
   useBootstrap();
@@ -81,7 +82,7 @@ function PrescriptionPage() {
     }
   };
 
-  const handleAddToCart = async (product: Product) => {
+  const handleAddToCart = async (product: CartItem) => {
     try {
       // 1. Llamamos a la base de datos para obtener el producto completo
       const productFromDb = await getProduct(product.nregistro);

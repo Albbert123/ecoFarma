@@ -1,3 +1,5 @@
+import { CartItem } from "./orderTypes";
+
 export interface ShopFormProps {
   products: Product[];
   recommendations?: any[];
@@ -5,7 +7,7 @@ export interface ShopFormProps {
   categories: string[];
   initialSearchTerm?: string;
   isLoading?: boolean;
-  onAddToCart: (product: Product) => void;
+  onAddToCart: (product: CartItem) => void;
   onSearch: (term: string) => void;
   onFilterChange: (filters: Filters) => void;
   onSortChange: (sortOption: string) => void;
@@ -13,7 +15,7 @@ export interface ShopFormProps {
 
 export interface ProductCardProps {
     product: Product;
-    onAddToCart: (product: Product) => void;
+    onAddToCart: (product: CartItem) => void;
 }
 
 export interface FiltersFormProps {
@@ -33,19 +35,19 @@ export interface Filters {
 export interface Product {
     nregistro: string;
     name: string;
-    description?: string;
-    price?: number;
-    image?: string;
-    laboratory?: string;
-    category?: string;
-    stock?: number;
-    principleAct?: string;
-    dosis?: string;
-    quantity?: number;
-    prescription?: boolean;
-    composition?: string;
-    AdditionalInfo?: string;
-    embedding?: number[];
+    description?: string | null;
+    price?: number | null;
+    image?: string | null;
+    laboratory?: string | null;
+    category?: string | null;
+    stock?: number | null;
+    principleAct?: string | null;
+    dosis?: string | null;
+    // quantity?: number | null;
+    prescription?: boolean | null;
+    composition?: string | null;
+    AdditionalInfo?: string | null;
+    embedding?: number[] | null;
 }
 
 export interface UpdateProductData {
