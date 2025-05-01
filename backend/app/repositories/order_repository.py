@@ -17,6 +17,14 @@ class OrderRepository:
         order_dict["_id"] = str(result.inserted_id)
         return order_dict
 
+    def get_orders(self):
+        orders = ORDER_DB.find()
+        result = []
+        for order in orders:
+            order["id"] = str(order.pop("_id"))
+            result.append(Order(**order))
+        return result
+
     def get_order_by_id(self, order_id):
         try:
             order = ORDER_DB.find_one({"_id": ObjectId(order_id)})
@@ -43,10 +51,32 @@ class OrderRepository:
             return Order(**order)
         return None
 
-    def update_order(self, order_id, order_data):
-        # Logic to update an order in the database
-        pass
+    def update_order_status(self, order_id: str, status: str):
+        try:
+            # Actualizar el estado del pedido
+            result = ORDER_DB.update_one(
+                {"_id": ObjectId(order_id)},  # Filtro por el ID del pedido
+                {"$set": {"status": status}}  # Actualización del estado
+            )
 
-    def delete_order(self, order_id):
-        # Logic to delete an order from the database
-        pass
+            # Si no se modificó ningún documento, devolver None
+            if result.modified_count == 0:
+                return None
+
+            # Obtener el pedido actualizado
+            updated_order = ORDER_DB.find_one({"_id": ObjectId(order_id)})
+            if updated_order:
+                updated_order["id"] = str(updated_order.pop("_id"))
+                return Order(**updated_order)
+
+        except Exception as e:
+            print(f"Error al actualizar el estado del pedido: {e}")
+            return None
+
+    def delete_order(self, order_id: str):
+        try:
+            result = ORDER_DB.delete_one({"_id": ObjectId(order_id)})
+            return result.deleted_count > 0
+        except Exception as e:
+            print(f"Error al eliminar el pedido: {e}")
+            return False

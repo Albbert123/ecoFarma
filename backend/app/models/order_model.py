@@ -25,3 +25,7 @@ class Order (BaseModel):
     pharmacist: str
     note: Optional[str] = None
     promoCode: Optional[str] = None
+
+
+class OrderStatusUpdate(BaseModel):
+    status: str

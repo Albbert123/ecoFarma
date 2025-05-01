@@ -19,6 +19,15 @@ class OrderService:
 
         return order
 
+    def get_orders(self):
+        orders = self.order_repo.get_orders()
+        if not orders:
+            raise HTTPException(
+                status_code=404,
+                detail="No hay encargos disponibles"
+            )
+        return orders
+
     def get_order_by_id(self, order_id: str):
         order = self.order_repo.get_order_by_id(order_id)
         if not order:
@@ -112,3 +121,21 @@ class OrderService:
             )
 
         return status_code
+
+    def update_order_status(self, order_id: str, status: str):
+        order = self.order_repo.update_order_status(order_id, status)
+        if not order:
+            raise HTTPException(
+                status_code=404,
+                detail="El encargo no existe"
+            )
+        return order
+
+    def delete_order(self, order_id: str):
+        order = self.order_repo.delete_order(order_id)
+        if not order:
+            raise HTTPException(
+                status_code=404,
+                detail="El encargo no existe"
+            )
+        return order

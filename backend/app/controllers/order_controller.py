@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import datetime
-from app.models.order_model import Order
+from app.models.order_model import Order, OrderStatusUpdate
 from app.services.order_service import OrderService
 
 router = APIRouter()
@@ -12,6 +12,12 @@ async def create_order(order: Order, order_service: OrderService = Depends()):
     print(order)
     order_service.create_order(order)
     return {"message": "Order created successfully"}
+
+
+@router.get("/")
+async def get_orders(order_service: OrderService = Depends()):
+    orders = order_service.get_orders()
+    return orders
 
 
 @router.post("/confirmation")
@@ -58,3 +64,23 @@ async def get_orders_by_user(
 ):
     orders = order_service.get_orders_by_user(user)
     return orders
+
+
+@router.put("/{order_id}", response_model=Order)
+async def update_order_status(
+    order_id: str,
+    status_update: OrderStatusUpdate,
+    order_service: OrderService = Depends()
+):
+    order = order_service.update_order_status(order_id, status_update.status)
+    if not order:
+        raise HTTPException(status_code=404, detail="Encargo no encontrado")
+    return order
+
+
+@router.delete("/{order_id}")
+async def delete_order(
+    order_id: str, order_service: OrderService = Depends()
+):
+    order_service.delete_order(order_id)
+    return {"message": "Order deleted successfully"}
