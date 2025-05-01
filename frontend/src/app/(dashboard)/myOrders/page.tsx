@@ -8,7 +8,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { getUserOrders } from "@/services/orderService";
 import { Order } from "@/types/orderTypes";
 
-function OrdersPage() {
+function OrderPage() {
   useBootstrap();
   const { userCorreo } = useAuthStore();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -30,4 +30,4 @@ function OrdersPage() {
   );
 }
 
-export default withAuth(OrdersPage, ["usuario"]);
+export default withAuth(OrderPage, ["usuario"]);
