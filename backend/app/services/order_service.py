@@ -19,6 +19,24 @@ class OrderService:
 
         return order
 
+    def get_order_by_id(self, order_id: str):
+        order = self.order_repo.get_order_by_id(order_id)
+        if not order:
+            raise HTTPException(
+                status_code=404,
+                detail="El encargo no existe"
+            )
+        return order
+
+    def get_order_by_user_and_date(self, user: str, date: str):
+        order = self.order_repo.get_order_by_user_and_date(user, date)
+        if not order:
+            raise HTTPException(
+                status_code=404,
+                detail="El encargo no existe"
+            )
+        return order
+
     def get_orders_by_user(self, user: str):
         orders = self.order_repo.get_orders_by_user(user)
         return orders
@@ -46,6 +64,7 @@ class OrderService:
 
                 <h3>Información del encargo</h3>
                 <ul>
+                    <li><strong>Número de encargo:</strong> {order.id}</li>
                     <li><strong>Correo del usuario:</strong> {order.user}</li>
                     <li><strong>Fecha de realización:</strong> {order.date}</li>
                     <li><strong>Fecha de recogida:</strong> {order.pickupDate}</li>

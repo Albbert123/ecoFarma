@@ -1,13 +1,10 @@
-// /app/profile/page.tsx
 "use client";
 import DashboardNav from "@/components/dashboard/DashboardNav";
 import ProfileForm from "@/components/dashboard/ProfileForm";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import withAuth from "@/components/withAuth";
 
-// cambiar
-
-function ProfilePage() {
+function OrdersPage() {
     useBootstrap();
 
     return (
@@ -20,4 +17,4 @@ function ProfilePage() {
     );
 }
 
-export default withAuth(ProfilePage, ["usuario"]);
+export default withAuth(OrdersPage, ["usuario"]);

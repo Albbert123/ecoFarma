@@ -13,6 +13,7 @@ class CartItem(BaseModel):
 
 
 class Order (BaseModel):
+    id: Optional[str] = None
     user: str
     products: Optional[List[CartItem]] = None
     pickupDate: str

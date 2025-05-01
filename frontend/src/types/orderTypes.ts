@@ -16,6 +16,7 @@ export interface CartState {
 }
 
 export interface Order {
+  id?: string;
   user: string;
   products: CartItem[];
   pickupDate: string;

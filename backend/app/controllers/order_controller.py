@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from datetime import datetime
 from app.models.order_model import Order
 from app.services.order_service import OrderService
@@ -28,6 +28,28 @@ async def order_confirmation(
 
     order_service.send_email_confirmation(order)
     return {"message": "Order confirmed successfully"}
+
+
+@router.get("/by-user-and-date", response_model=Order)
+async def get_order_by_user_and_date(
+    user: str,
+    date: str,  # Debe ser un string ISO, ej. "2025-04-29T12:34:56.000Z"
+    order_service: OrderService = Depends()
+):
+    order = order_service.get_order_by_user_and_date(user, date)
+    if not order:
+        raise HTTPException(status_code=404, detail="Encargo no encontrado")
+    return order
+
+
+@router.get("/id/{order_id}", response_model=Order)
+async def get_order_by_id(
+    order_id: str, order_service: OrderService = Depends()
+):
+    order = order_service.get_order_by_id(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Encargo no encontrado")
+    return order
 
 
 @router.get("/{user}", response_model=List[Order])

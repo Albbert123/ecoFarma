@@ -22,6 +22,28 @@ export const getUserOrders = async (user: string) => {
     }
 }
 
+export const getOrderById = async (id: string) => {
+    try {
+        const response = await api.get(`/orders/id/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching order by ID:", error);
+        throw error;
+    }
+}
+
+export const getOrderByUserDate = async (user: string, date: string) => {
+    try {
+        const response = await api.get(`/orders/by-user-and-date`, {
+            params: { user, date }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching order by user and date:", error);
+        throw error;
+    }
+};
+
 export const sendConfirmationEmail = async (orderData: Order) => {
     try {
         const response = await api.post('/orders/confirmation', orderData);

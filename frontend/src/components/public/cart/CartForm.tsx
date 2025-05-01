@@ -60,6 +60,7 @@ export default function CartForm({onOrder, isOrdering}: CartFormProps) {
     }
 
     onOrder({
+        id: "",
         user: userCorreo ?? "",
         products: cart,
         pickupDate,
