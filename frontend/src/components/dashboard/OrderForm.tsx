@@ -1,4 +1,5 @@
-// components/OrderForm.tsx
+"use client";
+
 import { Order } from "@/types/orderTypes";
 import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
@@ -11,6 +12,7 @@ type Props = {
 
 export default function OrderForm({ orders, loading }: Props) {
   const [expandedOrders, setExpandedOrders] = useState<{ [id: string]: boolean }>({});
+  const [showDelivered, setShowDelivered] = useState(false);
 
   const toggleExpand = (id: string) => {
     setExpandedOrders((prev) => ({
@@ -18,6 +20,10 @@ export default function OrderForm({ orders, loading }: Props) {
       [id]: !prev[id],
     }));
   };
+
+  const filteredOrders = showDelivered
+    ? orders
+    : orders.filter((order) => order.status.toLowerCase() !== "entregado");
 
   if (loading) {
     return (
@@ -55,7 +61,7 @@ export default function OrderForm({ orders, loading }: Props) {
     );
   }
 
-  const sortedOrders = [...orders].sort((a, b) =>
+  const sortedOrders = [...filteredOrders].sort((a, b) =>
     a.status === "Pendiente" && b.status !== "Pendiente" ? -1 : 1
   );
 
@@ -66,6 +72,17 @@ export default function OrderForm({ orders, loading }: Props) {
         <p className="text-lg text-gray-600">
           Revisa el estado de tus encargos y su historial
         </p>
+      </div>
+
+      {/* Checkbox para mostrar entregados */}
+      <div className="mb-6 flex items-center">
+        <input
+          type="checkbox"
+          checked={showDelivered}
+          onChange={() => setShowDelivered((prev) => !prev)}
+          className="form-checkbox h-4 w-4 text-blue-600 mr-2"
+        />
+        <label className="text-sm text-gray-700">Mostrar encargos entregados</label>
       </div>
 
       <div className="space-y-4">
