@@ -32,8 +32,6 @@ export const OrderDetails = ({ order }: OrderDetailProps) => {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
                     })}
                   </p>
                 </div>
@@ -48,21 +46,6 @@ export const OrderDetails = ({ order }: OrderDetailProps) => {
                   <p className="text-xs font-medium text-gray-500">Lugar de recogida</p>
                   <p className="text-gray-700">{order.address}</p>
                 </div>
-    
-                {/* {isPharmacist && (
-                <div className="flex items-start">
-                  <label className="text-xs font-medium text-gray-500 mr-2 mt-1">Estado:</label>
-                  <select
-                    className="border border-gray-300 rounded-md px-3 py-1 text-sm"
-                    value={selectedStatus}
-                    onChange={handleStatusChange}
-                  >
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Listo para recoger">Listo para recoger</option>
-                    <option value="Entregado">Entregado</option>
-                  </select>
-                </div>
-              )} */}
               </div>
             </div>
           </div>
