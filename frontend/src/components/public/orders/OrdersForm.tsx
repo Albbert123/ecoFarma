@@ -29,7 +29,7 @@ export default function OrdersForm() {
             </span>
             ¿Por qué hacer encargos?
           </h2>
-          <ul className="space-y-5">
+          <ul className="space-y-3">
             <li className="flex items-start">
               <div className="bg-sky-50 p-2 rounded-full mr-4">
                 <FaClock className="text-sky-600" />
@@ -68,7 +68,7 @@ export default function OrdersForm() {
             </span>
             ¿Cómo empezar?
           </h2>
-          <ol className="space-y-5">
+          <ol className="space-y-3">
             <li className="flex items-start">
               <div className="bg-teal-50 text-teal-800 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 flex-shrink-0">
                 1
