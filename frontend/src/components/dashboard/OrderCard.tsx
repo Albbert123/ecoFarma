@@ -14,7 +14,7 @@ export const OrderCard = ({ order, isExpanded, toggleExpand }: OrderCardProps) =
 
   return (
     <div
-      className={`bg-white rounded-xl shadow-md overflow-hidden transition-all duration-200 ${
+      className={`bg-gray-50 rounded-xl shadow-md overflow-hidden transition-all duration-200 ${
         isExpanded ? "ring-2 ring-blue-200" : "hover:shadow-lg"
       }`}
     >
