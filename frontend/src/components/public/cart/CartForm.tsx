@@ -13,7 +13,7 @@ import { PHARM_ADDRESS } from "@/constants/constants";
 export default function CartForm({onOrder, isOrdering}: CartFormProps) {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCartStore();
   const [pickupDate, setPickupDate] = useState<string>("");
-  const [paymentMethod, setPaymentMethod] = useState<"store" | "online">("store");
+  const [paymentMethod, setPaymentMethod] = useState<"Tienda" | "Online">("Tienda");
   const [showPromoCode, setShowPromoCode] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [showNote, setShowNote] = useState(false);
@@ -258,14 +258,14 @@ export default function CartForm({onOrder, isOrdering}: CartFormProps) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={`flex items-center justify-center p-3 border rounded-md cursor-pointer transition-colors ${
-                    paymentMethod === "store" ? "border-blue-500 bg-blue-50" : "border-gray-300"
+                    paymentMethod === "Tienda" ? "border-blue-500 bg-blue-50" : "border-gray-300"
                 }`}
                 >
                 <input
                     type="radio"
                     className="text-blue-500 focus:ring-blue-500 mr-2"
-                    checked={paymentMethod === "store"}
-                    onChange={() => setPaymentMethod("store")}
+                    checked={paymentMethod === "Tienda"}
+                    onChange={() => setPaymentMethod("Tienda")}
                 />
                 <span> En tienda</span>
                 </motion.label>

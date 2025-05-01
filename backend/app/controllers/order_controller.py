@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends
+from datetime import datetime
 from app.models.order_model import Order
 from app.services.order_service import OrderService
 
@@ -17,6 +18,14 @@ async def create_order(order: Order, order_service: OrderService = Depends()):
 async def order_confirmation(
     order: Order, order_service: OrderService = Depends()
 ):
+    # Convertir las fechas al formato día/mes/año
+    order.date = datetime.fromisoformat(
+        order.date.replace("Z", "")
+    ).strftime("%d/%m/%Y")
+    order.pickupDate = datetime.fromisoformat(
+        order.pickupDate.replace("Z", "")
+    ).strftime("%d/%m/%Y")
+
     order_service.send_email_confirmation(order)
     return {"message": "Order confirmed successfully"}
 

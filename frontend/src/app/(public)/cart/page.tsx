@@ -48,8 +48,8 @@ export default function CartPage() {
 
       toast.success("¡Encargo realizado con éxito!");
       clearCart();
-      await sendConfirmationEmail(orderData)
       setShowModal(true);
+      await sendConfirmationEmail(orderData)
     } catch (error) {
       console.error("Error al crear encargo:", error);
       toast.error("Error al realizar el encargo. Inténtalo más tarde.");

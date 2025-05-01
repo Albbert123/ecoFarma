@@ -50,9 +50,8 @@ class OrderService:
                     <li><strong>Fecha de realización:</strong> {order.date}</li>
                     <li><strong>Fecha de recogida:</strong> {order.pickupDate}</li>
                     <li><strong>Método de pago:</strong> {order.paymentMethod}</li>
-                    <li><strong>Dirección:</strong> {order.address}</li>
+                    <li><strong>Dirección de entrega:</strong> {order.address}</li>
                     <li><strong>Estado actual:</strong> {order.status}</li>
-                    <li><strong>Farmacéutico asignado:</strong> {order.pharmacist}</li>
                     {"<li><strong>Nota:</strong> " + order.note + "</li>" if order.note else ""}
                     {"<li><strong>Código promocional:</strong> " + order.promoCode + "</li>" if order.promoCode else ""}
                 </ul>
