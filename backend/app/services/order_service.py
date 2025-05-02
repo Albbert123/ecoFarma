@@ -11,6 +11,11 @@ class OrderService:
 
     def create_order(self, order_data: Order):
         order = self.order_repo.create_order(order_data)
+        if not order:
+            raise HTTPException(
+                status_code=400,
+                detail="Error al crear el encargo"
+            )
 
         # # Update product stock
         # for item in order_data['items']:
