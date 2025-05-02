@@ -56,7 +56,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
                             <p><strong>Encargos activos:</strong></p>
                             <ul>
                                 {user.encargos.map((encargo, index) => (
-                                    <li key={index}>• {encargo}</li>
+                                    <li key={index}>• #{encargo}</li>
                                 ))}
                             </ul>
                         </div>

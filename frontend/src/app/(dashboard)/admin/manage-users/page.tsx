@@ -8,6 +8,7 @@ import withAuth from "@/components/withAuth";
 import { UserCardData } from "@/types/userTypes";
 import { deleteUser, getUsers } from "@/services/userService";
 import toast from "react-hot-toast";
+import { getUserOrders } from "@/services/orderService";
 
 function ManageUsersPage() {
   useBootstrap();
@@ -20,9 +21,23 @@ function ManageUsersPage() {
   const fetchUsers = async () => {
     try {
       setLoading(true); // Mostrar loading mientras se obtienen los datos
-      const usersDB = await getUsers(); // Llamada a la función asíncrona
-      const filteredUsers = usersDB.filter((user: UserCardData) => user.rol === "usuario"); // Filtrar por rol "usuario"
-      setUsers(filteredUsers); // Guardar los usuarios en el estado
+      const usersDB = await getUsers();
+      const filteredUsers = usersDB.filter((user: UserCardData) => user.rol === "usuario");
+
+      const usersWithOrders = await Promise.all(
+        filteredUsers.map(async (user: { correo: string; }) => {
+          try {
+            const orders = await getUserOrders(user.correo);
+            const orderIds = orders.map((order: any) => order.id); // extraer solo los IDs
+            return { ...user, encargos: orderIds };
+          } catch (err) {
+            console.error(`Error al obtener encargos de ${user.correo}:`, err);
+            return { ...user, encargos: [] };
+          }
+        })
+      );
+        
+      setUsers(usersWithOrders);
     } catch (err: any) {
       setError(err.message || "Error al obtener los usuarios"); // Manejar errores
     } finally {
