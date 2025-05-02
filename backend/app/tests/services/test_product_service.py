@@ -1,8 +1,10 @@
 import pytest
 from fastapi import HTTPException
 from unittest.mock import MagicMock, patch
+import numpy as np
 from app.services.product_service import ProductService
-from app.models.product_model import Product, SearchData
+from app.models.product_model import Product, Rating, SearchData
+from app.tests.mocks.mock_product import get_mock_product, get_mock_recommendations, get_mock_search_history, get_mock_similar_products
 
 
 @pytest.fixture
@@ -251,6 +253,40 @@ def test_get_search_history_by_user_no_history(product_service, mock_product_rep
     mock_product_repository.get_search_history_by_user.assert_called_once_with(user)
 
 
+def test_get_recent_searches_by_user_success(product_service, mock_product_repository):
+    """Test que verifica que se obtienen correctamente las búsquedas recientes de un usuario."""
+    # Arrange
+    user = "test_user"
+    since = "2023-04-01T10:00:00Z"
+    mock_recent_searches = [
+        {"searchTerm": "paracetamol", "date": "2023-04-01T11:00:00Z"},
+        {"searchTerm": "ibuprofeno", "date": "2023-04-01T10:30:00Z"},
+    ]
+    mock_product_repository.get_recent_searches_by_user.return_value = mock_recent_searches
+
+    # Act
+    result = product_service.get_recent_searches_by_user(user, since)
+
+    # Assert
+    assert result == mock_recent_searches
+    mock_product_repository.get_recent_searches_by_user.assert_called_once_with(user, since)
+
+
+def test_get_recent_searches_by_user_no_results(product_service, mock_product_repository):
+    """Test que verifica que se devuelve una lista vacía cuando no hay búsquedas recientes."""
+    # Arrange
+    user = "test_user"
+    since = "2023-04-01T10:00:00Z"
+    mock_product_repository.get_recent_searches_by_user.return_value = []
+
+    # Act
+    result = product_service.get_recent_searches_by_user(user, since)
+
+    # Assert
+    assert result == []
+    mock_product_repository.get_recent_searches_by_user.assert_called_once_with(user, since)
+
+
 def test_delete_search_history_entry_success(product_service, mock_product_repository):
     """Test que verifica que se elimina correctamente una entrada del historial de búsqueda."""
     # Arrange
@@ -303,6 +339,38 @@ def test_save_search_data_removes_oldest_entry(product_service, mock_product_rep
         "test_user", "2023-03-31"
     )
     mock_product_repository.save_search_data.assert_called_once_with(search_data.dict())
+
+
+def test_save_rating_success(product_service, mock_product_repository):
+    """Test que verifica que se guarda correctamente una calificación."""
+    # Arrange
+    rating = Rating(value=4, type="product", date="2023-04-01T10:00:00Z")
+    rating_dict = rating.dict()
+    mock_product_repository.save_rating.return_value = None  # Simula que la operación no devuelve nada
+
+    # Act
+    result = product_service.save_rating(rating)
+
+    # Assert
+    assert result == rating
+    mock_product_repository.save_rating.assert_called_once_with(rating_dict)
+
+
+def test_get_ratings_success(product_service, mock_product_repository):
+    """Test que verifica que se obtienen correctamente todas las calificaciones."""
+    # Arrange
+    mock_ratings = [
+        {"value": 4, "type": "product", "date": "2023-04-01T10:00:00Z"},
+        {"value": 5, "type": "service", "date": "2023-04-02T12:00:00Z"},
+    ]
+    mock_product_repository.get_ratings.return_value = mock_ratings
+
+    # Act
+    result = product_service.get_ratings()
+
+    # Assert
+    assert result == mock_ratings
+    mock_product_repository.get_ratings.assert_called_once()
 
 
 def test_create_product_success(product_service, mock_product_repository):
@@ -410,6 +478,121 @@ def test_semantic_search_success(product_service, mock_product_repository):
         assert result["products"] == expected_products
         assert result["embedding"] == embedding
         mock_product_repository.search_by_vector.assert_called_once_with(embedding, limit)
+
+
+def test_get_recommendations_success(product_service, mock_product_repository):
+    """Test que verifica que se obtienen correctamente las recomendaciones."""
+    # Arrange
+    user = "test_user"
+    mock_search_history = get_mock_search_history()
+    mock_recommendations = get_mock_recommendations()
+
+    mock_product_repository.get_search_history_by_user.return_value = mock_search_history
+    mock_product_repository.search_by_vector.return_value = mock_recommendations
+
+    # Act
+    result = product_service.get_recommendations(user)
+
+    # Assert
+    assert result == mock_recommendations
+    mock_product_repository.get_search_history_by_user.assert_called_once_with(user)
+    average_embedding = np.mean(
+        [np.array(search["embedding"]) for search in mock_search_history[:5]], axis=0
+    ).tolist()
+    # Usar pytest.approx para comparar con tolerancia
+    mock_product_repository.search_by_vector.assert_called_once_with(
+        pytest.approx(average_embedding, rel=1e-9), 10
+    )
+
+
+def test_get_recommendations_no_history(product_service, mock_product_repository):
+    """Test que verifica que se devuelve una lista vacía si no hay historial suficiente."""
+    # Arrange
+    user = "test_user"
+    mock_product_repository.get_search_history_by_user.return_value = []
+
+    # Act
+    result = product_service.get_recommendations(user)
+
+    # Assert
+    assert result == []
+    mock_product_repository.get_search_history_by_user.assert_called_once_with(user)
+    mock_product_repository.search_by_vector.assert_not_called()
+
+
+def test_get_recommendations_insufficient_history(product_service, mock_product_repository):
+    """Test que verifica que se devuelve una lista vacía si el historial es insuficiente."""
+    # Arrange
+    user = "test_user"
+    mock_search_history = [
+        {"embedding": [0.1, 0.2, 0.3], "date": "2023-04-01T10:00:00Z"},
+        {"embedding": [0.2, 0.3, 0.4], "date": "2023-04-02T10:00:00Z"},
+    ]
+    mock_product_repository.get_search_history_by_user.return_value = mock_search_history
+
+    # Act
+    result = product_service.get_recommendations(user)
+
+    # Assert
+    assert result == []
+    mock_product_repository.get_search_history_by_user.assert_called_once_with(user)
+    mock_product_repository.search_by_vector.assert_not_called()
+
+
+def test_get_similar_products_success(product_service, mock_product_repository):
+    """Test que verifica que se obtienen correctamente los productos similares."""
+    # Arrange
+    nregistro = "12345"
+    product = get_mock_product()
+    similar_products = get_mock_similar_products()
+
+    mock_product_repository.get_product_by_nregistro.return_value = product
+    mock_product_repository.search_by_vector.return_value = similar_products
+
+    # Act
+    result = product_service.get_similar_products(nregistro)
+
+    # Assert
+    assert result == similar_products
+    mock_product_repository.get_product_by_nregistro.assert_called_once_with(nregistro)
+    mock_product_repository.search_by_vector.assert_called_once_with(
+        np.array(product["embedding"]).tolist(), 3
+    )
+
+
+def test_get_similar_products_product_not_found(product_service, mock_product_repository):
+    """Test que verifica que se lanza una excepción si el producto no se encuentra."""
+    # Arrange
+    nregistro = "12345"
+    mock_product_repository.get_product_by_nregistro.return_value = None
+
+    # Act & Assert
+    with pytest.raises(HTTPException) as exc_info:
+        product_service.get_similar_products(nregistro)
+    assert exc_info.value.status_code == 404
+    assert exc_info.value.detail == "Producto no encontrado"
+    mock_product_repository.get_product_by_nregistro.assert_called_once_with(nregistro)
+    mock_product_repository.search_by_vector.assert_not_called()
+
+
+def test_get_similar_products_embedding_not_found(product_service, mock_product_repository):
+    """Test que verifica que se lanza una excepción si el embedding no se encuentra."""
+    # Arrange
+    nregistro = "12345"
+    product = {
+        "nregistro": nregistro,
+        "name": "Producto Base",
+        "embedding": None,  # Embedding no disponible
+    }
+    mock_product_repository.get_product_by_nregistro.return_value = product
+
+    # Act & Assert
+    with pytest.raises(HTTPException) as exc_info:
+        product_service.get_similar_products(nregistro)
+    assert exc_info.value.status_code == 404
+    assert exc_info.value.detail == "Embedding no encontrado"
+    mock_product_repository.get_product_by_nregistro.assert_called_once_with(nregistro)
+    mock_product_repository.search_by_vector.assert_not_called()
 
 
 def test_get_all_nregistros_success(product_service, mock_product_repository):
