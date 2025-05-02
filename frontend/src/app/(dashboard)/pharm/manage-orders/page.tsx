@@ -7,6 +7,7 @@ import { getAllOrders, updateOrderStatus } from "@/services/orderService";
 import { Order } from "@/types/orderTypes";
 import ManageOrdersForm from "@/components/dashboard/pharm/ManageOrdersForm";
 import toast from "react-hot-toast";
+import { useAuthStore } from "@/stores/authStore";
 
 function ManageOrdersPage() {
   useBootstrap();
@@ -14,12 +15,14 @@ function ManageOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { userCorreo } = useAuthStore();
 
   useEffect(() => {
     async function fetchOrders() {
       try {
         const data = await getAllOrders();
-        setOrders(data);
+        const filteredOrders = data.filter((order: { pharmacist: string | null; }) => order.pharmacist === userCorreo); // Filtrar por farmacéutico
+        setOrders(filteredOrders);
       } catch (err) {
         setError("Error al cargar los encargos");
         console.error(err);
@@ -27,9 +30,9 @@ function ManageOrdersPage() {
         setLoading(false);
       }
     }
-
+  
     fetchOrders();
-  }, []);
+  }, [userCorreo]); // Agregar userCorreo como dependencia
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     try {
