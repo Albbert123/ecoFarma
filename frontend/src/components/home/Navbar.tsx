@@ -121,7 +121,7 @@ export default function Navbar() {
                 {/* Links */}
                 {renderNavLinks([
                     { href: "/pharm/manage-orders", text: "Gestión de encargos" },
-                    { href: "/pharm/user-advice", text: "Asesoramiento a usuarios" },
+                    { href: "/pharm/manage-queries", text: "Asesoramiento a usuarios" },
                     { href: "/pharm/consult-users", text: "Consultar usuarios" }
                 ])}
 

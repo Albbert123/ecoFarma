@@ -98,7 +98,7 @@ export default function Welcome() {
                             Gestionar encargos
                         </button>
                     </Link>
-                    <Link href="/pharm/user-advice">
+                    <Link href="/pharm/manage-queries">
                         <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700">
                             Asesoramiento a usuarios
                         </button>

@@ -18,4 +18,11 @@ export interface ContactPageFormProps {
     isAuthenticated: boolean;
     consultations: Query[];
     onSubmit: (subject: string, message: string) => void;
-  }
+}
+
+export interface ManageQueriesFormProps {
+  queries: Query[];
+  loading: boolean;
+  error: string | null;
+  onStatusChange: (id: string, answer: string, newStatus: string) => void;
+}

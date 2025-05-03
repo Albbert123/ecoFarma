@@ -14,28 +14,6 @@ export default function ContactPage() {
   useBootstrap();
   const { userCorreo, isAuthenticated } = useAuthStore();
   const [consultations, setConsultations] = useState<Query[]>([]);
-  const mockConsultations = [
-    {
-      id: '1',
-      user: userCorreo || '',
-      pharmacist: 'Dr. Juan Pérez',
-      date: '2025-04-20',
-      subject: 'Consulta sobre medicamento',
-      question: '¿Es seguro tomar este medicamento con alcohol?',
-      answer: null,
-      status: 'Pendiente',
-    },
-    {
-      id: '2',
-      user: userCorreo || '',
-      pharmacist: 'Dra. María López',
-      date: '2025-04-22',
-      subject: 'Efectos secundarios',
-      question: '¿Cuáles son los efectos secundarios de este medicamento?',
-      answer: 'Los efectos secundarios pueden incluir náuseas y mareos.',
-      status: 'Respondida',
-    },
-  ];
 
   const choosePharmacist = async () : Promise<string> => {
       const usersDB = await getUsers(); // Llamada a la función asíncrona
@@ -53,7 +31,7 @@ export default function ContactPage() {
   const handleSubmit = async (subject: string, message: string) => {
     if (!subject || !message) return;
     const pharmacist = await choosePharmacist();
-    const newQuery: Query = {
+    const query: Query = {
       user: userCorreo || "",
       pharmacist: pharmacist,
       date: new Date().toISOString(),
@@ -63,9 +41,10 @@ export default function ContactPage() {
       status: QueryStatus.PENDING,
     };
     try {
-        await sendConsultation(newQuery);
-        toast.success('Consulta enviada con éxito');
-        setConsultations((prev) => [...prev, newQuery]);
+      await sendConsultation(query);
+      const updatedQueries = await getQueriesByUser(userCorreo || "");
+      setConsultations(updatedQueries);
+      toast.success("Consulta enviada con éxito");
     } catch (error) {
         toast.error('Error al enviar la consulta');
     }
@@ -73,7 +52,7 @@ export default function ContactPage() {
 
   useEffect(() => {
     if (isAuthenticated && userCorreo) {
-      getQueriesByUser(userCorreo).then((queries) => {
+      getQueriesByUser(userCorreo || "").then((queries) => {
         setConsultations(queries);
       });
     }

@@ -11,3 +11,8 @@ class Query(BaseModel):
     question: str
     answer: Optional[str] = None
     status: str
+
+
+class QueryUpdate(BaseModel):
+    answer: str
+    status: str

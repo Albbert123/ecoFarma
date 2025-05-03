@@ -126,7 +126,7 @@ export default function ContactPageForm({ isAuthenticated, consultations, onSubm
               Enviar Consulta
             </button>
 
-            {isClient && isAuthenticated && consultations.length > 0 && (
+            {isClient && isAuthenticated && (
               <button
                 type="button"
                 onClick={scrollToHistory}
@@ -175,9 +175,9 @@ export default function ContactPageForm({ isAuthenticated, consultations, onSubm
         </div>
       </section>
 
-      {/* Row 3: Historial de consultas */}
+      {/* Row 3: Historial de consultas - Ahora siempre visible si está autenticado */}
       <div ref={historyRef}>
-        {isClient && isAuthenticated && consultations.length > 0 && (
+        {isClient && isAuthenticated && (
           <section className="bg-white rounded-xl shadow-md p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
               <div className="flex items-center">
@@ -187,63 +187,77 @@ export default function ContactPageForm({ isAuthenticated, consultations, onSubm
                 <h2 className="text-2xl font-bold text-gray-800">Historial de consultas</h2>
               </div>
 
-              <label className="flex items-center cursor-pointer">
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    checked={hideResolved}
-                    onChange={() => setHideResolved(!hideResolved)}
-                    className="sr-only"
-                  />
-                </div>
-                <div className="ml-3 flex items-center text-gray-700">
-                  {hideResolved ? (
-                    <FiEyeOff className="mr-2 text-gray-500" />
-                  ) : (
-                    <FiEye className="mr-2 text-gray-500" />
-                  )}
-                  Ocultar consultas resueltas
-                </div>
-              </label>
+              {consultations.length > 0 && (
+                <label className="flex items-center cursor-pointer">
+                  <div className="relative">
+                    <input
+                      type="checkbox"
+                      checked={hideResolved}
+                      onChange={() => setHideResolved(!hideResolved)}
+                      className="sr-only"
+                    />
+                  </div>
+                  <div className="ml-3 flex items-center text-gray-700">
+                    {hideResolved ? (
+                      <FiEyeOff className="mr-2 text-gray-500" />
+                    ) : (
+                      <FiEye className="mr-2 text-gray-500" />
+                    )}
+                    Ocultar consultas resueltas
+                  </div>
+                </label>
+              )}
             </div>
 
-            {filteredConsultations.length > 0 ? (
-              <div className="space-y-4">
-                {filteredConsultations.map((c) => (
-                  <div key={c.id} className={`border-l-4 ${c.status === 'Respondida' ? 'border-emerald-500' : 'border-amber-500'} p-4 rounded-md bg-gray-50`}>
-                    <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                            <p className="font-medium text-gray-800 mb-2">{c.subject}</p>
-                            <p className="text-gray-600 italic mb-3">"{c.question}"</p>
-                            {c.answer ? (
-                                <div className="bg-emerald-50 p-3 rounded-md mt-2">
-                                <p className="font-medium text-emerald-800 mb-1">Respuesta:</p>
-                                <p className="text-gray-700">"{c.answer}"</p>
-                                </div>
-                            ) : (
-                                <div className="bg-amber-50 p-3 rounded-md mt-2">
-                                <p className="font-medium text-amber-800 mb-1">Estado:</p>
-                                <p className="text-gray-700">Nuestro farmacéutico responderá a tu consulta lo antes posible.</p>
-                                </div>
-                            )}
-                            </div>
-                            <div className="text-right ml-4">
-                            <span className={`inline-block px-2 py-1 text-xs rounded-full ${c.status === 'Respondida' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                                {c.status}
-                            </span>
-                            <p className="text-xs text-gray-500 mt-2">{formatDateSafe(c.date)}</p>
-                        </div>
-                    </div>
-                  </div>
-                ))}
+            {consultations.length === 0 ? (
+              <div className="text-center py-12 bg-gray-50 rounded-lg">
+                <FiMessageSquare className="mx-auto text-3xl text-gray-400 mb-3" />
+                <h3 className="text-lg font-medium text-gray-700">No tienes consultas registradas</h3>
+                <p className="text-gray-500">Todas las consultas que realices aparecerán aquí</p>
               </div>
-            ) : (
+            ) : filteredConsultations.length === 0 ? (
               <div className="text-center py-8">
                 <div className="bg-gray-100 inline-block p-4 rounded-full mb-4">
                   <FiEyeOff className="text-gray-400 text-2xl" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-700">No hay consultas pendientes</h3>
                 <p className="text-gray-500 mt-1">Todas tus consultas han sido respondidas</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredConsultations
+                  .filter(c => c.id) // Filtramos consultas sin ID
+                  .map((c) => (
+                    <div 
+                      key={`consult-${c.id}`} // Aseguramos key única
+                      className={`border-l-4 ${c.status === 'Respondida' ? 'border-emerald-500' : 'border-amber-500'} p-4 rounded-md bg-gray-50`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-800 mb-2">{c.subject}</p>
+                          <p className="text-gray-600 italic mb-3">"{c.question}"</p>
+                          {c.answer ? (
+                            <div className="bg-emerald-50 p-3 rounded-md mt-2">
+                              <p className="font-medium text-emerald-800 mb-1">Respuesta:</p>
+                              <p className="text-gray-700">"{c.answer}"</p>
+                            </div>
+                          ) : (
+                            <div className="bg-amber-50 p-3 rounded-md mt-2">
+                              <p className="font-medium text-amber-800 mb-1">Estado:</p>
+                              <p className="text-gray-700">Nuestro farmacéutico responderá a tu consulta lo antes posible.</p>
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-right ml-4">
+                          <span className={`inline-block px-2 py-1 text-xs rounded-full ${c.status === 'Respondida' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                            {c.status}
+                          </span>
+                          <p className="text-xs text-gray-500 mt-2">{formatDateSafe(c.date)}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                }
               </div>
             )}
           </section>
