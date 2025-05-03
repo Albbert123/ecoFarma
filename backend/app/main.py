@@ -5,6 +5,7 @@ from app.routes.google_routes import api_router as google_router
 from app.routes.product_routes import api_router as product_router
 from app.routes.prescription_routes import api_router as prescription_router
 from app.routes.order_routes import api_router as order_router
+from app.routes.query_routes import api_router as query_router
 
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
@@ -37,6 +38,7 @@ app.include_router(google_router)
 app.include_router(product_router)
 app.include_router(prescription_router)
 app.include_router(order_router)
+app.include_router(query_router)
 
 
 @app.get("/")
