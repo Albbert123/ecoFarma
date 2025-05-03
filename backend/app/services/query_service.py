@@ -17,7 +17,41 @@ class QueryService:
         return query
 
     def add_query(self, query: Query):
+        self.send_email_new_query(query)
         return self.query_repo.add_query(query)
+
+    def send_email_new_query(self, query: Query):
+        subject = "Nueva consulta que atender"
+        html_content = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif; color: #333;">
+            <h2>Hola,</h2>
+            <p>Te escribimos desde <strong>ecoFarma</strong> para informarte que tienes una nueva consulta que atender.</p>
+            <h3>Detalles de la consulta</h3>
+            <ul>
+            <li><strong>Asunto:</strong> {query.subject}</li>
+            <li><strong>Usuario:</strong> {query.user}</li>
+            <li><strong>Fecha de envío:</strong> {query.date}</li>
+            </ul>
+            <h3>Pregunta del usuario</h3>
+            <p style="background-color: #f9f9f9; padding: 10px; border-left: 4px solid #007b8f;">
+            {query.question}
+            </p>
+            <p>Gracias por confiar en nosotros.<br>Atentamente,<br><strong>El equipo de ecoFarma</strong></p>
+        </body>
+        </html>
+        """
+        status_code = send_email(
+            to_email=query.pharmacist,
+            subject=subject,
+            content=html_content
+        )
+        if status_code != 200:
+            raise HTTPException(
+                status_code=500,
+                detail="El correo no pudo ser enviado"
+            )
+        return status_code
 
     def send_email_change_status(self, query: Query):
         subject = "Cambio de estado de tu consulta en ecoFarma"
