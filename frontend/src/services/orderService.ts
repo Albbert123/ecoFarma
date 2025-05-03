@@ -53,7 +53,7 @@ export const getOrderByUserDate = async (user: string, date: string) => {
     }
 };
 
-export const sendConfirmationEmail = async (orderData: Order) => {
+export const sendConfirmationEmails = async (orderData: Order) => {
     try {
         const response = await api.post('/orders/confirmation', orderData);
         return response.data;
