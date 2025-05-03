@@ -2,7 +2,7 @@
 
 import { ContactPageFormProps } from '@/types/contactTypes';
 import { useState, useEffect, useRef } from 'react';
-import { FiSend, FiPhone, FiMail, FiMapPin, FiClock, FiMessageSquare, FiAlertCircle, FiArrowDown } from 'react-icons/fi';
+import { FiSend, FiPhone, FiMail, FiMapPin, FiClock, FiMessageSquare, FiAlertCircle, FiArrowDown, FiEye, FiEyeOff } from 'react-icons/fi';
 import Link from 'next/link';
 
 export default function ContactPageForm({ isAuthenticated, consultations, onSubmit }: ContactPageFormProps) {
@@ -10,6 +10,7 @@ export default function ContactPageForm({ isAuthenticated, consultations, onSubm
   const [message, setMessage] = useState('');
   const [isClient, setIsClient] = useState(false);
   const [showLoginMessage, setShowLoginMessage] = useState(false);
+  const [hideResolved, setHideResolved] = useState(false);
   const historyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,6 +44,11 @@ export default function ContactPageForm({ isAuthenticated, consultations, onSubm
       return dateString;
     }
   };
+
+  // Filtrar consultas según el estado del checkbox
+  const filteredConsultations = hideResolved 
+    ? consultations.filter(c => c.status !== 'Respondida')
+    : consultations;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -173,42 +179,73 @@ export default function ContactPageForm({ isAuthenticated, consultations, onSubm
       <div ref={historyRef}>
         {isClient && isAuthenticated && consultations.length > 0 && (
           <section className="bg-white rounded-xl shadow-md p-6">
-            <div className="flex items-center mb-6">
-              <div className="bg-emerald-100 p-3 rounded-full mr-4">
-                <FiClock className="text-emerald-600 text-xl" />
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+              <div className="flex items-center">
+                <div className="bg-emerald-100 p-3 rounded-full mr-4">
+                  <FiClock className="text-emerald-600 text-xl" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800">Historial de consultas</h2>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">Historial de consultas</h2>
+
+              <label className="flex items-center cursor-pointer">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={hideResolved}
+                    onChange={() => setHideResolved(!hideResolved)}
+                    className="sr-only"
+                  />
+                </div>
+                <div className="ml-3 flex items-center text-gray-700">
+                  {hideResolved ? (
+                    <FiEyeOff className="mr-2 text-gray-500" />
+                  ) : (
+                    <FiEye className="mr-2 text-gray-500" />
+                  )}
+                  Ocultar consultas resueltas
+                </div>
+              </label>
             </div>
 
-            <div className="space-y-4">
-              {consultations.map((c) => (
-                <div key={c.id} className={`border-l-4 ${c.status === 'Respondida' ? 'border-emerald-500' : 'border-amber-500'} p-4 rounded-md bg-gray-50`}>
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-800 mb-2">{c.subject}</p>
-                      <p className="text-gray-600 italic mb-3">"{c.question}"</p>
-                      {c.answer ? (
-                        <div className="bg-emerald-50 p-3 rounded-md mt-2">
-                          <p className="font-medium text-emerald-800 mb-1">Respuesta:</p>
-                          <p className="text-gray-700">"{c.answer}"</p>
+            {filteredConsultations.length > 0 ? (
+              <div className="space-y-4">
+                {filteredConsultations.map((c) => (
+                  <div key={c.id} className={`border-l-4 ${c.status === 'Respondida' ? 'border-emerald-500' : 'border-amber-500'} p-4 rounded-md bg-gray-50`}>
+                    <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                            <p className="font-medium text-gray-800 mb-2">{c.subject}</p>
+                            <p className="text-gray-600 italic mb-3">"{c.question}"</p>
+                            {c.answer ? (
+                                <div className="bg-emerald-50 p-3 rounded-md mt-2">
+                                <p className="font-medium text-emerald-800 mb-1">Respuesta:</p>
+                                <p className="text-gray-700">"{c.answer}"</p>
+                                </div>
+                            ) : (
+                                <div className="bg-amber-50 p-3 rounded-md mt-2">
+                                <p className="font-medium text-amber-800 mb-1">Estado:</p>
+                                <p className="text-gray-700">Nuestro farmacéutico responderá a tu consulta lo antes posible.</p>
+                                </div>
+                            )}
+                            </div>
+                            <div className="text-right ml-4">
+                            <span className={`inline-block px-2 py-1 text-xs rounded-full ${c.status === 'Respondida' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                                {c.status}
+                            </span>
+                            <p className="text-xs text-gray-500 mt-2">{formatDateSafe(c.date)}</p>
                         </div>
-                      ) : (
-                        <div className="bg-amber-50 p-3 rounded-md mt-2">
-                          <p className="font-medium text-amber-800 mb-1">Estado:</p>
-                          <p className="text-gray-700">Nuestro farmacéutico responderá a tu consulta lo antes posible.</p>
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-right ml-4">
-                      <span className={`inline-block px-2 py-1 text-xs rounded-full ${c.status === 'Respondida' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                        {c.status}
-                      </span>
-                      <p className="text-xs text-gray-500 mt-2">{formatDateSafe(c.date)}</p>
                     </div>
                   </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="bg-gray-100 inline-block p-4 rounded-full mb-4">
+                  <FiEyeOff className="text-gray-400 text-2xl" />
                 </div>
-              ))}
-            </div>
+                <h3 className="text-lg font-medium text-gray-700">No hay consultas pendientes</h3>
+                <p className="text-gray-500 mt-1">Todas tus consultas han sido respondidas</p>
+              </div>
+            )}
           </section>
         )}
       </div>
