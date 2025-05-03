@@ -1,5 +1,5 @@
 export interface Query {
-  id: string;
+  id?: string;
   user: string;
   pharmacist: string;
   date: string;
@@ -7,6 +7,11 @@ export interface Query {
   question: string;
   answer?: string | null;
   status: string; //Pendiente, Respondida
+}
+
+export enum QueryStatus {
+  PENDING = "Pendiente",
+  ANSWERED = "Respondida",
 }
 
 export interface ContactPageFormProps {

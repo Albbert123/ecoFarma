@@ -1,6 +1,6 @@
 'use client';
 
-import { ContactPageFormProps } from '@/types/contactTypes';
+import { ContactPageFormProps } from '@/types/queryTypes';
 import { useState, useEffect, useRef } from 'react';
 import { FiSend, FiPhone, FiMail, FiMapPin, FiClock, FiMessageSquare, FiAlertCircle, FiArrowDown, FiEye, FiEyeOff } from 'react-icons/fi';
 import Link from 'next/link';

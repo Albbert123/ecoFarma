@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 
 class Query(BaseModel):
-    id: str
+    id: Optional[str] = None
     user: str
     pharmacist: str
     date: str
