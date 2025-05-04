@@ -4,7 +4,7 @@ import CartForm from "@/components/public/cart/CartForm";
 import { useBootstrap } from "@/hooks/useBootstrap";
 import { useCartStore } from "@/stores/cartStore";
 import { useAuthStore } from "@/stores/authStore";
-import { createOrder, getOrderByUserDate, sendConfirmationEmail } from "@/services/orderService";
+import { createOrder, getOrderByUserDate, sendConfirmationEmails } from "@/services/orderService";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Order } from "@/types/orderTypes";
@@ -50,7 +50,7 @@ export default function CartPage() {
       clearCart();
       setShowModal(true);
       const orderDB = await getOrderByUserDate(orderData.user, orderData.date)
-      await sendConfirmationEmail(orderDB)
+      await sendConfirmationEmails(orderDB)
     } catch (error) {
       console.error("Error al crear encargo:", error);
       toast.error("Error al realizar el encargo. Inténtalo más tarde.");

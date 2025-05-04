@@ -31,7 +31,8 @@ async def order_confirmation(
         order.pickupDate.replace("Z", "")
     ).strftime("%d/%m/%Y")
 
-    order_service.send_email_confirmation(order)
+    order_service.send_email_confirmation_user(order)
+    order_service.send_email_confirmation_pharmacist(order)
     return {"message": "Order confirmed successfully"}
 
 

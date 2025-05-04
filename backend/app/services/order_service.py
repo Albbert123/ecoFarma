@@ -56,7 +56,7 @@ class OrderService:
         orders = self.order_repo.get_orders_by_user(user)
         return orders
 
-    def send_email_confirmation(self, order: Order):
+    def send_email_confirmation_user(self, order: Order):
         subject = "Confirmación de tu encargo en ecoFarma"
 
         # Formatear productos en tabla HTML
@@ -126,6 +126,41 @@ class OrderService:
                 detail="El correo no pudo ser enviado"
             )
 
+        return status_code
+
+    def send_email_confirmation_pharmacist(self, order: Order):
+        subject = "Nuevo encargo en ecoFarma"
+        html_content = f"""
+        <html>
+            <body>
+                <h2>¡Hola!</h2>
+                <p>Te informamos que tienes un nuevo encargo en ecoFarma que manejar.</p>
+                <h3>Detalles del encargo</h3>
+                <ul>
+                    <li><strong>Número de encargo:</strong> {order.id}</li>
+                    <li><strong>Correo del usuario:</strong> {order.user}</li>
+                    <li><strong>Fecha de realización:</strong> {order.date}</li>
+                    <li><strong>Fecha de recogida:</strong> {order.pickupDate}</li>
+                    <li><strong>Método de pago:</strong> {order.paymentMethod}</li>
+                    <li><strong>Dirección de entrega:</strong> {order.address}</li>
+                    <li><strong>Estado actual:</strong> {order.status}</li>
+                    {"<li><strong>Nota:</strong> " + order.note + "</li>" if order.note else ""}
+                    {"<li><strong>Código promocional:</strong> " + order.promoCode + "</li>" if order.promoCode else ""}
+                </ul>
+                <p>Gracias por confiar en ecoFarma.</p>
+            </body>
+        </html>
+        """
+        status_code = send_email(
+            to_email=order.pharmacist,
+            subject=subject,
+            content=html_content
+        )
+        if status_code != 200:
+            raise HTTPException(
+                status_code=500,
+                detail="El correo no pudo ser enviado"
+            )
         return status_code
 
     def send_email_change_status(self, order: Order):

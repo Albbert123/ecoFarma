@@ -55,7 +55,7 @@ function ManageOrdersPage() {
         orders={orders}
         loading={loading}
         error={error}
-        onStatusChange={handleStatusChange} // <-- pásalo aquí
+        onStatusChange={handleStatusChange}
       />
     </div>
   );
