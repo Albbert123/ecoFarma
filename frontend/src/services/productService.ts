@@ -223,9 +223,9 @@ export const getUserReminders = async (user: string) => {
   }
 }
 
-export const deleteReminder = async (nregistro: string) => {
+export const deleteReminder = async (id: string) => {
   try {
-    await api.delete(`/products/reminder/${nregistro}`);
+    await api.delete(`/products/reminder/${id}`);
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al eliminar el recordatorio";
     throw new Error(errorMessage);

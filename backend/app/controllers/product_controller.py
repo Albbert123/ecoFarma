@@ -129,7 +129,7 @@ async def get_reminders(
     return reminders
 
 
-@router.delete("/reminder/{id}", response_model=Reminder)
+@router.delete("/reminder/{id}")
 async def delete_reminder(
     id: str,
     product_service: ProductService = Depends()

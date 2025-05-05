@@ -6,8 +6,9 @@ import withAuth from "@/components/withAuth";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { Reminder } from "@/types/productTypes";
-import { getUserReminders } from "@/services/productService";
+import { deleteReminder, getUserReminders } from "@/services/productService";
 import RemindersForm from "@/components/dashboard/RemindersForm";
+import toast from "react-hot-toast";
 
 function RemindersPage() {
     useBootstrap();
@@ -23,11 +24,11 @@ function RemindersPage() {
         }
       }, [userCorreo]);
 
-    const handleDelete = (id: string) => {
-        setReminders((prevReminders) => prevReminders.filter((reminder) => reminder.id !== id));
+    const handleDelete = async (id: string) => {
         try {
-            // Aquí puedes llamar a una función para eliminar el recordatorio del backend
-            // await deleteReminder(id);
+            await deleteReminder(id);
+            setReminders((prevReminders) => prevReminders.filter((reminder) => reminder.id !== id));
+            toast.success("Recordatorio eliminado con éxito");
         }
         catch (error) {
             setError("Error al eliminar el recordatorio");
