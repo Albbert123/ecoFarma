@@ -137,3 +137,11 @@ export type ProductFilters = {
   max_price?: number;
   limit?: number;
 };
+
+export interface Reminder {
+  id?: string;
+  user: string;
+  productName: string;
+  productNregistro: string;
+  date: string;
+}

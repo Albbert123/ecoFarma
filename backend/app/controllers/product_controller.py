@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Any, List, Optional
 from fastapi import APIRouter, HTTPException, Depends, Body, Query
-from app.models.product_model import Product, Rating, SearchData
+from app.models.product_model import Product, Rating, Reminder, SearchData
 from app.services.product_service import ProductService
 
 router = APIRouter()
@@ -110,6 +110,32 @@ async def get_ratings(
             detail="No se encontraron calificaciones"
         )
     return ratings
+
+
+@router.post("/reminder", response_model=Reminder)
+async def create_reminder(
+    reminder: Reminder = Body(...),
+    product_service: ProductService = Depends()
+):
+    return product_service.save_reminder(reminder)
+
+
+@router.get("/reminder/{user}", response_model=List[Reminder])
+async def get_reminders(
+    user: str,
+    product_service: ProductService = Depends()
+):
+    reminders = product_service.get_reminders_by_user(user)
+    return reminders
+
+
+@router.delete("/reminder/{id}", response_model=Reminder)
+async def delete_reminder(
+    id: str,
+    product_service: ProductService = Depends()
+):
+    reminder = product_service.delete_reminder(id)
+    return reminder
 
 
 @router.get("/search-history/{userCorreo}", response_model=List[SearchData])

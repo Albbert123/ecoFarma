@@ -74,19 +74,37 @@ export default function ProductDetail({ product, onAddToCart, similarProducts }:
               />
             </div>
             
-            {product.prescription ? (
-              <div className="w-full bg-gray-400 text-white py-2.5 px-6 rounded-md text-sm flex items-center justify-center gap-2 cursor-not-allowed">
-                <FiLock className="text-base" />
-                Requiere receta
-              </div>
-            ) : (
-              <button
-                onClick={handleAddToCart}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 px-6 rounded-md transition duration-200"
-              >
-                Añadir al carrito
-              </button>
-            )}
+            <div className="flex gap-2">
+              {product.prescription ? (
+                <>
+                  <div className="flex-1 bg-gray-400 text-white py-2.5 px-6 rounded-md text-sm flex items-center justify-center gap-2 cursor-not-allowed">
+                    <FiLock className="text-base" />
+                    Requiere receta
+                  </div>
+                  <button
+                    disabled
+                    className="bg-gray-300 text-gray-500 py-2.5 px-4 rounded-md cursor-not-allowed text-sm"
+                  >
+                    Recordatorio
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={handleAddToCart}
+                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 px-6 rounded-md transition duration-200"
+                  >
+                    Añadir al carrito
+                  </button>
+                  <button
+                    onClick={() => typeof window !== 'undefined' && window.dispatchEvent(new CustomEvent("openReminder"))}
+                    className="bg-yellow-400 hover:bg-yellow-500 text-black py-2.5 px-4 rounded-md text-sm"
+                  >
+                    Recordatorio
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

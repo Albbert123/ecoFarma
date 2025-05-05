@@ -82,3 +82,5 @@ CATEGORIES_MAPPING = {
         "ANTIVIRALES DE ACCIÓN DIRECTA"
     ]
 }
+
+REMINDER_DB = db["Recordatorio"]

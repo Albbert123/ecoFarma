@@ -33,3 +33,11 @@ class Rating(BaseModel):
     value: int
     type: str
     date: str
+
+
+class Reminder(BaseModel):
+    id: Optional[str] = None
+    user: str
+    date: str
+    productName: str
+    productNregistro: str
