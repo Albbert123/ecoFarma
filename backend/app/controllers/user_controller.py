@@ -77,6 +77,19 @@ async def get_users(user_service: UserService = Depends()):
     return user_service.get_users()
 
 
+@router.put("/subscribe-newsletter")
+async def subscribe_newsletter(
+    correo: str = Body(..., embed=True),
+    user_service: UserService = Depends()
+):
+    # Obtener el usuario ORIGINAL por su correo actual
+    existing_user = user_service.get_user_by_email(correo)
+
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="Correo no encontrado")
+    return user_service.subscribe_newsletter(correo)
+
+
 @router.delete("/{correo}")
 async def delete_user(
     correo: str = Path(..., description="Correo del usuario a eliminar"),

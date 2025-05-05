@@ -17,6 +17,7 @@ class UserRepository:
             "apellido": user["apellido"],
             "rol": user["rol"],
             "imagen": user["imagen"],
+            "newsletter": user["newsletter"],
             "fromGoogle": user["fromGoogle"],
             "contraseña": hashed_password,
         }
@@ -52,6 +53,18 @@ class UserRepository:
         updated_user = PERSONA_DB.find_one_and_update(
             {"correo": correo},
             {"$set": {"contraseña": new_password}},
+            return_document=ReturnDocument.AFTER
+        )
+
+        if not updated_user:
+            raise ValueError("Usuario no encontrado")
+
+        return updated_user
+
+    def subscribe_newsletter(self, correo: str):
+        updated_user = PERSONA_DB.find_one_and_update(
+            {"correo": correo},
+            {"$set": {"newsletter": True}},
             return_document=ReturnDocument.AFTER
         )
 

@@ -19,6 +19,7 @@ export default function RegisterForm({ onSubmit, error }: RegisterFormProps) {
     contraseña: "",
     imagen: "",
     rol: "usuario",
+    newsletter: false,
     fromAdmin: false,
     fromGoogle: false,
   });

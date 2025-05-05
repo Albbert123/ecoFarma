@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RegisterForm from "@/components/auth/RegisterForm";
 import { registerUser } from "@/services/userService";
-import axios from "axios";
 import { RegisterFormData } from "@/types/userTypes";
 import { useAuthStore } from "@/stores/authStore";
 import { useBootstrap } from "@/hooks/useBootstrap";
