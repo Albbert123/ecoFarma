@@ -144,4 +144,5 @@ export interface Reminder {
   productName: string;
   productNregistro: string;
   date: string;
+  sent: boolean;
 }

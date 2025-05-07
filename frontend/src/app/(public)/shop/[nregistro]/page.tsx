@@ -89,6 +89,7 @@ export default function ProductPage({ params }: { params: Promise<{ nregistro: s
       productName: product.name,
       productNregistro: nregistro,
       date: date,
+      sent: false,
     };
 
     try {

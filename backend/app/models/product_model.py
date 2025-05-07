@@ -41,3 +41,4 @@ class Reminder(BaseModel):
     date: str
     productName: str
     productNregistro: str
+    sent: bool

@@ -142,3 +142,20 @@ class ProductRepository:
         if result.deleted_count == 0:
             raise ValueError("Recordatorio no encontrado")
         return result.deleted_count
+
+    def get_pending_reminders(self, now: datetime):
+        return list(REMINDER_DB.find({
+            "sent": False,
+            "date": {"$lte": now}
+        }))
+
+    def mark_reminder_as_sent(self, reminder_id: str) -> dict:
+        updated_reminder = REMINDER_DB.find_one_and_update(
+            {"_id": ObjectId(reminder_id)},
+            {"$set": {"sent": True}},
+            return_document=ReturnDocument.AFTER
+        )
+        if not updated_reminder:
+            raise ValueError("Recordatorio no encontrado")
+        updated_reminder["id"] = str(updated_reminder.pop("_id"))
+        return updated_reminder
