@@ -1,7 +1,7 @@
 from datetime import datetime
 from fastapi import HTTPException
 from app.repositories.product_repository import ProductRepository
-from app.models.product_model import Product, Rating, SearchData
+from app.models.product_model import Product, Rating, Reminder, SearchData
 from typing import List
 import numpy as np
 from app.constants.product_constants import LAB_MAPPING, CATEGORIES_MAPPING
@@ -205,3 +205,20 @@ class ProductService:
 
     def get_all_nregistros(self) -> List[str]:
         return self.product_repo.get_all_nregistros()
+
+    def save_reminder(
+        self, reminder: Reminder
+    ) -> Reminder:
+        self.product_repo.save_reminder(reminder)
+        return reminder
+
+    def get_reminders_by_user(self, user: str) -> List[Reminder]:
+        return self.product_repo.get_reminders_by_user(user)
+
+    def delete_reminder(self, reminder_id: str):
+        result = self.product_repo.delete_reminder(reminder_id)
+        if not result:
+            raise HTTPException(
+                status_code=404, detail="Recordatorio no encontrado"
+            )
+        return {"message": "Recordatorio eliminado correctamente"}

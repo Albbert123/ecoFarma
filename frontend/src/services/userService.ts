@@ -90,3 +90,13 @@ export const refreshToken = async (token: string) => {
     throw new Error("Error al renovar el token");
   }
 };
+
+export const subscribeToNewsletter = async (correo: string) => {
+  try {
+    const response = await api.put("/users/subscribe-newsletter", { correo });
+    return response.data; // Retorna la respuesta del backend
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al suscribirse al newsletter";
+    throw new Error(errorMessage);
+  }
+}

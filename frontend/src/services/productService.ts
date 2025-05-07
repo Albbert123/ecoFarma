@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { Product, ProductFilters, ProductFormData, UpdateProductData, SearchData, Rating } from '@/types/productTypes';
+import { Product, ProductFilters, ProductFormData, UpdateProductData, SearchData, Rating, Reminder} from '@/types/productTypes';
 import { LAB_MAPPING, CATEGORIES_MAPPING } from '@/constants/constants';
 
 
@@ -199,6 +199,35 @@ export const getRatings = async () => {
     return response.data;
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al obtener las calificaciones";
+    throw new Error(errorMessage);
+  }
+}
+
+export const saveReminder = async (reminder: Reminder) => {
+  try {
+    const response = await api.post(`/products/reminder/`, reminder);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al guardar el recordatorio";
+    throw new Error(errorMessage);
+  }
+}
+
+export const getUserReminders = async (user: string) => {
+  try {
+    const response = await api.get(`/products/reminder/${user}`);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al obtener los recordatorios";
+    throw new Error(errorMessage);
+  }
+}
+
+export const deleteReminder = async (id: string) => {
+  try {
+    await api.delete(`/products/reminder/${id}`);
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al eliminar el recordatorio";
     throw new Error(errorMessage);
   }
 }

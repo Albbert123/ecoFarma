@@ -1,4 +1,3 @@
-import ForgotPasswordForm from '../components/auth/ForgotPasswordForm';
 export interface RegisterFormData {
     correo: string;
     nombre: string;
@@ -6,6 +5,7 @@ export interface RegisterFormData {
     contraseña: string;
     imagen: string;
     rol: string;
+    newsletter: boolean;
     fromAdmin?: boolean;
     fromGoogle?: boolean;
 }

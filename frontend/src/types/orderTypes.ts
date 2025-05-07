@@ -1,9 +1,9 @@
 export interface CartItem {
   nregistro: string;
   name: string;
-  price?: number;
-  image?: string;
-  stock?: number;
+  price?: number | null;
+  image?: string | null;
+  stock?: number | null;
   quantity: number;
 }
 

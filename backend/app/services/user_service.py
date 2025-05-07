@@ -158,3 +158,36 @@ class UserService:
             return None
 
         return new_token
+
+    def subscribe_newsletter(self, correo: str):
+        self.user_repo.subscribe_newsletter(correo)
+        try:
+            # Preparar contenido del correo
+            subject = "Suscripción a nuestro boletín"
+            html_content = """
+            <html>
+                <body>
+                    <h2>¡Gracias por suscribirte!</h2>
+                    <p>Ahora recibirás nuestras últimas noticias y ofertas.</p>
+                </body>
+            </html>
+            """
+
+            # Enviar el correo
+            status_code = send_email(
+                to_email=correo,
+                subject=subject,
+                content=html_content
+            )
+
+            if status_code != 200:
+                raise HTTPException(
+                    status_code=500,
+                    detail="El correo no pudo ser enviado"
+                )
+            return {"message": "Suscripción exitosa"}
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error en el proceso de suscripción: {str(e)}"
+            )

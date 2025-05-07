@@ -17,9 +17,6 @@ export default function Home() {
   // ⛔ Evitar problemas de hidratación con un estado que solo se activa en el cliente
   const [isClient, setIsClient] = useState(false);
   useEffect(() => setIsClient(true), []);
-  const [products, setProducts] = useState<Product[]>([]);
-  const setProductsStore = useProductStore((state) => state.setProductsStore);
-  const clearProducts = useProductStore((state) => state.clearProducts);
 
   const { isAuthenticated, userRole } = useAuthStore(); // Obtener usuario autenticado
 

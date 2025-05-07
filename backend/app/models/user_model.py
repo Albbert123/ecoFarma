@@ -9,6 +9,7 @@ class UserCreate(BaseModel):
     contraseña: str
     imagen: str
     rol: str
+    newsletter: bool
     fromAdmin: Optional[bool] = False
     fromGoogle: Optional[bool] = False
 
@@ -34,6 +35,7 @@ class UserResponse(BaseModel):
     apellido: str
     imagen: str
     rol: str
+    newsletter: bool
     token: Optional[str] = None
     fromGoogle: Optional[bool] = False
 
@@ -41,3 +43,7 @@ class UserResponse(BaseModel):
 class UserLogin(BaseModel):
     correo: str
     contraseña: str
+
+
+class SubscribeNewsletterRequest(BaseModel):
+    correo: str

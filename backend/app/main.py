@@ -6,7 +6,7 @@ from app.routes.product_routes import api_router as product_router
 from app.routes.prescription_routes import api_router as prescription_router
 from app.routes.order_routes import api_router as order_router
 from app.routes.query_routes import api_router as query_router
-
+from app.services.scheduler_service import start_scheduler
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from dotenv import load_dotenv
@@ -44,3 +44,6 @@ app.include_router(query_router)
 @app.get("/")
 def home():
     return {"message": "Bienvenido a ecoFarma API"}
+
+
+start_scheduler()

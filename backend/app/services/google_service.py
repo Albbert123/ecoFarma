@@ -80,6 +80,9 @@ async def handle_google_callback(request: Request, user_service: UserService):
             "fromGoogle": (
                 "true" if existing_user.get("fromGoogle", False) else "false"
             ),
+            "newsletter": (
+                "true" if existing_user.get("newsletter", False) else "false"
+            ),
         }
     else:
         new_user = user_service.create_user(UserCreate(
@@ -89,6 +92,7 @@ async def handle_google_callback(request: Request, user_service: UserService):
             contraseña="google_auth",
             rol="usuario",
             imagen=imagen,
+            newsletter=False,
             fromAdmin=False,
             fromGoogle=True,
         ))
@@ -100,6 +104,7 @@ async def handle_google_callback(request: Request, user_service: UserService):
             "nombre": new_user.nombre,
             "apellido": new_user.apellido,
             "fromGoogle": "true" if new_user.fromGoogle else "false",
+            "newsletter": "true" if new_user.newsletter else "false"
         }
 
     redirect_url = f"http://localhost:3000/login?{urlencode(user_data)}"
