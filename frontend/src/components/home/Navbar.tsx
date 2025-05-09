@@ -86,7 +86,8 @@ export default function Navbar() {
                     { href: "/shop", text: "Tienda" },
                     { href: "/orders", text: "Encargos" },
                     { href: "/contact", text: "Contacto" },
-                    { href: "/about", text: "Nosotros" }
+                    { href: "/about", text: "Nosotros" },
+                    { href: "/faq", text: "FAQ" }
                 ])}
 
                 {/* Icons - Aumentamos tamaño en desktop */}
