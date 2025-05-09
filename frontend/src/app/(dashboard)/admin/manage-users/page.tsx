@@ -9,6 +9,7 @@ import { UserCardData } from "@/types/userTypes";
 import { deleteUser, getUsers } from "@/services/userService";
 import toast from "react-hot-toast";
 import { getUserOrders } from "@/services/orderService";
+import { getQueriesByUser } from "@/services/queryService";
 
 function ManageUsersPage() {
   useBootstrap();
@@ -24,12 +25,17 @@ function ManageUsersPage() {
       const usersDB = await getUsers();
       const filteredUsers = usersDB.filter((user: UserCardData) => user.rol === "usuario");
 
-      const usersWithOrders = await Promise.all(
+      const usersWithOrdersAndQueries = await Promise.all(
         filteredUsers.map(async (user: { correo: string; }) => {
           try {
             const orders = await getUserOrders(user.correo);
-            const orderIds = orders.map((order: any) => order.id); // extraer solo los IDs
-            return { ...user, encargos: orderIds };
+            const activeOrders = orders.filter((order: any) => order.status !== "Entregado");
+            const orderIds = activeOrders.map((order: any) => order.id); // Extraer solo los IDs
+            
+            const queries = await getQueriesByUser(user.correo);
+            const activeQueries = queries.filter((query: any) => query.status !== "Pendiente");
+            const queryIds = activeQueries.map((query: any) => query.id); // Extraer solo los IDs
+            return { ...user, encargos: orderIds, consultas: queryIds };
           } catch (err) {
             console.error(`Error al obtener encargos de ${user.correo}:`, err);
             return { ...user, encargos: [] };
@@ -37,7 +43,7 @@ function ManageUsersPage() {
         })
       );
         
-      setUsers(usersWithOrders);
+      setUsers(usersWithOrdersAndQueries);
     } catch (err: any) {
       setError(err.message || "Error al obtener los usuarios"); // Manejar errores
     } finally {

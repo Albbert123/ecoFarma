@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FaTrash, FaChevronUp } from "react-icons/fa";
+import { FaTrash, FaChevronDown, FaUser, FaEnvelope, FaPills } from "react-icons/fa";
 import { PharmCardData } from "@/types/userTypes";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -16,72 +16,78 @@ const PharmacistCard: React.FC<PharmCardProps> = ({ pharm, onDelete }) => {
   const { userRole } = useAuthStore();
 
   return (
-    <div className="relative flex flex-col sm:flex-row sm:items-start gap-2">
-        {/* Tarjeta de farmacéutico */}
-        <div className={`border rounded-lg p-3 mb-4 w-full bg-gray-100 transition-all ${expanded ? "pb-4" : "min-h-12"}`}>
-            {/* Contenedor principal con posición relativa */}
-            <div className="relative w-full h-full">
-                {/* Contenido del farmacéutico */}
-                <div 
-                    className="pr-8 cursor-pointer" // Deja espacio para la flecha
-                    onClick={() => setExpanded(!expanded)}
-                >
-                    {/* Nombre y apellido en columna en móvil, en fila en desktop */}
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                        <span className="whitespace-nowrap">
-                            <strong>Nombre:</strong> {pharm?.nombre}
-                        </span>
-                        <span className="whitespace-nowrap">
-                            <strong>Apellido:</strong> {pharm?.apellido}
-                        </span>
-                    </div>
-                </div>
-
-                {/* Flecha posicionada absolutamente en la esquina superior derecha */}
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <FaChevronUp
-                        className={`transition-transform ${expanded ? "rotate-180" : ""}`}
-                    />
-                </div>
+    <div className="relative w-full mb-4 last:mb-0">
+      {/* Main Card */}
+      <div 
+        className={`bg-gray-50 rounded-xl shadow-md overflow-hidden transition-all duration-300 ${expanded ? "ring-2 ring-blue-500" : "hover:shadow-lg"}`}
+      >
+        {/* Card Header */}
+        <div 
+          className="flex items-center justify-between p-4 cursor-pointer"
+          onClick={() => setExpanded(!expanded)}
+        >
+          <div className="flex items-center space-x-3">
+            <div className="bg-green-100 p-2 rounded-full">
+              <FaPills className="text-green-600" />
             </div>
-
-            {expanded && (
-                <div className="mt-4 bg-gray-100 p-2 rounded">
-                    <p>
-                        <strong>Correo:</strong> {pharm?.correo}
-                    </p>
-                </div>
-            )}
+            <div>
+              <h3 className="font-semibold text-gray-800">{pharm?.nombre} {pharm?.apellido}</h3>
+              <p className="text-sm text-gray-500">{pharm?.correo}</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center">
+            <FaChevronDown 
+              className={`text-gray-400 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+            />
+          </div>
         </div>
 
-        {/* Botón eliminar (responsivo) */}
-        {userRole === "admin" && (
-            <div className={`flex ${showConfirm ? 'flex-row' : ''} gap-2 mb-4 sm:mb-0 sm:self-center`}>
-                {!showConfirm ? (
-                    <button 
-                        className="text-red-600 h-12 w-12 flex items-center justify-center"
-                        onClick={() => setShowConfirm(true)}
-                    >
-                        <FaTrash />
-                    </button>
-                ) : (
-                    <>
-                        <button 
-                            className="text-green-600 h-12 w-12 flex items-center justify-center"
-                            onClick={() => onDelete(pharm.correo)}
-                        >
-                            ✅
-                        </button>
-                        <button 
-                            className="text-gray-600 h-12 w-12 flex items-center justify-center"
-                            onClick={() => setShowConfirm(false)}
-                        >
-                            ❌
-                        </button>
-                    </>
-                )}
+        {/* Expanded Content */}
+        {expanded && (
+          <div className="px-4 pb-4 pt-2 border-t border-gray-100 bg-gray-50">
+            {/* Single column layout */}
+            <div className="space-y-4">
+              {/* Email */}
+              <div className="flex items-center text-sm text-gray-600">
+                <FaEnvelope className="mr-2 text-blue-500" />
+                <span><strong>Correo:</strong> {pharm?.correo}</span>
+              </div>
             </div>
+            
+            {/* Delete Button (for admin) */}
+            {userRole === "admin" && (
+              <div className={`mt-4 flex ${showConfirm ? 'justify-end space-x-2' : 'justify-end'}`}>
+                {!showConfirm ? (
+                  <button
+                    onClick={() => setShowConfirm(true)}
+                    className="flex items-center px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <FaTrash className="mr-2" />
+                    Eliminar farmacéutico
+                  </button>
+                ) : (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-600 mr-2">¿Estás seguro?</span>
+                    <button
+                      onClick={() => setShowConfirm(false)}
+                      className="px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={() => onDelete(pharm.correo)}
+                      className="px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      Confirmar
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         )}
+      </div>
     </div>
   );
 };
