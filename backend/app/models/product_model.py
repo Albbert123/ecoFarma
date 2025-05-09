@@ -17,6 +17,7 @@ class Product(BaseModel):
     composition: Optional[str] = None
     AdditionalInfo: Optional[str] = None
     embedding: Optional[List[float]] = None
+    fromAdmin: Optional[bool] = False
 
     class Config:
         extra = "ignore"  # Ignorar campos adicionales
@@ -42,3 +43,13 @@ class Reminder(BaseModel):
     productName: str
     productNregistro: str
     sent: bool
+
+
+class ProductAdmin(BaseModel):
+    name: str
+    price: float
+    nregistro: str
+    principleAct: str
+    laboratory: str
+    category: str
+    description: str

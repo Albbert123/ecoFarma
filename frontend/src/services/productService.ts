@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { Product, ProductFilters, ProductFormData, UpdateProductData, SearchData, Rating, Reminder} from '@/types/productTypes';
+import { Product, ProductFilters, ProductFormData, UpdateProductData, SearchData, Rating, Reminder, ProductAdmin} from '@/types/productTypes';
 import { LAB_MAPPING, CATEGORIES_MAPPING } from '@/constants/constants';
 
 
@@ -228,6 +228,35 @@ export const deleteReminder = async (id: string) => {
     await api.delete(`/products/reminder/${id}`);
   } catch (error: any) {
     const errorMessage = error.response?.data?.detail || "Error al eliminar el recordatorio";
+    throw new Error(errorMessage);
+  }
+}
+
+export const addProductAdmin = async (formData: Product) => {
+  try {
+    const response = await api.post("/products/admin", formData);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al agregar el producto";
+    throw new Error(errorMessage);
+  }
+}
+
+export const updateProductAdmin = async (nregistro: string, updatedFields: Product) => {
+  try {
+    const response = await api.put(`/products/admin/${nregistro}`, updatedFields);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al actualizar el producto";
+    throw new Error(errorMessage);
+  }
+}
+
+export const deleteProductAdmin = async (nregistro: string) => {
+  try {
+    await api.delete(`/products/admin/${nregistro}`);
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Error al eliminar el producto";
     throw new Error(errorMessage);
   }
 }

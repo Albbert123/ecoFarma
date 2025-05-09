@@ -43,11 +43,11 @@ export interface Product {
     stock?: number | null;
     principleAct?: string | null;
     dosis?: string | null;
-    // quantity?: number | null;
     prescription?: boolean | null;
     composition?: string | null;
     AdditionalInfo?: string | null;
     embedding?: number[] | null;
+    fromAdmin?: boolean | null;
 }
 
 export interface UpdateProductData {
@@ -145,4 +145,14 @@ export interface Reminder {
   productNregistro: string;
   date: string;
   sent: boolean;
+}
+
+export interface ProductAdmin {
+  name: string;
+  price: number;
+  nregistro: string;
+  principleAct: string;
+  laboratory: string;
+  category: string;
+  description: string;
 }
