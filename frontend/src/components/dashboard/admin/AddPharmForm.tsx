@@ -16,6 +16,7 @@ const AddPharmForm: React.FC<AddPharmFormProps> = ({ onAddPharmacist, onCancel }
     imagen: "",
     rol: "farmaceutico",
     fromAdmin: true,
+    newsletter: false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
