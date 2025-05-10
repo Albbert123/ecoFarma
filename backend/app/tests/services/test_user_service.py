@@ -61,7 +61,8 @@ def test_create_user(mock_user_repo, user_service):
         apellido="User",
         rol="user",
         imagen="image_url",
-        fromAdmin=False
+        fromAdmin=False,
+        newsletter=False
     )
 
     hashed_password = bcrypt.hashpw(
@@ -74,7 +75,8 @@ def test_create_user(mock_user_repo, user_service):
         "rol": "user",
         "imagen": user_data.imagen,
         "fromAdmin": user_data.fromAdmin,
-        "password": hashed_password
+        "password": hashed_password,
+        "newsletter": user_data.newsletter,
     }
 
     with patch('app.services.user_service.create_access_token') as mock_token:
@@ -102,7 +104,8 @@ def test_authenticate_user_success(mock_user_repo, user_service):
         "nombre": "Test User",
         "apellido": "User",
         "imagen": "image_url",
-        "fromGoogle": False
+        "fromGoogle": False,
+        "newsletter": False
     }
 
     with patch('app.services.user_service.create_access_token') as mock_token:
@@ -172,7 +175,8 @@ def test_update_user(user_service, mock_user_repo):
         "rol": "user",
         "apellido": user_data.apellido,
         "imagen": user_data.imagen,
-        "fromGoogle": False
+        "fromGoogle": False,
+        "newsletter": False
     }
 
     result = user_service.update_user(user_data)
