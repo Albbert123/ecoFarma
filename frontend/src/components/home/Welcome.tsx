@@ -42,46 +42,109 @@ export default function Welcome() {
         return (
             <>
                 {/* Hero Section */}
-                <header className="text-center py-15 px-6"> {/* padding en y de 20 y en x de 6 */}
-                    <h1 className="text-5xl font-bold">BIENVENIDOS A ECOFARMA</h1>
-                    <div className="mt-8 flex justify-center"> {/* margin top de 6, centrar horizontalmente */}
-                        <div className="relative w-full max-w-lg">
+                <header className="text-center px-6 mt-14">
+                    <h1 className="text-5xl font-bold text-gray-800 mb-2">
+                        BIENVENIDOS A <span className="text-blue-600">ECOFARMA</span>
+                    </h1>
+                    <p className="text-lg text-gray-600 mb-8">Tu salud, nuestra prioridad</p>
+                    
+                    <div className="mt-12 mb-15 flex justify-center">
+                        <div className="relative w-full max-w-lg transform transition-all duration-300 hover:scale-[1.02]">
                             <input
                                 type="text"
                                 placeholder="Cuéntanos qué te ocurre, qué producto necesitas..."
-                                className="w-full px-4 py-3 border rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                className="w-full px-4 py-3 border-3 border-blue-200 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-green-500"
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                                 onKeyDown={handleSubmit}
                             />
-                            <FaSearch className="absolute top-5 right-4 text-gray-500" />
+                            <FaSearch className="absolute top-5 right-4 text-gray-500 hover:text-green-600 cursor-pointer" />
                         </div>
                     </div>
                 </header>
-            
+
                 {/* Info Section */}
-                <section className="text-center px-6 py-1">
-                    <h2 className="text-2xl font-semibold">¡Descubre nuestro nuevo método de búsqueda!</h2>
-                    <p className="mt-4 text-gray-700 max-w-2xl mx-auto text-justify">
-                        Estamos emocionados de presentarte nuestra nueva funcionalidad de Búsqueda Semántica, diseñada para ayudarte a encontrar exactamente lo que necesitas de manera rápida y sencilla.
-                    </p>
-                    <p className="mt-4 text-gray-700 max-w-2xl mx-auto text-justify">
-                        Simplemente describe lo que necesitas en tus propias palabras, y nuestro sistema hará el resto. Por ejemplo, si buscas:
-                    </p>
-                    <ul className="mt-4 space-y-2">
-                        <li>🔍 "Algo para el dolor de cabeza"</li>
-                        <li>🔍 "Un jarabe para la tos seca"</li>
-                    </ul>
-                    <p className="mt-4 text-gray-700 max-w-2xl mx-auto text-justify">Nuestra búsqueda semántica te mostrará los productos más relevantes, ¡sin complicaciones!</p>
+                <section className="px-6 mb-6">
+                    <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <div className="text-center mb-8">
+                            <h2 className="text-3xl font-semibold text-gray-800">
+                                Búsqueda <span className="text-green-600">inteligente</span>, resultados <span className="text-green-600">precisos</span>
+                            </h2>
+                            <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+                                Nuestra tecnología semántica entiende lo que necesitas, incluso si no conoces el nombre exacto del producto
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-8 mt-6">
+                            <div className="bg-green-50 p-6 rounded-lg border border-green-100">
+                                <h3 className="font-medium text-lg text-green-800 flex items-center">
+                                    <span className="bg-green-100 p-2 rounded-full mr-3">
+                                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </span>
+                                    ¿Cómo funciona?
+                                </h3>
+                                <p className="mt-3 text-gray-700">
+                                    Describe tus síntomas o necesidades en lenguaje natural. Nuestro sistema analiza tu consulta y encuentra los productos más relevantes.
+                                </p>
+                            </div>
+
+                            <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
+                                <h3 className="font-medium text-lg text-blue-800 flex items-center">
+                                    <span className="bg-blue-100 p-2 rounded-full mr-3">
+                                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </span>
+                                    Ejemplos prácticos
+                                </h3>
+                                <ul className="mt-3 space-y-2 pl-1">
+                                    <li className="flex items-start">
+                                        <span className="text-blue-500 mr-2">•</span>
+                                        <span>"Tengo alergia y me pican los ojos"</span>
+                                    </li>
+                                    <li className="flex items-start">
+                                        <span className="text-blue-500 mr-2">•</span>
+                                        <span>"Necesito algo para el ardor de estómago"</span>
+                                    </li>
+                        
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </section>
-            
-                {/* Feedback Section */}
-                <section className="bg-gray-100 py-12 text-center px-6">
-                    <h2 className="text-2xl font-semibold">¡Tu opinión cuenta!</h2>
-                    <p className="mt-4 text-gray-700 max-w-2xl mx-auto text-justify">
-                        Después de cada búsqueda, te preguntaremos si los resultados fueron útiles. Tu feedback nos ayudará a mejorar y ofrecerte siempre la mejor experiencia.
-                    </p>
-                </section>
+
+                {/* Feedback Section
+                <section className="bg-gradient-to-r from-green-50 to-blue-50 py-12 px-6 border-t border-gray-200">
+                    <div className="max-w-4xl mx-auto text-center">
+                        <div className="inline-flex items-center justify-center bg-white rounded-full p-4 mb-6 shadow-sm">
+                            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                            </svg>
+                        </div>
+                        <h2 className="text-3xl font-semibold text-gray-800 mb-4">
+                            Ayúdanos a <span className="text-green-600">mejorar</span> contigo
+                        </h2>
+                        <p className="text-gray-700 max-w-2xl mx-auto mb-6">
+                            Tu experiencia es valiosa. Después de cada búsqueda, podrás valorar si los resultados fueron útiles.
+                        </p>
+                        <div className="bg-white p-6 rounded-lg shadow-sm inline-block max-w-lg w-full border border-gray-100">
+                            <p className="text-gray-700 mb-4">
+                                <span className="font-medium text-green-600">"¿Encontraste lo que buscabas?"</span><br />
+                                Esta simple pregunta nos ayuda a afinar nuestros resultados para ti y para los próximos usuarios.
+                            </p>
+                            <div className="flex justify-center space-x-4">
+                                <button className="px-4 py-2 bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition-colors">
+                                    Sí, perfecto
+                                </button>
+                                <button className="px-4 py-2 bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition-colors">
+                                    No exactamente
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section> */}
             </>
         );
     } else if (userRole === "farmaceutico") {
