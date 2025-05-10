@@ -94,9 +94,11 @@ def send_weekly_newsletter():
 
 def start_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(check_and_send_reminders, "interval", minutes=60)
 
-    # Job semanal: cada lunes a las 10:00
+    # Reminder check every 24 hours
+    scheduler.add_job(check_and_send_reminders, "interval", hours=24)
+
+    # Weekly newsletter every Monday at 10:00 AM
     scheduler.add_job(
         send_weekly_newsletter,
         trigger="cron",

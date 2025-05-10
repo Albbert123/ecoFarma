@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authStore';
 import ContactPageForm from '@/components/public/contact/ContactPageForm';
 import { Query, QueryStatus } from '@/types/queryTypes';
 import { useBootstrap } from '@/hooks/useBootstrap';
-import { getQueriesByUser, sendConsultation } from '@/services/queryService';
+import { getQueriesByUser, sendQuery } from '@/services/queryService';
 import toast from 'react-hot-toast';
 import { getUsers } from '@/services/userService';
 import { PharmCardData } from '@/types/userTypes';
@@ -13,7 +13,7 @@ import { PharmCardData } from '@/types/userTypes';
 export default function ContactPage() {
   useBootstrap();
   const { userCorreo, isAuthenticated } = useAuthStore();
-  const [consultations, setConsultations] = useState<Query[]>([]);
+  const [queries, setQueries] = useState<Query[]>([]);
 
   const choosePharmacist = async () : Promise<string> => {
       const usersDB = await getUsers(); // Llamada a la función asíncrona
@@ -41,9 +41,9 @@ export default function ContactPage() {
       status: QueryStatus.PENDING,
     };
     try {
-      await sendConsultation(query);
+      await sendQuery(query);
       const updatedQueries = await getQueriesByUser(userCorreo || "");
-      setConsultations(updatedQueries);
+      setQueries(updatedQueries);
       toast.success("Consulta enviada con éxito");
     } catch (error) {
         toast.error('Error al enviar la consulta');
@@ -53,12 +53,12 @@ export default function ContactPage() {
   useEffect(() => {
     if (isAuthenticated && userCorreo) {
       getQueriesByUser(userCorreo || "").then((queries) => {
-        setConsultations(queries);
+        setQueries(queries);
       });
     }
   }, [isAuthenticated, userCorreo]);
 
   return (
-    <ContactPageForm isAuthenticated={isAuthenticated} consultations={consultations} onSubmit={handleSubmit} />
+    <ContactPageForm isAuthenticated={isAuthenticated} consultations={queries} onSubmit={handleSubmit} />
   );
 }

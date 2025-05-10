@@ -23,7 +23,7 @@ export const getQueriesByUser = async (user: string) => {
   }
 }
 
-export const sendConsultation = async (query: Query) => {
+export const sendQuery = async (query: Query) => {
   try {
     const response = await api.post("/queries", query);
     return response.data;
