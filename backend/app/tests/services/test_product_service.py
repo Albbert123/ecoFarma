@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from unittest.mock import MagicMock, patch
 import numpy as np
 from app.services.product_service import ProductService
-from app.models.product_model import Product, Rating, SearchData
+from app.models.product_model import Product, Rating, Reminder, SearchData
 from app.tests.mocks.mock_product import get_mock_product, get_mock_recommendations, get_mock_search_history, get_mock_similar_products
 
 
@@ -607,3 +607,84 @@ def test_get_all_nregistros_success(product_service, mock_product_repository):
     # Assert
     assert result == mock_nregistros
     mock_product_repository.get_all_nregistros.assert_called_once()
+
+
+def test_save_reminder_success(product_service, mock_product_repository):
+    """Test que verifica que se guarda correctamente un recordatorio."""
+    # Arrange
+    reminder = Reminder(
+        id="1",
+        user="test_user",
+        date="2025-05-06T00:00:00.000Z",
+        productName="Producto 1",
+        productNregistro="12345",
+        sent=False
+    )
+    mock_product_repository.save_reminder.return_value = None  # Simula que no devuelve nada
+
+    # Act
+    result = product_service.save_reminder(reminder)
+
+    # Assert
+    assert result == reminder
+    mock_product_repository.save_reminder.assert_called_once_with(reminder)
+
+
+def test_get_reminders_by_user_success(product_service, mock_product_repository):
+    """Test que verifica que se obtienen correctamente los recordatorios de un usuario."""
+    # Arrange
+    user = "test_user"
+    mock_reminders = [
+        Reminder(
+            id="1",
+            user=user,
+            date="2025-05-06T00:00:00.000Z",
+            productName="Producto 1",
+            productNregistro="12345",
+            sent=False
+        ),
+        Reminder(
+            id="2",
+            user=user,
+            date="2025-05-07T00:00:00.000Z",
+            productName="Producto 2",
+            productNregistro="67890",
+            sent=True
+        )
+    ]
+    mock_product_repository.get_reminders_by_user.return_value = mock_reminders
+
+    # Act
+    result = product_service.get_reminders_by_user(user)
+
+    # Assert
+    assert result == mock_reminders
+    mock_product_repository.get_reminders_by_user.assert_called_once_with(user)
+
+
+def test_delete_reminder_success(product_service, mock_product_repository):
+    """Test que verifica que se elimina correctamente un recordatorio."""
+    # Arrange
+    reminder_id = "1"
+    mock_product_repository.delete_reminder.return_value = True  # Simula que se eliminó correctamente
+
+    # Act
+    result = product_service.delete_reminder(reminder_id)
+
+    # Assert
+    assert result == {"message": "Recordatorio eliminado correctamente"}
+    mock_product_repository.delete_reminder.assert_called_once_with(reminder_id)
+
+
+def test_delete_reminder_not_found(product_service, mock_product_repository):
+    """Test que verifica que se lanza una excepción si el recordatorio no existe."""
+    # Arrange
+    reminder_id = "1"
+    mock_product_repository.delete_reminder.return_value = False  # Simula que no se encontró el recordatorio
+
+    # Act & Assert
+    with pytest.raises(HTTPException) as exc_info:
+        product_service.delete_reminder(reminder_id)
+    assert exc_info.value.status_code == 404
+    assert exc_info.value.detail == "Recordatorio no encontrado"
+    mock_product_repository.delete_reminder.assert_called_once_with(reminder_id)
