@@ -9,7 +9,7 @@ import { FaUser, FaSignOutAlt, FaFilePrescription, FaHistory, FaBell, FaUserCog 
 import { IoMdCart } from "react-icons/io";
 
 export default function ProfileMenu() {
-    const { isAuthenticated, userRole, userImagen, logout } = useAuthStore();
+    const { isAuthenticated, userRole, userImagen, userNombre, logout } = useAuthStore();
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
@@ -81,9 +81,8 @@ export default function ProfileMenu() {
             {menuOpen && isAuthenticated && (
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg z-50 overflow-hidden border border-gray-100 animate-fade-in">
                     {/* Encabezado del menú */}
-                    <div className="px-4 py-3 bg-gradient-to-r from-blue-50 to-blue-100 border-b border-gray-200">
-                        <p className="text-sm font-medium text-gray-700">Hola, {userRole}</p>
-                        <p className="text-xs text-gray-500">Gestiona tu cuenta</p>
+                    <div className="px-3 py-3 bg-gradient-to-r from-blue-50 to-blue-100 border-b border-gray-200">
+                        <p className="text-sm font-medium text-gray-700">Hola, {userNombre}</p>
                     </div>
 
                     {/* Opciones del menú */}
@@ -171,6 +170,7 @@ const MenuItem = ({
     <Link 
         href={href} 
         className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 transition-colors"
+        style={{ textDecoration: 'none', color: 'inherit'}}
         onClick={onClick}
     >
         <span className="mr-3">{icon}</span>

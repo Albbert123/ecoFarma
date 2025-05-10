@@ -19,7 +19,7 @@ export default function Navbar() {
     if (!isClient) return null;
 
     // Estilos base con gradiente sutil y sombra mejorada
-    const baseNavStyles = "flex justify-between items-center px-4 sm:px-6 lg:px-8 py-3 bg-gradient-to-r from-blue-50 to-white shadow-sm border-b border-gray-100";
+    const baseNavStyles = "flex justify-between items-center px-4 sm:px-6 lg:px-8 py-3 shadow-sm border-b border-gray-100";
 
     // Menú móvil con animación suave
     const mobileMenuStyles = `
