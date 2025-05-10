@@ -9,6 +9,7 @@ import { CartFormProps, OrderStatus } from "@/types/orderTypes";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/stores/authStore";
 import { PHARM_ADDRESS } from "@/constants/constants";
+import { useRouter } from "next/navigation";
 
 export default function CartForm({onOrder, isOrdering}: CartFormProps) {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCartStore();
@@ -19,6 +20,7 @@ export default function CartForm({onOrder, isOrdering}: CartFormProps) {
   const [showNote, setShowNote] = useState(false);
   const [note, setNote] = useState("");
   const { userCorreo, isAuthenticated } = useAuthStore();
+  const router = useRouter();
   
   const total = cart.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
 
@@ -34,7 +36,7 @@ export default function CartForm({onOrder, isOrdering}: CartFormProps) {
           <p className="text-gray-500 mb-4">Agrega productos para continuar</p>
           <button 
             className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-            onClick={() => window.history.back()}
+            onClick={() => router.push("/shop")}
           >
             Volver a la tienda
           </button>

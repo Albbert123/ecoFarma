@@ -21,7 +21,9 @@ export default function LoginPage() {
       const userData = await loginUser(formData);
       setUser(userData?.token, userData?.rol, userData?.correo, userData?.imagen, userData?.nombre, userData?.apellido, userData?.fromGoogle); // Guardar en authStore
       toast.success("Inicio de sesión exitoso 🎉");
-      router.push("/");
+      const params = new URLSearchParams(window.location.search);
+      const returnTo = params.get("returnTo") || "/";
+      router.push(returnTo);
     } catch (err: any) {
       setError(err.message);
     }
@@ -37,11 +39,13 @@ export default function LoginPage() {
     const imagen = params.get("imagen") ?? "";
     const role = params.get("rol") ?? "";
     const fromGoogle = params.get("fromGoogle") === "true";
+    const returnTo = params.get("returnTo") || "/";
+    console.log("params.get('returnTo')", params.get("returnTo"));
 
     if (token && correo && nombre && role) {
       setUser(token, role as UserRole, correo, imagen, nombre, apellido, fromGoogle);
       toast.success("Inicio de sesión exitoso con Google 🎉");
-      router.push("/");
+      router.push(returnTo);
     }
   }, []);
 

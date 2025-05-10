@@ -60,7 +60,6 @@ function PrescriptionPage() {
     try {
         const user = userCorreo ?? "";
         const newPrescription = await uploadPrescription(user, currentType, file);
-        console.log("Receta subida:", newPrescription);
         toast.success("Receta subida correctamente.");
         setPrescriptions((prev) => [...prev, newPrescription]);
     } catch (error) {
