@@ -18,7 +18,8 @@ export default function withAuth(Component: React.FC, allowedRoles: string[]) {
 
     useEffect(() => {
       if (!isAuthenticated) {
-        router.push("/login");
+        const returnTo = window.location.pathname;
+        router.push(`/login?returnTo=${encodeURIComponent(returnTo)}`);
       } else if (!allowedRoles.includes(userRole!)) {
         router.push("/"); // Redirige a la página de inicio si no tiene permiso
       } else {

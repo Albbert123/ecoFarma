@@ -39,7 +39,10 @@ oauth.register(
 
 def get_google_auth_redirect(request: Request):
     """Genera la URL de redirección a Google para autenticación."""
-    return oauth.google.authorize_redirect(request, REDIRECT_URI)
+    return_to = request.query_params.get("returnTo", "/")
+    return oauth.google.authorize_redirect(
+        request, REDIRECT_URI, state=return_to
+    )
 
 
 async def handle_google_callback(request: Request, user_service: UserService):
@@ -48,6 +51,8 @@ async def handle_google_callback(request: Request, user_service: UserService):
     id_token = token.get("id_token")
     if not id_token:
         raise ValueError("El token devuelto por Google no contiene un id.")
+
+    return_to = request.query_params.get("state", "/")
 
     google_user = jwt.decode(
         id_token,
@@ -83,6 +88,7 @@ async def handle_google_callback(request: Request, user_service: UserService):
             "newsletter": (
                 "true" if existing_user.get("newsletter", False) else "false"
             ),
+            "returnTo": return_to,
         }
     else:
         new_user = user_service.create_user(UserCreate(
@@ -104,7 +110,8 @@ async def handle_google_callback(request: Request, user_service: UserService):
             "nombre": new_user.nombre,
             "apellido": new_user.apellido,
             "fromGoogle": "true" if new_user.fromGoogle else "false",
-            "newsletter": "true" if new_user.newsletter else "false"
+            "newsletter": "true" if new_user.newsletter else "false",
+            "returnTo": return_to,
         }
 
     redirect_url = f"http://localhost:3000/login?{urlencode(user_data)}"

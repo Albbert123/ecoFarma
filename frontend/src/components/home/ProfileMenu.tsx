@@ -19,7 +19,8 @@ export default function ProfileMenu() {
 
     const handleProfileClick = () => {
         if (!isAuthenticated) {
-            router.push("/login");
+            const currentPath = window.location.pathname + window.location.search;
+            router.push(`/login?returnTo=${encodeURIComponent(currentPath)}`);
         } else {
             setMenuOpen(!menuOpen);
         }

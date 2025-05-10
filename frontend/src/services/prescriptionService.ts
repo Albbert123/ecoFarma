@@ -4,7 +4,6 @@ import { Prescription, PrescriptionType } from "../types/prescriptionTypes";
 export const getPrescriptions = async (user: string) => {
     try {
         const response = await api.get(`/prescriptions/${user}`);
-        console.log("Recetas obtenidas:", response.data);
         return response.data;
     } catch (error: any) {
         const errorMessage = error.response?.data?.detail || "Error al obtener las recetas";

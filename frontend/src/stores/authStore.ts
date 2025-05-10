@@ -42,7 +42,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.removeItem("userNombre");
       localStorage.removeItem("userApellido");
       localStorage.removeItem("userFromGoogle");
-      localStorage.clear();
     }
     set({ token: null, isAuthenticated: false, userRole: null, userCorreo: null, userImagen: null, userNombre: null, userApellido: null, userFromGoogle: false });
   },
