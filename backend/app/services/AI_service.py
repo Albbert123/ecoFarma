@@ -1,12 +1,12 @@
 import re
 from fastapi import UploadFile
-import ollama
+# import ollama
 import requests
-import fitz  # PyMuPDF
+# import fitz  # PyMuPDF
 from bs4 import BeautifulSoup
 import pdfplumber
-from PIL import Image
-import pytesseract
+# from PIL import Image
+# import pytesseract
 import tempfile
 import os
 from sentence_transformers import SentenceTransformer
@@ -22,9 +22,9 @@ model_product = SentenceTransformer(MODEL_PRODUCT_PATH)
 
 
 # Función para generar embedding con Ollama
-def generate_embedding(text):
-    response = ollama.embeddings(model='nomic-embed-text', prompt=text)
-    return response['embedding']  # Devuelve la lista de valores del embedding
+# def generate_embedding(text):
+#     response = ollama.embeddings(model='nomic-embed-text', prompt=text)
+#     return response['embedding']  # Devuelve la lista de valores del embedding
 
 
 def generate_embedding_modelReceipt(text: str):
@@ -50,9 +50,9 @@ def extract_text_from_file(file: UploadFile) -> str:
                 text = "\n".join(
                     page.extract_text() or "" for page in pdf.pages
                 )
-        elif "image" in file.content_type:
-            image = Image.open(tmp_path)
-            text = pytesseract.image_to_string(image)
+        # elif "image" in file.content_type:
+        #     image = Image.open(tmp_path)
+        #     text = pytesseract.image_to_string(image)
     finally:
         os.remove(tmp_path)
 
@@ -94,31 +94,31 @@ def download_pdf(url, filename):
 
 
 # Extraer texto del PDF
-def extract_text_from_pdf(pdf_path):
-    doc = fitz.open(pdf_path)
-    text = "\n".join([page.get_text("text") for page in doc])
-    return text.strip()
+# def extract_text_from_pdf(pdf_path):
+#     doc = fitz.open(pdf_path)
+#     text = "\n".join([page.get_text("text") for page in doc])
+#     return text.strip()
 
 
 # Llamar a DeepSeek R1 7B para resumir
-def extract_product_sections(text):
-    prompt = f"""Resume la siguiente informacion de manera clara y concisa.
+# def extract_product_sections(text):
+#     prompt = f"""Resume la siguiente informacion de manera clara y concisa.
 
-    El resumen debe contener solo la información más relevante.
-    - No incluyas información adicional o irrelevante.
-    - No incluyas información redundante.
-    - Maximo 200 palabras. No hay mínimo de palabras.
+#     El resumen debe contener solo la información más relevante.
+#     - No incluyas información adicional o irrelevante.
+#     - No incluyas información redundante.
+#     - Maximo 200 palabras. No hay mínimo de palabras.
 
-    No incluyas encabezados ni títulos, solo el texto resumido.
-    No incluyas introducciones ni conclusiones, solo el resumen.
+#     No incluyas encabezados ni títulos, solo el texto resumido.
+#     No incluyas introducciones ni conclusiones, solo el resumen.
 
-    Texto:
-    {text}
-    """
+#     Texto:
+#     {text}
+#     """
 
-    response = ollama.chat(
-        model='deepseek-r1:7b',
-        messages=[{"role": "user", "content": prompt}]
-    )
-    # Imprimir la respuesta para depuración
-    return response['message']['content'].strip()
+#     response = ollama.chat(
+#         model='deepseek-r1:7b',
+#         messages=[{"role": "user", "content": prompt}]
+#     )
+#     # Imprimir la respuesta para depuración
+#     return response['message']['content'].strip()
