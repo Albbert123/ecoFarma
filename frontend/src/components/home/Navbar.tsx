@@ -70,17 +70,16 @@ export default function Navbar() {
     // Componente común de botones de acción
     const ActionButtons = () => (
         <div className="flex space-x-4 items-center">
-            <div className="relative">
-                <Link href="/cart" className="p-2 rounded-full transition-colors">
-                    <FaShoppingCart className="text-gray-700 text-xl hover:text-blue-600 transition-colors" />
-                    <CartBadge />
-                </Link>
-            </div>
-            <div className="ml-2">
-                <ProfileMenu />
-            </div>
+          <Link href="/cart" className="p-2 rounded-full transition-colors relative">
+            <FaShoppingCart className="text-gray-700 text-xl hover:text-blue-600 transition-colors" />
+            <CartBadge />
+          </Link>
+          <div className="ml-2">
+            <ProfileMenu />
+          </div>
         </div>
-    );
+      );
+      
 
     if (userRole === "usuario" || !isAuthenticated) {
         return (
