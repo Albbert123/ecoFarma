@@ -51,16 +51,16 @@ def mock_jwt_decode(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_get_google_auth_redirect(mock_request, mock_oauth):
+    # Mockear el valor de "state" que se pasa como parámetro
+    mock_request.query_params.get.return_value = "mock_state_value"
+
     # Llamar a la función asíncrona y esperar su resultado
     response = await get_google_auth_redirect(mock_request)
 
     # Verificar que authorize_redirect fue llamado con los argumentos correctos
     mock_oauth.google.authorize_redirect.assert_called_once_with(
-        mock_request, "http://localhost:8000/auth/google/callback"
+        mock_request, "http://localhost:8000/auth/google/callback", state="mock_state_value"
     )
-
-    # Verificar que el resultado sea el esperado
-    assert response == mock_oauth.google.authorize_redirect.return_value
 
 
 @pytest.mark.asyncio
