@@ -324,7 +324,7 @@ class PrescriptionService:
     def get_products_by_prescription(self, product_name: str, principle_act: str):
         # cleaned_name = self.clean_prescription_product_name(product_name)
         # Crear la query combinando el nombre del producto y el principio activo
-        query = f"{principle_act}{". name:"}{product_name}"
+        query = f"{principle_act}. name:{product_name}"
 
         # Llamar al método semantic_search desde ProductService
         try:
