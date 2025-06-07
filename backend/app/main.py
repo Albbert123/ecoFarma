@@ -20,6 +20,8 @@ app = FastAPI()
 app.add_middleware(
     SessionMiddleware,
     secret_key=os.getenv("SECRET_KEY", "supersecretkey"),
+    same_site="lax",         # Ideal para local
+    https_only=False
 )
 
 # Middleware CORS

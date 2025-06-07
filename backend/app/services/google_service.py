@@ -21,6 +21,7 @@ USER_INFO_URL = os.getenv("USER_INFO_URL")
 AUTHORIZATION_URL = os.getenv("AUTHORIZATION_URL")
 JWKS_URI = os.getenv("JWKS_URI")
 METADATA_URL = os.getenv("METADATA_URL")
+FRONT_URL = os.getenv("FRONT_URL")
 
 oauth = OAuth()
 oauth.register(
@@ -114,5 +115,5 @@ async def handle_google_callback(request: Request, user_service: UserService):
             "returnTo": return_to,
         }
 
-    redirect_url = f"http://localhost:3000/login?{urlencode(user_data)}"
+    redirect_url = f"{FRONT_URL}/login?{urlencode(user_data)}"
     return RedirectResponse(url=redirect_url)

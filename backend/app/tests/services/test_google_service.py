@@ -10,6 +10,13 @@ from app.tests.mocks.mock_google_service import (
     get_mock_google_user,
     get_mock_existing_user,
 )
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+FRONT_URL = os.getenv("FRONT_URL")
+BACKEND_URL = os.getenv("BACKEND_URL")
 
 
 @pytest.fixture
