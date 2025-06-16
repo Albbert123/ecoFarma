@@ -3,7 +3,7 @@ import { api } from "./api";
 
 export const getAllQueries = async () => {
   try {
-    const response = await api.get("/queries");
+    const response = await api.get("/queries/");
     return response.data;
   } catch (error: any) {
     const errorMessage =
@@ -25,7 +25,7 @@ export const getQueriesByUser = async (user: string) => {
 
 export const sendQuery = async (query: Query) => {
   try {
-    const response = await api.post("/queries", query);
+    const response = await api.post("/queries/", query);
     return response.data;
   } catch (error: any) {
     const errorMessage =

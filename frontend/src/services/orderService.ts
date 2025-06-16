@@ -3,7 +3,7 @@ import { api } from "./api";
 
 export const createOrder = async (orderData: Order) => {
   try {
-    const response = await api.post('/orders', orderData);
+    const response = await api.post('/orders/', orderData);
     return response.data;
   } catch (error) {
     console.error("Error creating order:", error);
@@ -13,7 +13,7 @@ export const createOrder = async (orderData: Order) => {
 
 export const getAllOrders = async () => {
     try {
-        const response = await api.get('/orders');
+        const response = await api.get('/orders/');
         return response.data;
     } catch (error) {
         console.error("Error fetching all orders:", error);
