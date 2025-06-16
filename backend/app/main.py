@@ -27,7 +27,10 @@ app.add_middleware(
 # Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Cambiar en producción
+    allow_origins=[
+        "http://localhost:3000",
+        "https://eco-farma-6d8x.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
