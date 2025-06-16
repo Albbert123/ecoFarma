@@ -9,12 +9,16 @@ from app.routes.query_routes import api_router as query_router
 from app.services.scheduler_service import start_scheduler
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
 app = FastAPI()
+
+# Middleware que fuerza HTTPS || QUITAR EN LOCAL
+app.add_middleware(HTTPSRedirectMiddleware)
 
 # Middleware de sesión
 app.add_middleware(
