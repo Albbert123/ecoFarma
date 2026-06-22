@@ -1,57 +1,55 @@
-# Sistema Web Basado en Embeddings para una Farmacia
+# Pharmacy Web Platform with Semantic Search and AI-Based Recommendations
 
-Este es mi Trabajo de Final de Grado titulado **"Sistema web basado en embeddings para una farmacia"**, desarrollado con el objetivo de aplicar técnicas de inteligencia artificial y procesamiento de lenguaje natural al sector farmacéutico.
+This is my Final Degree Project, titled **"Embeddings-Based Web System for a Pharmacy"**, developed with the aim of applying artificial intelligence and natural language processing techniques to the pharmaceutical sector.
 
-## Resumen
+## Overview
 
-Este proyecto desarrolla un sistema web para la gestión de productos farmacéuticos, destacando el uso de **modelos de embeddings** complementados con **IA** para realizar búsquedas semánticas, generar recomendaciones personalizadas y gestionar recetas médicas.
+This project consists of a web-based system for managing pharmaceutical products, with a particular focus on the use of **embedding models** combined with **AI** to enable semantic search, generate personalized recommendations, and manage medical prescriptions.
 
-El propósito principal es **mejorar la accesibilidad y eficiencia** en la compra y gestión de productos farmacéuticos tanto para usuarios como para farmacéuticos. Entre las funcionalidades clave se incluyen:
+The main goal of the project is to **improve accessibility and efficiency** in the purchase and management of pharmaceutical products for both users and pharmacists. Some of the key features include:
 
-* 📄 Gestión de **recetas electrónicas** (Seguridad Social) y **recetas privadas**
-* 🛒 Encargos de productos **con y sin receta**
-* 🔔 Sistema de **notificaciones** sobre la medicación
-* 🧑‍⚕️ Panel de gestión para **farmacéuticos**
-* 🛠️ Herramientas de administración para **supervisar productos y usuarios**
+* 📄 Management of **electronic prescriptions** (public healthcare system) and **private prescriptions**
+* 🛒 Ordering of products **with or without a prescription**
+* 🔔 **Medication reminder and notification** system
+* 🧑‍⚕️ Management dashboard for **pharmacists**
+* 🛠️ Administrative tools to **monitor products and users**
 
-El sistema ha sido diseñado tomando en cuenta **aportes de profesionales del sector farmacéutico** y el análisis de **plataformas de farmacias online** ya existentes, lo que garantiza su viabilidad práctica y orientación al usuario real.
-
----
-
-## Tecnologías utilizadas
-
-* **Frontend:** React + Tailwind CSS
-* **Backend:** Node.js / Express
-* **Base de datos:** MongoDB
-* **Embeddings y NLP:** Sentence Transforms
-* **OCR (para recetas):** Tesseract.js
-* **Autenticación:** JWT
-* **Otros:** Cloudinary, Zustand, Axios, etc.
+The system was designed taking into account **input from professionals in the pharmaceutical sector**, as well as an analysis of **existing online pharmacy platforms**, which helped ensure its practical feasibility and user-oriented design.
 
 ---
 
-## Funcionalidades destacadas
+## Technologies Used
 
-* **Buscador semántico** de productos usando embeddings
-* **Recomendaciones personalizadas** según historial y recetas
-* Subida de recetas en formato imagen o PDF
-* Verificación automática de recetas electrónicas
-* Paneles diferenciados para **usuarios, farmacéuticos y administradores**
-* Gestión de encargos y seguimiento del estado
-
----
-
-## Público objetivo
-
-Este sistema está diseñado para:
-
-* Usuarios que necesitan una plataforma más intuitiva y flexible para gestionar su medicación.
-* Farmacéuticos que desean optimizar la atención y la organización de encargos.
-* Administradores que gestionan productos y supervisan la actividad del sistema.
+* **Frontend:** Typescript + Next
+* **Backend:** Python + FastAPI
+* **Database:** MongoDB
+* **Embeddings & NLP:** Sentence Transformers
+* **OCR (for prescriptions):** Tesseract.js
+* **Authentication:** JWT
 
 ---
 
-## Agradecimientos
+## Key Features
 
-Este proyecto ha contado con la colaboración de profesionales del ámbito farmacéutico y ha sido guiado por docentes del grado en Ingeniería Informática. A todos ellos, ¡gracias por su apoyo!
+* **Semantic product search** powered by embeddings
+* **Personalized recommendations** based on user history and prescriptions
+* Upload of prescriptions in image or PDF format
+* Automatic verification of electronic prescriptions
+* Dedicated dashboards for **users, pharmacists, and administrators**
+* Order management and status tracking
 
+---
+
+## Target Users
+
+This system is designed for:
+
+* Users who need a more intuitive and flexible platform to manage their medication.
+* Pharmacists who want to optimize customer service and order management.
+* Administrators responsible for product management and system supervision.
+
+---
+
+## Acknowledgements
+
+This project was developed with the collaboration of professionals from the pharmaceutical field and under the guidance of lecturers from the Computer Engineering degree. I would like to thank all of them for their support.
