@@ -1,8 +1,8 @@
-# 💊 Sistema Web Basado en Embeddings para una Farmacia
+# Sistema Web Basado en Embeddings para una Farmacia
 
 Este es mi Trabajo de Final de Grado titulado **"Sistema web basado en embeddings para una farmacia"**, desarrollado con el objetivo de aplicar técnicas de inteligencia artificial y procesamiento de lenguaje natural al sector farmacéutico.
 
-## 📝 Resumen
+## Resumen
 
 Este proyecto desarrolla un sistema web para la gestión de productos farmacéuticos, destacando el uso de **modelos de embeddings** complementados con **IA** para realizar búsquedas semánticas, generar recomendaciones personalizadas y gestionar recetas médicas.
 
@@ -18,7 +18,7 @@ El sistema ha sido diseñado tomando en cuenta **aportes de profesionales del se
 
 ---
 
-## ⚙️ Tecnologías utilizadas
+## Tecnologías utilizadas
 
 * **Frontend:** React + Tailwind CSS
 * **Backend:** Node.js / Express
@@ -30,28 +30,28 @@ El sistema ha sido diseñado tomando en cuenta **aportes de profesionales del se
 
 ---
 
-## 🚀 Funcionalidades destacadas
+## Funcionalidades destacadas
 
-* 🔍 **Buscador semántico** de productos usando embeddings
-* 💬 **Recomendaciones personalizadas** según historial y recetas
-* 📤 Subida de recetas en formato imagen o PDF
-* 🧾 Verificación automática de recetas electrónicas
-* 🧑‍💼 Paneles diferenciados para **usuarios, farmacéuticos y administradores**
-* 📦 Gestión de encargos y seguimiento del estado
+* **Buscador semántico** de productos usando embeddings
+* **Recomendaciones personalizadas** según historial y recetas
+* Subida de recetas en formato imagen o PDF
+* Verificación automática de recetas electrónicas
+* Paneles diferenciados para **usuarios, farmacéuticos y administradores**
+* Gestión de encargos y seguimiento del estado
 
 ---
 
-## 👨‍⚕️ Público objetivo
+## Público objetivo
 
 Este sistema está diseñado para:
 
-* 🧑 Usuarios que necesitan una plataforma más intuitiva y flexible para gestionar su medicación.
-* 🏥 Farmacéuticos que desean optimizar la atención y la organización de encargos.
-* 🛠️ Administradores que gestionan productos y supervisan la actividad del sistema.
+* Usuarios que necesitan una plataforma más intuitiva y flexible para gestionar su medicación.
+* Farmacéuticos que desean optimizar la atención y la organización de encargos.
+* Administradores que gestionan productos y supervisan la actividad del sistema.
 
 ---
 
-## 🤝 Agradecimientos
+## Agradecimientos
 
 Este proyecto ha contado con la colaboración de profesionales del ámbito farmacéutico y ha sido guiado por docentes del grado en Ingeniería Informática. A todos ellos, ¡gracias por su apoyo!
 
